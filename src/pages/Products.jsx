@@ -1,4 +1,7 @@
-function DealPage() {
+import { useParams } from "react-router-dom";
+
+function Products() {
+    const { id } = useParams();
     const items = [
         {
           id: 1,
@@ -84,7 +87,7 @@ function DealPage() {
       return (
         <div className="px-4 py-15 rounded-md bg-white">
       <div className="mx-6">
-      <h1 className="text-2xl font-semibold">Deals Of The Day</h1>
+      <h1 className="text-2xl font-semibold">{id}</h1>
       </div>
 
       <div className="relative w-full flex flex-wrap justify-around items-center my-6">
@@ -104,4 +107,4 @@ function DealPage() {
   );
 }
 
-export default DealPage;
+export default Products;

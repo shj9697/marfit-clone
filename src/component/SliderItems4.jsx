@@ -97,7 +97,7 @@ function SliderItems4() {
     <div className="mx-12 my-12 px-2 border-gray-300 rounded-md">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Trolley Bags</h1>
-        <button className="text-white text-sm bg-orange-600 px-6 py-2 rounded-md cursor-pointer" onClick={() => navigate("/trolley-bags")}>
+        <button className="text-white text-sm bg-orange-600 px-6 py-2 rounded-md cursor-pointer" onClick={() => navigate("/products/"+"Trolley Bags")}>
           View All
         </button>
       </div>

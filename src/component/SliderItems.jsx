@@ -94,7 +94,7 @@ function SliderItems() {
     <div className="mx-12 my-12 px-2 rounded-md">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Deal Of The Day</h1>
-        <button className="text-white text-sm bg-orange-600 px-6 py-2 rounded-md cursor-pointer" onClick={() => navigate("/deal")}>
+        <button className="text-white text-sm bg-orange-600 px-6 py-2 rounded-md cursor-pointer" onClick={() => navigate("/products/"+"Deal Of The Day")}>
           View All
         </button>
       </div>
