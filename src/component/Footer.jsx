@@ -2,8 +2,8 @@ import { Facebook, Instagram, Mail, Phone } from "lucide-react";
 
 function Footer() {
   return (
-    <div className="flex flex-col gap-10">
-      <div className="w-[95%] border-2 h-full mx-16 rounded-tl-[45px] bg-black p-12 flex flex-col gap-10">
+    <div className="flex flex-col">
+      <div className="w-[95%] border-2 h-full mx-23 rounded-tl-[45px] bg-black p-12 flex flex-col gap-10">
         <div className="flex flex-col sm:flex-row gap-10">
           <div className="w-1/2">
             <div className="flex flex-col">
@@ -53,12 +53,12 @@ function Footer() {
           </div>
           <div className="right w-1/2 inline-block">
             <ul className="flex items-center gap-5 text-white mx-35 my-10 relative">
-            <li className="cursor-pointer">
-               <Facebook size={40} onClick={() => (window.location.href = 'https://www.facebook.com/MarfitStores')}/>
-            </li>
+              <li className="cursor-pointer">
+                <Facebook size={40} onClick={() => (window.location.href = 'https://www.facebook.com/MarfitStores')} />
+              </li>
 
               <li className="cursor-pointer">
-              <Instagram size={40} onClick={() => (window.location.href = 'https://www.instagram.com/marfit.in')}/>
+                <Instagram size={40} onClick={() => (window.location.href = 'https://www.instagram.com/marfit.in')} />
               </li>
             </ul>
             <div className="text-white text-sm  mx-33">
