@@ -10,6 +10,9 @@ import Products from "./pages/Products";
 import { Toaster } from "react-hot-toast";
 import Categories from "./pages/Categories";
 import SubCategories from "./pages/SubCategories";
+import Embose from "./pages/Embose";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
+
 
 function App() {
   return (
@@ -24,6 +27,8 @@ function App() {
           <Route path="/franchise" element={<Franchise />} />
           <Route path="/categories/:pathId" element={<Categories />} />
           <Route path="/categories/:parentId/:subId" element={<SubCategories />} />
+          <Route path="/emboss" element={<Embose />} />
+          <Route path="/categories/:parentId/:subId/:productId" element={<ProductDetailsPage />} />
 
         </Routes>
         <Footer />
