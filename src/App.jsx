@@ -12,11 +12,13 @@ import Categories from "./pages/Categories";
 import SubCategories from "./pages/SubCategories";
 import Embose from "./pages/Embose";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
+import { CartProvider } from './context/CartProvider';
 
 
 function App() {
   return (
     <div className="w-full bg-[#eef0f3]">
+      <CartProvider>
       <BrowserRouter>
         <Navbar />
         <Routes>
@@ -29,10 +31,10 @@ function App() {
           <Route path="/categories/:parentId/:subId" element={<SubCategories />} />
           <Route path="/emboss" element={<Embose />} />
           <Route path="/categories/:parentId/:subId/:productId" element={<ProductDetailsPage />} />
-
         </Routes>
         <Footer />
       </BrowserRouter>
+      </CartProvider>
       <Toaster />
     </div>
   );

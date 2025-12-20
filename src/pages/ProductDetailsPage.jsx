@@ -1,12 +1,11 @@
 import { useParams } from "react-router-dom";
-import Breadcrumb from "../component/Breadcrumb";
 import { useRef } from "react";
+import Breadcrumb from "../component/Breadcrumb";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, A11y } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import { useNavigate } from "react-router-dom";
-
+import { ShoppingCart, Zap } from "lucide-react";
 
 
 const items = [
@@ -95,194 +94,88 @@ const items = [
 function ProductDetailsPage() {
     const { parentId, subId, productId } = useParams();
     const swiperRef = useRef(null);
-
-
+  
+  
+    const handleAddToCart = () => {
+      
+    };
+  
+    const handleBuyNow = () => {
+      
+    };
+  
     return (
-        <div className=" my-10">
-            <Breadcrumb
-                paths={[
-                    { title: parentId, link: `/categories/${parentId}` },
-                    { title: subId, link: `/categories/${parentId}/${subId}` },
-                    { title: 'product details', link: `/categories/${parentId}/${subId}/${productId}` },
-                ]}
-            />
-
-            <div className="flex  w-full bg-white mx-20">
-                <div className="flex flex-col w-[30%] h-160  mx-10 bg-white ">
-                    <div className="w-full  h-140"></div>
-                    <div className="flex w-full  h-20">
-                        <button className="border border-orange-500 text-sm font-medium px-12 h-12 cursor-pointer">ADD TO CART</button>
-                        <button className="bg-orange-500 text-sm px-12 h-12 font-medium cursor-pointer mx-4 text-white">BUY NOW</button>
-                    </div>
-                </div>
-                <div className="w-[70%] border mx-35">
-
-                </div>
-
-
+      <section className="my-10">
+        <Breadcrumb
+          paths={[
+            { title: parentId, link: `/categories/${parentId}` },
+            { title: subId, link: `/categories/${parentId}/${subId}` },
+            {
+              title: "product details",
+              link: `/categories/${parentId}/${subId}/${productId}`,
+            },
+          ]}
+        />
+  
+        <div className="flex w-full bg-white mx-20">
+          <div className="flex flex-col w-[30%] mx-10">
+            <div className="h-140" />
+  
+            <div className="flex gap-2">
+              <button
+                onClick={handleAddToCart}
+                className="flex items-center gap-2 px-8 rounded-full border border-orange-600"
+              >
+                <ShoppingCart />
+                Add To Cart
+              </button>
+  
+              <button
+                onClick={handleBuyNow}
+                className="flex items-center gap-2 px-8 rounded-full bg-orange-600 text-white"
+              >
+                <Zap />
+                Buy Now
+              </button>
             </div>
-            <div className="mx-3 h-130 my-2 px-2 border-gray-300 rounded-md">
-                <div className="mx-10">
-                    <h1 className="text-3xl font-normal">Similar Products</h1>
-                    <div className="crossline flex items-center gap-2 my-2">
-                        <span className="w-20 h-1 bg-black"></span>
-                        <span className="w-1 h-6 bg-black rotate-40"></span>
-                        <span className="w-1 h-6 bg-black rotate-40"></span>
-                        <span className="w-20 h-1 bg-black"></span>
-                    </div>
-                </div>
-
-                <div className="relative">
-                    <Swiper
-                        modules={[Navigation, A11y]}
-                        onSwiper={(swiper) => (swiperRef.current = swiper)}
-                        spaceBetween={15}
-                        slidesPerView={7}
-                        className="my-4 drop-shadow-xl bg-white p-4 rounded-md"
-                    >
-                        {items.map((item, index) => (
-                            <SwiperSlide key={index}>
-                                <div className="shadow-xl p-4 cursor-pointer rounded-md">
-                                    <img
-                                        src={item.img}
-                                        alt=""
-                                        className="w-full h-48 object-cover"
-                                    />
-                                    <p className="text-sm mt-2">{item.title}</p>
-                                    <p className="text-sm">Rs. {item.price}</p>
-                                    <p className="text-sm line-through text-gray-500">
-                                        Rs. {item.oldPrice}
-                                    </p>
-                                    <span className="text-sm text-orange-600">{item.off}</span>
-                                </div>
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-
-                    {/* Custom Navigation Buttons */}
-                    <button
-                        onClick={() => swiperRef.current?.slidePrev()}
-                        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white-600 text-black w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-colors"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={2}
-                            stroke="currentColor"
-                            className="w-5 h-5"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M15.75 19.5L8.25 12l7.5-7.5"
-                            />
-                        </svg>
-                    </button>
-                    <button
-                        onClick={() => swiperRef.current?.slideNext()}
-                        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white-900 text-black w-10 h-10 rounded-full shadow-xl flex items-center justify-center transition-colors"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={2}
-                            stroke="currentColor"
-                            className="w-5 h-5"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                            />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div className="mx-3 h-130 my-1 px-2 border-gray-300 rounded-md">
-                <div className="mx-10">
-                    <h1 className="text-3xl font-normal">You May Also Like</h1>
-                    <div className="crossline flex items-center gap-2 my-2">
-                        <span className="w-20 h-1 bg-black"></span>
-                        <span className="w-1 h-6 bg-black rotate-40"></span>
-                        <span className="w-1 h-6 bg-black rotate-40"></span>
-                        <span className="w-20 h-1 bg-black"></span>
-                    </div>
-                </div>
-
-                <div className="relative">
-                    <Swiper
-                        modules={[Navigation, A11y]}
-                        onSwiper={(swiper) => (swiperRef.current = swiper)}
-                        spaceBetween={17}
-                        slidesPerView={7}
-                        className="my-4 drop-shadow-xl bg-white p-4 rounded-md"
-                    >
-                        {items.map((item, index) => (
-                            <SwiperSlide key={index}>
-                                <div className="shadow-xl p-4 cursor-pointer rounded-md">
-                                    <img
-                                        src={item.img}
-                                        alt=""
-                                        className="w-full h-48 object-cover"
-                                    />
-                                    <p className="text-sm mt-2">{item.title}</p>
-                                    <p className="text-sm">Rs. {item.price}</p>
-                                    <p className="text-sm line-through text-gray-500">
-                                        Rs. {item.oldPrice}
-                                    </p>
-                                    <span className="text-sm text-orange-600">{item.off}</span>
-                                </div>
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-
-                    {/* Custom Navigation Buttons */}
-                    <button
-                        onClick={() => swiperRef.current?.slidePrev()}
-                        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white-600 text-black w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-colors"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={2}
-                            stroke="currentColor"
-                            className="w-5 h-5"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M15.75 19.5L8.25 12l7.5-7.5"
-                            />
-                        </svg>
-                    </button>
-                    <button
-                        onClick={() => swiperRef.current?.slideNext()}
-                        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white-900 text-black w-10 h-10 rounded-full shadow-xl flex items-center justify-center transition-colors"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={2}
-                            stroke="currentColor"
-                            className="w-5 h-5"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                            />
-                        </svg>
-                    </button>
-                </div>
-            </div>
+          </div>
+  
+          <div className="w-[70%] border mx-10" />
         </div>
-
-
-    )
-}
+  
+        <section className="mx-3 my-6">
+          <h2 className="text-3xl mx-10">Similar Products</h2>
+  
+          <div className="relative">
+            <Swiper
+              modules={[Navigation, A11y]}
+              onSwiper={(swiper) => (swiperRef.current = swiper)}
+              spaceBetween={15}
+              slidesPerView={5}
+              className="my-4 bg-white p-4 rounded-md"
+            >
+              {items.map((item) => (
+                <SwiperSlide key={item.id}>
+                  <article className="shadow-xl p-4 rounded-md">
+                    <img
+                      src={item.img}
+                      alt={item.title}
+                      className="w-full h-48 object-cover"
+                    />
+                    <p className="mt-2 text-sm">{item.title}</p>
+                    <p className="text-sm">Rs. {item.price}</p>
+                    <p className="text-sm line-through text-gray-500">
+                      Rs. {item.oldPrice}
+                    </p>
+                    <span className="text-sm text-orange-600">{item.off}</span>
+                  </article>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </section>
+      </section>
+    );
+  }
 
 export default ProductDetailsPage;
