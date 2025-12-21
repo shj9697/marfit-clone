@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -7,8 +7,13 @@ import { useRef } from "react";
 import Breadcrumb from "../component/Breadcrumb";
 
 function Categories() {
+  const navigate = useNavigate();
   const { pathId } = useParams();
   const swiperRef = useRef(null);
+
+  function handleViewProductDetails(item) {
+    navigate(`/categories/${item.parent}/${item.subcategory}`)
+  }
 
   const items = [
     {
@@ -99,12 +104,11 @@ function Categories() {
     <div className="mx-27 my-10">
       <Breadcrumb
         paths={[
-          {
-            title: pathId,
-            link: `"/categories/${pathId}`,
-          },
+          { title: pathId, link: `/categories/${pathId}` },
+
         ]}
       />
+
       <div className="flex flex-col ">
         <h1 className="text-2xl my-3 font-normal">
           Select by {pathId} Category
@@ -113,7 +117,7 @@ function Categories() {
       </div>
 
       <div className="flex mx-5 my-5 w-full gap-2 flex-wrap">
-        <div className="w-[24%] h-[52vh] bg-white rounded  cursor-pointer hover:-translate-y-2 transition-transform duration-400 ease-out">
+        <div className="w-[24%] h-[52vh] bg-white rounded  cursor-pointer hover:-translate-y-2 transition-transform duration-400 ease-out" onClick={() => handleViewProductDetails(items)}>
           <h1 className="text-l font-medium text-gray-800 mx-2">
             Messengers Bags
           </h1>
@@ -122,35 +126,35 @@ function Categories() {
             alt="Messengers Bags"
           />
         </div>
-        <div className="w-[24%] h-[52vh] bg-white rounded cursor-pointer hover:-translate-y-2 transition-transform duration-200 ease-out">
+        <div className="w-[24%] h-[52vh] bg-white rounded cursor-pointer hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleViewProductDetails(items)}>
           <h1 className="text-l font-medium text-gray-800 mx-2">BriefCase</h1>
           <img
             src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FBriefcase%2FBriefcase?alt=media&token=c653874d-97b1-490e-ad95-a111e79fd698"
             alt="BriefCase"
           />
         </div>
-        <div className="w-[24%] h-[52vh] bg-white rounded cursor-pointer hover:-translate-y-2 transition-transform duration-200 ease-out">
+        <div className="w-[24%] h-[52vh] bg-white rounded cursor-pointer hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleViewProductDetails(items)}>
           <h1 className="text-l font-medium text-gray-800 mx-2">Sling bags</h1>
           <img
             src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FSling%20Bags%2FSling%20Bags?alt=media&token=91a528b1-073b-401a-84dd-6577e2b934eb"
             alt="Sling bags"
           />
         </div>
-        <div className="w-[24%] h-[52vh] bg-white rounded cursor-pointer hover:-translate-y-2 transition-transform duration-200 ease-out">
+        <div className="w-[24%] h-[52vh] bg-white rounded cursor-pointer hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleViewProductDetails(items)}>
           <h1 className="text-l font-medium text-gray-800 mx-2">Wallets</h1>
           <img
             src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FOffice%20Supplies%2FOffice%20Supplies?alt=media&token=cdf203b5-5923-478a-a71d-2085cac6ccd3"
             alt="Wallets"
           />
         </div>
-        <div className="w-[24%] h-[52vh] bg-white rounded cursor-pointer my-2 hover:-translate-y-2 transition-transform duration-200 ease-out">
+        <div className="w-[24%] h-[52vh] bg-white rounded cursor-pointer my-2 hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleViewProductDetails(items)}>
           <h1 className="text-l font-medium text-gray-800 mx-2">Sling bags</h1>
           <img
             src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FSling%20Bags%2FSling%20Bags?alt=media&token=91a528b1-073b-401a-84dd-6577e2b934eb"
             alt="Sling bags"
           />
         </div>
-        <div className="w-[24%] h-[52vh] bg-white rounded cursor-pointer my-2 hover:-translate-y-2 transition-transform duration-200 ease-out">
+        <div className="w-[24%] h-[52vh] bg-white rounded cursor-pointer my-2 hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleViewProductDetails(items)}>
           <h1 className="text-l font-medium text-gray-800 mx-2">Wallets</h1>
           <img
             src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FOffice%20Supplies%2FOffice%20Supplies?alt=media&token=cdf203b5-5923-478a-a71d-2085cac6ccd3"

@@ -8,6 +8,10 @@ import { useNavigate } from "react-router-dom";
 function SliderItems1() {
   const swiperRef = useRef(null);
   const navigate = useNavigate();
+
+  function handleViewProductDetails(item) {
+    navigate(`/categories/${item.parent}/${item.subcategory}/${item.productId}`)
+  }
   const items = [
     {
       id: 1,
@@ -111,7 +115,7 @@ function SliderItems1() {
         >
           {items.map((item, index) => (
             <SwiperSlide key={index}>
-              <div className="shadow-xl p-4 cursor-pointer rounded-md">
+              <div className="shadow-xl p-4 cursor-pointer rounded-md" onClick={() => handleViewProductDetails(item)} >
                 <img src={item.img} alt="" className="w-full h-48 object-cover" />
                 <p className="text-sm mt-2">{item.title}</p>
                 <p className="text-sm">Rs. {item.price}</p>

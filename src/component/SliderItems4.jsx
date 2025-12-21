@@ -10,6 +10,10 @@ import { useNavigate } from "react-router-dom";
 function SliderItems4() {
   const swiperRef = useRef(null);
   const navigate = useNavigate();
+  function handleViewProductDetails(item) {
+    navigate(`/categories/${item.parent}/${item.subcategory}/${item.productId}`)
+  }
+
   const items = [
     {
       id: 1,
@@ -97,7 +101,7 @@ function SliderItems4() {
     <div className="mx-12 my-12 px-2 border-gray-300 rounded-md">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Trolley Bags</h1>
-        <button className="text-white text-sm bg-orange-600 px-6 py-2 rounded-md cursor-pointer" onClick={() => navigate("/products/"+"Trolley Bags")}>
+        <button className="text-white text-sm bg-orange-600 px-6 py-2 rounded-md cursor-pointer" onClick={() => navigate("/products/" + "Trolley Bags")}>
           View All
         </button>
       </div>
@@ -112,12 +116,12 @@ function SliderItems4() {
         >
           {items.map((item, index) => (
             <SwiperSlide key={index}>
-              <div className="shadow-xl p-4 cursor-pointer rounded-md">
+              <div className="shadow-xl p-4 cursor-pointer rounded-md" onClick={() => handleViewProductDetails(items)}>
                 <img src={item.img} alt="" className="w-full h-48 object-cover" />
                 <p className="text-sm mt-2">{item.title}</p>
                 <p className="text-sm">Rs. {item.price}</p>
-               <div className="flex items-center gap-2"> 
-                  <p className="text-sm line-through text-gray-500">Rs. {item.oldPrice} </p>           
+                <div className="flex items-center gap-2">
+                  <p className="text-sm line-through text-gray-500">Rs. {item.oldPrice} </p>
                   <span className="text-sm text-orange-600">{item.off}</span>
                 </div>
               </div>

@@ -2,6 +2,7 @@ import { ListFilter } from "lucide-react";
 import { useParams } from "react-router-dom";
 import Breadcrumb from "../component/Breadcrumb";
 import { useEffect, useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 const items = [
@@ -75,6 +76,7 @@ const items = [
     },
     {
         id: 9,
+        name: "Duffle Bags",
         img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FTB2155002BRN%2FGenuine%20Leather%20Duffel%20Bag%20for%20Travel%20Gym%20-%20TB2155002BRN?alt=media&token=687a79be-80f5-4880-a903-0dbbb1906c7d",
         title: "Genuine Leather Duffel Bag for Travel Gym - TB2155002BRN",
         price: 3099,
@@ -205,36 +207,25 @@ let subCategoriesOptions = [
 ];
 
 let availabilityOptions = [
-    {
-        label: "Embose",
-        value: "Embose",
-    },
-    {
-        label: "Out Of Stock",
-        value: "Out of Stock",
-    }
+    { label: "Embose", value: "Embose", },
+    { label: "Out Of Stock", value: "Out of Stock" }
 ]
 
 function Embose() {
-    const { parentId, subId } = useParams();
+    const navigate = useNavigate();
     const [sortBy, setSortBy] = useState("relevance");
-    const [category, setCategory] = useState("category");
-    const [subCategory, setSubCategory] = useState("subCategory");
-    const [availability, setAvailability] = useState("availability");
-    const [embose, setEmbose] = useState("embose");
+    const [category, setCategory] = useState("all");
+    const [subCategory, setSubCategory] = useState("all");
+    const [availability, setAvailability] = useState([]);
 
-    useEffect(() => {
-        setCategory("category");
-        setSubCategory("subCategory");
-        setAvailability("availability");
-        setEmbose("embose");
-    }, [parentId, subId]);
+    function handleViewProductDetails(item) {
+        navigate(`/categories/${item.parent}/${item.subcategory}/${item.productId}`)
+    }
 
     const handleSortBy = (value = "relevance") => setSortBy(value);
-    const handleCategoryBy = (value = "category") => setCategory(value);
-    const handleSubCategoryBy = (value = "subCategory") => setSubCategory(value);
+    const handleCategoryBy = (value = "all") => setCategory(value);
+    const handleSubCategoryBy = (value = "all") => setSubCategory(value);
     const handleAvailability = (value = "availability") => setAvailability(value);
-    const handleEmbose = (value = "embose") => setEmbose(value);
 
     const filteredItems = useMemo(() => {
         let result = [...items];
@@ -261,9 +252,7 @@ function Embose() {
             result.sort((a, b) => b.price - a.price);
         }
 
-        if (availability) {
 
-        }
 
         return result;
     }, [category, subCategory, sortBy]);
@@ -273,7 +262,6 @@ function Embose() {
         setCategory("category");
         setSubCategory("subCategory");
         setAvailability("availability");
-        setEmbose("embose");
     };
 
 
@@ -305,7 +293,7 @@ function Embose() {
                                 <input
                                     type="checkbox"
                                     checked={sortBy === "relevance"}
-                                    onClick={() => handleSortBy("relevance")}
+                                    onChange={() => handleSortBy("relevance")}
                                 />
                                 <label className="ml-2">RELEVANCE</label>
                             </div>
@@ -314,7 +302,7 @@ function Embose() {
                                 <input
                                     type="checkbox"
                                     checked={sortBy === "price-low-to-high"}
-                                    onClick={() => handleSortBy("price-low-to-high")}
+                                    onChange={() => handleSortBy("price-low-to-high")}
                                 />
                                 <label className="ml-2">PRICE LOW TO HIGH</label>
                             </div>
@@ -323,7 +311,7 @@ function Embose() {
                                 <input
                                     type="checkbox"
                                     checked={sortBy === "price-high-to-low"}
-                                    onClick={() => handleSortBy("price-high-to-low")}
+                                    onChange={() => handleSortBy("price-high-to-low")}
                                 />
                                 <label className="ml-2">PRICE HIGH TO LOW</label>
                             </div>
@@ -336,7 +324,7 @@ function Embose() {
                                     <input
                                         type="checkbox"
                                         checked={category === item.value}
-                                        onClick={() => handleCategoryBy(item.value)}
+                                        onChange={() => handleCategoryBy(item.value)}
                                     />
                                     <span>{item.label}</span>
                                 </div>
@@ -350,7 +338,7 @@ function Embose() {
                                     <input
                                         type="checkbox"
                                         checked={subCategory === item.value}
-                                        onClick={() => handleSubCategoryBy(item.value)}
+                                        onChange={() => handleSubCategoryBy(item.value)}
                                     />
                                     <span>{item.label}</span>
                                 </div>
@@ -364,7 +352,7 @@ function Embose() {
                                     <input
                                         type="checkbox"
                                         checked={availability === item.value}
-                                        onClick={() => handleAvailability(item.value)}
+                                        onChange={() => handleAvailability(item.value)}
                                     />
                                     <span>{item.label}</span>
 
@@ -377,7 +365,7 @@ function Embose() {
                         {filteredItems.map(item => (
                             <div
                                 key={item.id}
-                                className="cursor-pointer py-2 m-1 w-1/5 border border-gray-200 rounded-md"
+                                className="cursor-pointer py-2 m-1 w-1/5 border border-gray-200 rounded-md" onClick={() => handleViewProductDetails(items)}
                             >
                                 <img
                                     src={item.img}

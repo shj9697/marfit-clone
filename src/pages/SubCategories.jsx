@@ -5,7 +5,6 @@ import { useEffect, useState, useMemo } from "react";
 
 
 const items = [
-
 	{
 		id: 1,
 		img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FLB9329034TANCRO%2F1?alt=media&token=352fe421-02ca-4f4f-b2de-3b7f42df7682",
@@ -205,31 +204,40 @@ let subCategoriesOptions = [
 ];
 
 let availabilityOptions = [
-	{
-		label: "Embose",
-		value: "Embose",
-		label: "Out Of Stock",
-		value: "Out of Stock"
-	}
-]
+	{ label: "Embose", value: "Embose", },
+	{ label: "Out Of Stock", value: "Out of Stock" }
+];
 
 function SubCategories() {
 	const { parentId, subId } = useParams();
 	const [sortBy, setSortBy] = useState("relevance");
-	const [category, setCategory] = useState("category");
-	const [subCategory, setSubCategory] = useState("subCategory");
-	const [availability, setAvailability] = useState("availability");
+	const [category, setCategory] = useState("all");
+	const [subCategory, setSubCategory] = useState("all");
+	const [availability, setAvailability] = useState([]);
 
 	useEffect(() => {
-		setCategory("category");
-		setSubCategory("subCategory");
-		setAvailability("availability");
+		if (parentId) {
+			setCategory(parentId);
+		}
+		if (subId) {
+			setSubCategory(subId);
+		}
 	}, [parentId, subId]);
 
-	const handleSortBy = (value = "relevance") => setSortBy(value);
-	const handleCategoryBy = (value = "category") => setCategory(value);
-	const handleSubCategoryBy = (value = "subCategory") => setSubCategory(value);
-	const handleAvailability = (value = "availability") => setAvailability(value);
+	const handleSortBy = (value) => setSortBy(value);
+
+	const handleCategoryBy = (value) => setCategory(value);
+
+	const handleSubCategoryBy = (value) => setSubCategory(value);
+
+	const handleAvailability = (value, event) => {
+		const isChecked = event.target.checked;
+		if (isChecked) {
+			setAvailability(prev => ([...prev, value]));
+		} else {
+			setAvailability(prev => prev.filter(item => item !== value));
+		}
+	};
 
 	const filteredItems = useMemo(() => {
 		let result = [...items];
@@ -300,7 +308,7 @@ function SubCategories() {
 								<input
 									type="checkbox"
 									checked={sortBy === "relevance"}
-									onClick={() => handleSortBy("relevance")}
+									onChange={() => handleSortBy("relevance")}
 								/>
 								<label className="ml-2">RELEVANCE</label>
 							</div>
@@ -309,7 +317,7 @@ function SubCategories() {
 								<input
 									type="checkbox"
 									checked={sortBy === "price-low-to-high"}
-									onClick={() => handleSortBy("price-low-to-high")}
+									onChange={() => handleSortBy("price-low-to-high")}
 								/>
 								<label className="ml-2">PRICE LOW TO HIGH</label>
 							</div>
@@ -318,7 +326,7 @@ function SubCategories() {
 								<input
 									type="checkbox"
 									checked={sortBy === "price-high-to-low"}
-									onClick={() => handleSortBy("price-high-to-low")}
+									onChange={() => handleSortBy("price-high-to-low")}
 								/>
 								<label className="ml-2">PRICE HIGH TO LOW</label>
 							</div>
@@ -331,7 +339,7 @@ function SubCategories() {
 									<input
 										type="checkbox"
 										checked={category === item.value}
-										onClick={() => handleCategoryBy(item.value)}
+										onChange={() => handleCategoryBy(item.value)}
 									/>
 									<span>{item.label}</span>
 								</div>
@@ -345,7 +353,7 @@ function SubCategories() {
 									<input
 										type="checkbox"
 										checked={subCategory === item.value}
-										onClick={() => handleSubCategoryBy(item.value)}
+										onChange={() => handleSubCategoryBy(item.value)}
 									/>
 									<span>{item.label}</span>
 								</div>
@@ -358,8 +366,8 @@ function SubCategories() {
 								<div key={item.value} className="flex items-center gap-2">
 									<input
 										type="checkbox"
-										checked={availability === item.value}
-										onClick={() => handleAvailability(item.value)}
+										checked={availability.includes(item.value)}
+										onChange={(event) => handleAvailability(item.value, event)}
 									/>
 									<span>{item.label}</span>
 								</div>

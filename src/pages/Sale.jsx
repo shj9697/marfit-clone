@@ -1,4 +1,11 @@
+import { useNavigate } from "react-router-dom";
+
+
 function Sale() {
+  const navigate = useNavigate();
+  function handleViewProductDetails(item) {
+    navigate(`/categories/${item.parent}/${item.subcategory}/${item.productId}`)
+  }
   const items = [
     {
       id: 1,
@@ -106,7 +113,7 @@ function Sale() {
         {items.map((item, index) => (
           <div
             key={index}
-            className="shadow-xl cursor-pointer w-1/6 p-2 mx-1 my-1"
+            className="shadow-xl cursor-pointer w-1/6 p-2 mx-1 my-1" onClick={() => handleViewProductDetails(items)}
           >
             <img
               src={item.img}

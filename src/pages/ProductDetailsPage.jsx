@@ -94,88 +94,124 @@ const items = [
 function ProductDetailsPage() {
     const { parentId, subId, productId } = useParams();
     const swiperRef = useRef(null);
-  
-  
+
+
     const handleAddToCart = () => {
-      
+
     };
-  
+
     const handleBuyNow = () => {
-      
+
     };
-  
+
     return (
-      <section className="my-10">
-        <Breadcrumb
-          paths={[
-            { title: parentId, link: `/categories/${parentId}` },
-            { title: subId, link: `/categories/${parentId}/${subId}` },
-            {
-              title: "product details",
-              link: `/categories/${parentId}/${subId}/${productId}`,
-            },
-          ]}
-        />
-  
-        <div className="flex w-full bg-white mx-20">
-          <div className="flex flex-col w-[30%] mx-10">
-            <div className="h-140" />
-  
-            <div className="flex gap-2">
-              <button
-                onClick={handleAddToCart}
-                className="flex items-center gap-2 px-8 rounded-full border border-orange-600"
-              >
-                <ShoppingCart />
-                Add To Cart
-              </button>
-  
-              <button
-                onClick={handleBuyNow}
-                className="flex items-center gap-2 px-8 rounded-full bg-orange-600 text-white"
-              >
-                <Zap />
-                Buy Now
-              </button>
+        <section>
+            <Breadcrumb
+                paths={[
+                    { title: parentId, link: `/categories/${parentId}` },
+                    { title: subId, link: `/categories/${parentId}/${subId}` },
+                    {
+                        title: "product details",
+                        link: `/categories/${parentId}/${subId}/${productId}`,
+                    },
+                ]}
+            />
+
+            <div className="flex w-full h-160 bg-white px-35">
+                <div className="flex w-[30%] py-3">
+                    <div className="w-20% ">
+                        <div className="my-2">
+                            <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLK%2F1?alt=media&token=31d02f51-a5ca-4bb9-a96d-2d92d65291a7" alt="" className="w-14 h-14 cursor-pointer" />
+                        </div>
+                        <div className="my-2">
+                            <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLK%2F2?alt=media&token=633c78ba-a2cc-497f-8846-7b31b5fd9d1b" alt="" className="w-14 h-14 cursor-pointer" />
+                        </div>
+                        <div className="my-2">
+                            <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLK%2F3?alt=media&token=25e37ffb-17f4-4eb7-8531-d694a856f5e3" alt="" className="w-14 h-14 cursor-pointer" />
+                        </div>
+                        <div className="my-2">
+                            <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLK%2F4?alt=media&token=031f7ee7-b607-42ff-8f66-596440287e5d" alt="" className="w-14 h-14 cursor-pointer" />
+                        </div>
+                        <div className="my-2">
+                            <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLK%2F5?alt=media&token=6413431f-356c-4140-9010-5dbb461868d1" alt="" className="w-14 h-14 cursor-pointer" />
+                        </div>
+                    </div>
+                    <div className="mx-25 my-20 w-80% h-70 ">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLK%2F1?alt=media&token=31d02f51-a5ca-4bb9-a96d-2d92d65291a7" alt="" className="w-60 h-60 cursor-pointer object-contain border" />
+                    </div>
+                </div>
+                <div className="border w-[70%] px-3 py-10 mx-15 overflow-y-scroll">
+                    <h1 className="text-4xl leading-10">Genuine Leather Laptop Messenger Bag For<br></br> Men - MB2155063GRN</h1>
+                    <div className="flex items-center gap-2 my-2">
+                        <p className="text-4xl">₹4999 </p>
+                        <p className="line-through text-gray-600 text-2xl">₹14999</p>
+                        <p className="text-orange-600 font-medium text-md">67% off</p>
+                    </div>
+                    <div className="flex">
+                        <div >
+                            <h1 className="text-lg font-normal">Quantity</h1>
+                            <input type="number" id="" className="w-19" />
+                        </div>
+
+
+                        <div className="">
+                            <h1>Color</h1>
+                        </div>
+                        <div className="flex mx-8">
+                            <div className="m-1">
+                                <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063GRN%2F1?alt=media&token=737e828b-36e3-498f-b185-412ee163adc9" alt="" className="w-16 h-16 border-2 border-gray-500 rounded cursor-pointer" />
+                            </div>
+                            <div className="m-1">
+                                <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063DESBRN%20%2F1?alt=media&token=cc73770b-18dd-4510-b8ae-e32c7c6018d3" alt="" className="w-16 h-16 border-2 border-gray-500 rounded cursor-pointer" />
+                            </div>
+                            <div className="m-1">
+                                <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLK%2F1?alt=media&token=31d02f51-a5ca-4bb9-a96d-2d92d65291a7" alt="" className="w-16 h-16 border-2 border-gray-500 rounded cursor-pointer" />
+                            </div>
+                            <div className="m-1">
+                                <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BRN%2F1?alt=media&token=df599520-fd14-49a9-bcbb-c7e9b627d4a2" alt="" className="w-16 h-16 border-2 border-gray-500 rounded cursor-pointer" />
+                            </div>
+                            <div className="m-1">
+                                <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLU%2F1?alt=media&token=73dd0f5c-4e2d-4fdc-a081-32e9e0db9223" alt="" className="w-16 h-16 border-2 border-gray-500 rounded cursor-pointer" />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-  
-          <div className="w-[70%] border mx-10" />
-        </div>
-  
-        <section className="mx-3 my-6">
-          <h2 className="text-3xl mx-10">Similar Products</h2>
-  
-          <div className="relative">
-            <Swiper
-              modules={[Navigation, A11y]}
-              onSwiper={(swiper) => (swiperRef.current = swiper)}
-              spaceBetween={15}
-              slidesPerView={5}
-              className="my-4 bg-white p-4 rounded-md"
-            >
-              {items.map((item) => (
-                <SwiperSlide key={item.id}>
-                  <article className="shadow-xl p-4 rounded-md">
-                    <img
-                      src={item.img}
-                      alt={item.title}
-                      className="w-full h-48 object-cover"
-                    />
-                    <p className="mt-2 text-sm">{item.title}</p>
-                    <p className="text-sm">Rs. {item.price}</p>
-                    <p className="text-sm line-through text-gray-500">
-                      Rs. {item.oldPrice}
-                    </p>
-                    <span className="text-sm text-orange-600">{item.off}</span>
-                  </article>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
+
+            <section className="mx-3 my-6">
+                <h2 className="text-3xl mx-10">Similar Products</h2>
+
+                <div className="relative">
+                    <Swiper
+                        modules={[Navigation, A11y]}
+                        onSwiper={(swiper) => (swiperRef.current = swiper)}
+                        spaceBetween={15}
+                        slidesPerView={5}
+                        className="my-4 bg-white p-4 rounded-md"
+                    >
+                        {items.map((item) => (
+                            <SwiperSlide key={item.id}>
+                                <article className="shadow-xl p-4 rounded-md">
+                                    <img
+                                        src={item.img}
+                                        alt={item.title}
+                                        className="w-full h-48 object-cover"
+                                    />
+                                    <p className="mt-2 text-sm">{item.title}</p>
+                                    <p className="text-sm">Rs. {item.price}</p>
+                                    <p className="text-sm line-through text-gray-500">
+                                        Rs. {item.oldPrice}
+                                    </p>
+                                    <span className="text-sm text-orange-600">{item.off}</span>
+                                </article>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                </div>
+            </section>
         </section>
-      </section>
     );
-  }
+}
 
 export default ProductDetailsPage;
