@@ -13,27 +13,29 @@ import SubCategories from "./pages/SubCategories";
 import Embose from "./pages/Embose";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import { CartProvider } from './context/CartProvider';
+import BulkContact from "./pages/BulkContact";
 
 
 function App() {
   return (
     <div className="w-full bg-[#eef0f3]">
       <CartProvider>
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products/:id" element={<Products />} />
-          <Route path="/new-arrival" element={<NewArrival />} />
-          <Route path="/sale" element={<Sale />} />
-          <Route path="/franchise" element={<Franchise />} />
-          <Route path="/categories/:pathId" element={<Categories />} />
-          <Route path="/categories/:parentId/:subId" element={<SubCategories />} />
-          <Route path="/emboss" element={<Embose />} />
-          <Route path="/categories/:parentId/:subId/:productId" element={<ProductDetailsPage />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/products/:id" element={<Products />} />
+            <Route path="/new-arrival" element={<NewArrival />} />
+            <Route path="/sale" element={<Sale />} />
+            <Route path="/franchise" element={<Franchise />} />
+            <Route path="/categories/:pathId" element={<Categories />} />
+            <Route path="/categories/:parentId/:subId" element={<SubCategories />} />
+            <Route path="/emboss" element={<Embose />} />
+            <Route path="/categories/:parentId/:subId/:productId" element={<ProductDetailsPage />} />
+            <Route path="/bulkContact" element={<BulkContact />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
       </CartProvider>
       <Toaster />
     </div>

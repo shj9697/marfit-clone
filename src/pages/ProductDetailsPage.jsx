@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRef } from "react";
 import Breadcrumb from "../component/Breadcrumb";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -92,6 +92,7 @@ const items = [
 ];
 
 function ProductDetailsPage() {
+    const navigate = useNavigate();
     const { parentId, subId, productId } = useParams();
     const swiperRef = useRef(null);
 
@@ -103,6 +104,11 @@ function ProductDetailsPage() {
     const handleBuyNow = () => {
 
     };
+
+    const corporateContact = () => {
+        const item = items[0];
+        navigate(`/bulkContact?SKU=${item.id}`);
+    }
 
     return (
         <section>
@@ -137,10 +143,10 @@ function ProductDetailsPage() {
                         </div>
                     </div>
                     <div className="mx-25 my-20 w-80% h-70 ">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLK%2F1?alt=media&token=31d02f51-a5ca-4bb9-a96d-2d92d65291a7" alt="" className="w-60 h-60 cursor-pointer object-contain border" />
+                        <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLK%2F1?alt=media&token=31d02f51-a5ca-4bb9-a96d-2d92d65291a7" alt="" className="w-60 h-60 cursor-pointer object-cover " />
                     </div>
                 </div>
-                <div className="border w-[70%] px-3 py-10 mx-15 overflow-y-scroll">
+                <div className="w-[70%] px-3 py-10 mx-15 overflow-y-scroll no-scrollbar">
                     <h1 className="text-4xl leading-10">Genuine Leather Laptop Messenger Bag For<br></br> Men - MB2155063GRN</h1>
                     <div className="flex items-center gap-2 my-2">
                         <p className="text-4xl">₹4999 </p>
@@ -149,8 +155,8 @@ function ProductDetailsPage() {
                     </div>
                     <div className="flex">
                         <div >
-                            <h1 className="text-lg font-normal">Quantity</h1>
-                            <input type="number" id="" className="w-19" />
+                            <h1 className="text-lg font-semibold">Quantity</h1>
+                            <input type="number" id="" className="w-19 my-2" />
                         </div>
 
 
@@ -173,9 +179,46 @@ function ProductDetailsPage() {
                             <div className="m-1">
                                 <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLU%2F1?alt=media&token=73dd0f5c-4e2d-4fdc-a081-32e9e0db9223" alt="" className="w-16 h-16 border-2 border-gray-500 rounded cursor-pointer" />
                             </div>
-
                         </div>
                     </div>
+                    <button className="my-15 text-orange-600 font-semibold cursor-pointer" onClick={corporateContact} >For bulk - Click here</button>
+                    <h2>Delivery </h2>
+                    <div className="divide-y-2 p-4 h-20">
+                        <p className=" text-2xl">Product Details</p>
+                    </div>
+
+                    <p>BUY 100% Original Leather Products From MARFIT. Leather will long last and will never peel off like an artificial Leather. Costumer satisfaction guaranteed. PRODUCT DETAIL : Removable, adjustable nylon long shoulder strap | Metal Hardware : durable enough for daily use Zip-top closure pure genuine leather CFC zipper | Handle type : Fixed solid full grain leather double handle , carried in 3 ways Handbags , Shoulder bag & Satchels . TO PROCESS AND CLAIM WARRANTY : Customer needs to send the product to the MARFIT, Kolkata. The Product will be rectified and send back to the Customer. This warranty shall be void if the product is damaged due to misuse, abuse, physical mishandling or natural causes such as flood, fire, earthquake or other perils.</p>
+                    <div className="flex  w-150 mx-2 ">
+                        <div className="w-[35%]  p-5 leading-12 text-gray-600 font-semibold">
+                            <h1>Height</h1>
+                            <h1>Width</h1>
+                            <h1>Thickness</h1>
+                            <h1>Model Name</h1>
+                            <h1>Closure</h1>
+                            <h1>Sales Package</h1>
+                            <h1>Leather Type</h1>
+                            <h1>Weight</h1>
+                            <h1>Compartments</h1>
+                            <h1>Covered in Warranty</h1>
+
+                            <h1>Domestic Warranty</h1>
+                        </div>
+                        <div className="w-[70%]  p-5 leading-12">
+                            <p>32 cm</p>
+                            <p>45 cm</p>
+                            <p>7 cm</p>
+                            <p>Genuine Leather Laptop Messenger Bag</p>
+                            <p>Zipper</p>
+                            <p>1 piece Laptop Messenger Bag</p>
+                            <p>Top Grain</p>
+                            <p>700 g</p>
+                            <p>1 main compartments with with inner slip pockets</p>
+                            <p>Warranty Covers Only Manufacturing Defects</p>
+                            <p>1 Year</p>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
 
@@ -187,7 +230,7 @@ function ProductDetailsPage() {
                         modules={[Navigation, A11y]}
                         onSwiper={(swiper) => (swiperRef.current = swiper)}
                         spaceBetween={15}
-                        slidesPerView={5}
+                        slidesPerView={7}
                         className="my-4 bg-white p-4 rounded-md"
                     >
                         {items.map((item) => (
@@ -210,7 +253,7 @@ function ProductDetailsPage() {
                     </Swiper>
                 </div>
             </section>
-        </section>
+        </section >
     );
 }
 

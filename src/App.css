@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
-.swiper-button-next{
+.swiper-button-next {
     color: #000;
 }
 
+.no-scrollbar {
+    scrollbar-width: none;
+}

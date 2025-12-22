@@ -110,7 +110,7 @@ function SliderItems1() {
           modules={[Navigation, A11y]}
           onSwiper={(swiper) => (swiperRef.current = swiper)}
           spaceBetween={20}
-          slidesPerView={5}
+          slidesPerView={7}
           className="my-4 drop-shadow-xl bg-white p-4 rounded-md"
         >
           {items.map((item, index) => (
