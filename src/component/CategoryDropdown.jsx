@@ -120,6 +120,10 @@ const menuList = [
 	},
 ];
 
+const menuItes = [
+
+]
+
 function CategoryDropdown() {
 	const navigate = useNavigate();
 	return (
@@ -136,7 +140,6 @@ function CategoryDropdown() {
 					key={index}
 					title={item.title}
 					list={item.list}
-					path={item.path}
 				/>
 			))}
 

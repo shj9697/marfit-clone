@@ -1,7 +1,7 @@
 import { ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 
-function Dropdown({ title = "", list = [], path = "/"}) {
+function Dropdown({ title, list }) {
 	return (
 		<div className="relative group h-full">
 			<div className="flex items-center gap-1 cursor-pointer hover:text-orange-600 h-full">
@@ -32,7 +32,7 @@ function Dropdown({ title = "", list = [], path = "/"}) {
 					))}
 				</ul>
 			</div>
-			
+
 		</div>
 	);
 }
