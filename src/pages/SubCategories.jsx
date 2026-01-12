@@ -186,26 +186,68 @@ const items = [
 ];
 
 let categoryOptions = [
-	{ label: "All", value: "All" },
-	{ label: "Men", value: "Men" },
-	{ label: "Luggage & SuitCase", value: "Luggage & SuitCase" },
-	{ label: "Accessories", value: "Accessories" },
-	{ label: "Women", value: "Women" },
+	{
+		label: "All",
+		value: "All"
+	},
+	{
+		label: "Men",
+		value: "Men"
+	},
+	{
+		label: "Luggage & SuitCase",
+		value: "Luggage & SuitCase"
+	},
+	{
+		label: "Accessories",
+		value: "Accessories"
+	},
+	{
+		label: "Women",
+		value: "Women"
+	},
 ];
 
 let subCategoriesOptions = [
-	{ label: "All", value: "All" },
-	{ label: "Messenger Bags", value: "Messenger Bags" },
-	{ label: "BriefCase", value: "BriefCase" },
-	{ label: "Sling Bags", value: "Sling Bags" },
-	{ label: "Wallets", value: "Wallets" },
-	{ label: "Wallet Combos", value: "Wallet Combos" },
-	{ label: "CardHolder", value: "CardHolder" },
+	{
+		label: "All",
+		value: "All"
+	},
+	{
+		label: "Messenger Bags",
+		value: "Messenger Bags"
+	},
+	{
+		label: "BriefCase",
+		value: "BriefCase"
+	},
+	{
+		label: "Sling Bags",
+		value: "Sling Bags"
+	},
+	{
+		label: "Wallets",
+		value: "Wallets"
+	},
+	{
+		label: "Wallet Combos",
+		value: "Wallet Combos"
+	},
+	{
+		label: "CardHolder",
+		value: "CardHolder"
+	},
 ];
 
 let availabilityOptions = [
-	{ label: "Embose", value: "Embose", },
-	{ label: "Out Of Stock", value: "Out of Stock" }
+	{
+		label: "Embose",
+		value: "Embose",
+	},
+	{
+		label: "Out Of Stock",
+		value: "Out of Stock"
+	}
 ];
 
 function SubCategories() {

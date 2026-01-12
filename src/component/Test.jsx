@@ -109,7 +109,7 @@ const arr = [
         title: "Sale",
         textColor: "#fb641b",
         showArrow: false,
-        path: "/Category/Sale",
+        path: "/Sale",
         childMenus: []
     },
     {
