@@ -5,6 +5,91 @@ import { Navigation, A11y } from "swiper/modules";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
+
+const items = [
+  {
+    id: 1,
+    img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FNMB2155020BLK%2FGenuine%20Leather%20Black%20Laptop%20Messenger%20Bag%20For%20Men%20-%20NMB2155020BLK?alt=media&token=74189345-8c97-40de-a766-8df0b20f8d20",
+    title: "Genuine Leather Black Laptop Messenger Bag",
+    price: 4999,
+    oldPrice: 14999,
+    discount: "46% OFF",
+  },
+  {
+    id: 2,
+    img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155082BRN%2FGenuine%20Leather%20Office%20Messenger%20Bag%20For%20Men%20-%20MB2155082BRN?alt=media&token=7099b6bb-7197-4c4b-93ae-75bb319b239f",
+    title: "Brown Leather Office BriefCase For Men",
+    price: 2999,
+    oldPrice: 11999,
+    discount: "75% OFF",
+  },
+  {
+    id: 3,
+    img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BRN%2FGenuine%20Leather%20Laptop%20Messenger%20bag%20For%20Men%20-%20MB2155063BRN?alt=media&token=47c1683c-efd8-405a-8617-f99a89f5ef01",
+    title: "Leather Medium Check-In Trolley Bag",
+    price: 4999,
+    oldPrice: 11999,
+    discount: "58% OFF",
+  },
+  {
+    id: 4,
+    img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155021BLU%2FGenuine%20Leather%20Black%20Bombay%20Messenger%20bag%20For%20Men%20-%20MB2155021BLU?alt=media&token=1d04ecfc-218d-4f5f-b42a-41c88f5f65a0",
+    title: "Leather Blue Bombay Messenger Bag",
+    price: 3599,
+    oldPrice: 9999,
+    discount: "64% OFF",
+  },
+  {
+    id: 5,
+    img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155019DESBRN%20%2FGenuine%20Leather%20Laptop%20Messenger%20Bag%20For%20Men%20-%20%20MB2155019DESBRN%20?alt=media&token=e7f70776-2cc4-45b5-b908-53ac01da638e",
+    title: "Leather Medium Check-In Trolley Bag",
+    price: 4999,
+    oldPrice: 11999,
+    discount: "58% OFF",
+  },
+  {
+    id: 6,
+    img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155016BRN%2FMarfit%20Genuine%20Leather%20%20Laptop%20Messenger%20Bags%20?alt=media&token=0936a8a7-766e-4796-bc1c-bad16cfcac8f",
+    title: "Genuine Leather Laptop Messenger Bags - MB2155016BRN",
+    price: 4999,
+    oldPrice: 12999,
+    discount: "62% OFF",
+  },
+  {
+    id: 7,
+    img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FNMB2155062BRN%2FGenuine%20Leather%20Office%20Laptop%20Messenger%20Bag%20For%20Men%20-%20NMB2155062BRN?alt=media&token=f2d036d6-2600-4de4-ab79-5099d780357d",
+    title: "Genuine Leather Office Laptop Messenger Bag For Men - NMB2155062BRN",
+    price: 4999,
+    oldPrice: 14999,
+    discount: "67% OFF",
+  },
+  {
+    id: 8,
+    img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155005BLK%2FMarfit%20Genuine%20Leather%20%20Laptop%20Messenger%20Bags%20?alt=media&token=9afe096a-1d6b-4a25-8c91-de7fe42ebf00",
+    title: "Genuine Leather Laptop Messenger Bags - MB2155005BLK",
+    price: 4999,
+    oldPrice: 11999,
+    discount: "58% OFF",
+  },
+  {
+    id: 9,
+    img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155022BRN%2FMarfit%20Genuine%20Leather%20%20Laptop%20Messenger%20Bags%20?alt=media&token=6fe5ff8f-01df-4fad-875d-ba6bc72e7579",
+    title: "Genuine Leather Laptop Messenger Bags - MB2155022BRN",
+    price: 4999,
+    oldPrice: 11999,
+    discount: "58% OFF",
+  },
+  {
+    id: 10,
+    img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155043%2FMarfit%20Genuine%20Leather%20%20Laptop%20Messenger%20Bags%20?alt=media&token=e8af6662-31a6-4baa-ad85-382d4505283f",
+    title: "Genuine Leather Laptop Messenger Bags - MB2155043",
+    price: 3499,
+    oldPrice: 9999,
+    discount: "65% OFF",
+  },
+];
+
+
 function SliderItems1() {
   const swiperRef = useRef(null);
   const navigate = useNavigate();
@@ -12,94 +97,24 @@ function SliderItems1() {
   function handleViewProductDetails(item) {
     navigate(`/categories/${item.parent}/${item.subcategory}/${item.productId}`)
   }
-  const items = [
-    {
-      id: 1,
-      img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FNMB2155020BLK%2FGenuine%20Leather%20Black%20Laptop%20Messenger%20Bag%20For%20Men%20-%20NMB2155020BLK?alt=media&token=74189345-8c97-40de-a766-8df0b20f8d20",
-      title: "Genuine Leather Black Laptop Messenger Bag",
-      price: 4999,
-      oldPrice: 14999,
-      discount: "46% OFF",
-    },
-    {
-      id: 2,
-      img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155082BRN%2FGenuine%20Leather%20Office%20Messenger%20Bag%20For%20Men%20-%20MB2155082BRN?alt=media&token=7099b6bb-7197-4c4b-93ae-75bb319b239f",
-      title: "Brown Leather Office BriefCase For Men",
-      price: 2999,
-      oldPrice: 11999,
-      discount: "75% OFF",
-    },
-    {
-      id: 3,
-      img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BRN%2FGenuine%20Leather%20Laptop%20Messenger%20bag%20For%20Men%20-%20MB2155063BRN?alt=media&token=47c1683c-efd8-405a-8617-f99a89f5ef01",
-      title: "Leather Medium Check-In Trolley Bag",
-      price: 4999,
-      oldPrice: 11999,
-      discount: "58% OFF",
-    },
-    {
-      id: 4,
-      img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155021BLU%2FGenuine%20Leather%20Black%20Bombay%20Messenger%20bag%20For%20Men%20-%20MB2155021BLU?alt=media&token=1d04ecfc-218d-4f5f-b42a-41c88f5f65a0",
-      title: "Leather Blue Bombay Messenger Bag",
-      price: 3599,
-      oldPrice: 9999,
-      discount: "64% OFF",
-    },
-    {
-      id: 5,
-      img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155019DESBRN%20%2FGenuine%20Leather%20Laptop%20Messenger%20Bag%20For%20Men%20-%20%20MB2155019DESBRN%20?alt=media&token=e7f70776-2cc4-45b5-b908-53ac01da638e",
-      title: "Leather Medium Check-In Trolley Bag",
-      price: 4999,
-      oldPrice: 11999,
-      discount: "58% OFF",
-    },
-    {
-      id: 6,
-      img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155016BRN%2FMarfit%20Genuine%20Leather%20%20Laptop%20Messenger%20Bags%20?alt=media&token=0936a8a7-766e-4796-bc1c-bad16cfcac8f",
-      title: "Genuine Leather Laptop Messenger Bags - MB2155016BRN",
-      price: 4999,
-      oldPrice: 12999,
-      discount: "62% OFF",
-    },
-    {
-      id: 7,
-      img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FNMB2155062BRN%2FGenuine%20Leather%20Office%20Laptop%20Messenger%20Bag%20For%20Men%20-%20NMB2155062BRN?alt=media&token=f2d036d6-2600-4de4-ab79-5099d780357d",
-      title: "Genuine Leather Office Laptop Messenger Bag For Men - NMB2155062BRN",
-      price: 4999,
-      oldPrice: 14999,
-      discount: "67% OFF",
-    },
-    {
-      id: 8,
-      img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155005BLK%2FMarfit%20Genuine%20Leather%20%20Laptop%20Messenger%20Bags%20?alt=media&token=9afe096a-1d6b-4a25-8c91-de7fe42ebf00",
-      title: "Genuine Leather Laptop Messenger Bags - MB2155005BLK",
-      price: 4999,
-      oldPrice: 11999,
-      discount: "58% OFF",
-    },
-    {
-      id: 9,
-      img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155022BRN%2FMarfit%20Genuine%20Leather%20%20Laptop%20Messenger%20Bags%20?alt=media&token=6fe5ff8f-01df-4fad-875d-ba6bc72e7579",
-      title: "Genuine Leather Laptop Messenger Bags - MB2155022BRN",
-      price: 4999,
-      oldPrice: 11999,
-      discount: "58% OFF",
-    },
-    {
-      id: 10,
-      img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155043%2FMarfit%20Genuine%20Leather%20%20Laptop%20Messenger%20Bags%20?alt=media&token=e8af6662-31a6-4baa-ad85-382d4505283f",
-      title: "Genuine Leather Laptop Messenger Bags - MB2155043",
-      price: 3499,
-      oldPrice: 9999,
-      discount: "65% OFF",
-    },
-  ];
 
+  const shadowStyle = {
+    boxShadow: '1px 2px 3px rgba(0, 0, 0, .3)',
+    border: '2px solid rgba(0, 0, 0, .03)',
+  }
 
   return (
-    <div className="mx-12 my-12 px-2">
+    <div className="mx-26 my-4 p-3 rounded-md bg-white ">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Messenger Bags</h1>
+        <div className="flex flex-col">
+          <h1 className="text-2xl font-normal">Messenger Bags</h1>
+          <div className="flex items-center gap-2 my-1">
+            <span className="w-15 h-px bg-black"></span>
+            <span className="w-px h-4 bg-black rotate-45"></span>
+            <span className="w-px h-4 bg-black rotate-45"></span>
+            <span className="w-15 h-px bg-black"></span>
+          </div>
+        </div>
         <button className="text-white text-sm bg-orange-600 px-6 py-2 rounded-md cursor-pointer" onClick={() => navigate("/products/" + "Messenger Bags")}>
           View All
         </button>
@@ -110,17 +125,19 @@ function SliderItems1() {
           modules={[Navigation, A11y]}
           onSwiper={(swiper) => (swiperRef.current = swiper)}
           spaceBetween={20}
-          slidesPerView={7}
-          className="my-4 drop-shadow-xl bg-white p-4 rounded-md"
+          slidesPerView={6}
+          className="my-4"
         >
           {items.map((item, index) => (
-            <SwiperSlide key={index}>
-              <div className="shadow-xl p-4 cursor-pointer rounded-md" onClick={() => handleViewProductDetails(item)} >
-                <img src={item.img} alt="" className="w-full h-48 object-cover" />
+            <SwiperSlide key={index} className="w-60! h-84!">
+              <div className="w-full h-full p-2 m-0 cursor-pointer shadow-lg  " style={shadowStyle} onClick={() => handleViewProductDetails(item)}>
+                <img src={item.img} alt="" className="w-full h-52 object-cover" />
                 <p className="text-sm mt-2">{item.title}</p>
                 <p className="text-sm">Rs. {item.price}</p>
-                <p className="text-sm line-through text-gray-500">Rs. {item.oldPrice}</p>
-                <span className="text-sm text-orange-600">{item.off}</span>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm line-through text-gray-500">Rs. {item.oldPrice} </p>
+                  <span className="text-sm text-orange-600">{item.discount}</span>
+                </div>
               </div>
             </SwiperSlide>
           ))}

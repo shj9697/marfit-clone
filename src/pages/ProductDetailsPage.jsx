@@ -16,6 +16,9 @@ const items = [
         price: "2999",
         oldPrice: "6999",
         off: "57% OFF",
+        parent: "Women",
+        subcategory: "Handbag",
+        productId: "1"
     },
     {
         id: 2,

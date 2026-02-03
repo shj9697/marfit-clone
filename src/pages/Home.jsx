@@ -7,8 +7,7 @@ import Main1 from '../component/main1';
 import SliderItems4 from '../component/SliderItems4';
 import Banner3 from '../component/Banner3';
 import HeroSection from '../component/HeroSection';
-import Test from '../component/Test';
-
+import SliderItems5 from '../component/SliderItems5';
 
 function Home() {
   return (
@@ -22,7 +21,7 @@ function Home() {
       <Main1 />
       <SliderItems4 />
       <Banner3 />
-      <Test />
+      <SliderItems5 />
     </div>
   )
 }

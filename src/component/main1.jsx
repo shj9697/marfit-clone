@@ -1,6 +1,6 @@
 function Main() {
   return (
-    <div className="flex mx-3 h-130">
+    <div className="flex mx-26 h-130">
       <div className="w-1/3">
         <img
           src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fadvertisement%2FaboutLeft%2F0?alt=media&token=5db71ad6-4363-458c-a19b-e4a7a2f0be00"

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const items = [
   {
@@ -85,6 +85,7 @@ const items = [
 
 function Products() {
   const { id } = useParams();
+  const navigate = useNavigate()
 
   return (
     <div className="px-4 py-15 rounded-md bg-white">
@@ -94,7 +95,7 @@ function Products() {
 
       <div className="relative w-full flex flex-wrap justify-around items-center my-6">
         {items.map((item, index) => (
-          <div key={index} className="shadow-md cursor-pointer w-1/6 p-2 mx-1 my-1">
+          <div key={index} className="shadow-md cursor-pointer w-1/6 p-2 mx-1 my-1" onClick={() => navigate("/ProductDetailsPage")}>
             <img src={item.img} alt="" className="h-45 object-contain rounded-md w-full" />
             <p className="text-sm mb-2 text-left">{item.title}</p>
             <p className="text-sm">Rs. {item.price}</p>

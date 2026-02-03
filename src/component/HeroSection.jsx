@@ -13,20 +13,20 @@ export default function HeroSection() {
   ];
 
   return (
-    <div className="relative mx-8">
+    <div className="relative mx-26">
       <Swiper
         modules={[Navigation, A11y]}
         onSwiper={(swiper) => (swiperRef1.current = swiper)}
         spaceBetween={20}
         slidesPerView={1}
-        className="my-4 drop-shadow-xl bg-gray-600 text-black p-4"
+        className="my-4 drop-shadow-xl bg-gray-100 text-black p-4"
       >
         {images.map((image, index) => (
           <SwiperSlide key={index}>
             <img
               src={image}
               alt="slider"
-              className="w-full h-[400px] object-cover"
+              className="w-full h-[400px] object-contain"
             />
           </SwiperSlide>
         ))}

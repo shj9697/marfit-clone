@@ -14,6 +14,9 @@ import Embose from "./pages/Embose";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import { CartProvider } from './context/CartProvider';
 import BulkContact from "./pages/BulkContact";
+import TrackingOrders from "./pages/TrackingOrders";
+import ContactForm from "./pages/ContactForm";
+import TermsAndCondition from "./pages/TermsAndCondition";
 
 
 function App() {
@@ -33,6 +36,9 @@ function App() {
             <Route path="/emboss" element={<Embose />} />
             <Route path="/categories/:parentId/:subId/:productId" element={<ProductDetailsPage />} />
             <Route path="/bulkContact" element={<BulkContact />} />
+            <Route path="/TrackOrder" element={<TrackingOrders />} />
+            <Route path="/ContactForm" element={<ContactForm />} />
+            <Route path="/TermsAndCondition" element={<TermsAndCondition />} />
           </Routes>
           <Footer />
         </BrowserRouter>

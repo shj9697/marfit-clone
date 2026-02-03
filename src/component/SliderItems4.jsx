@@ -94,6 +94,12 @@ function SliderItems4() {
   const swiperRef = useRef(null);
   const navigate = useNavigate();
 
+  const shadowStyle = {
+    boxShadow: '1px 2px 3px rgba(0, 0, 0, .3)',
+    border: '2px solid rgba(0, 0, 0, .03)',
+  }
+
+
   function handleViewProductDetails(item) {
     navigate(`/categories/${item.parent}/${item.subcategory}/${item.productId}`)
   }
@@ -101,9 +107,17 @@ function SliderItems4() {
 
 
   return (
-    <div className="mx-12 my-12 px-2 border-gray-300 rounded-md">
+    <div className="mx-26 my-4 p-3 rounded-md bg-white ">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Trolley Bags</h1>
+        <div className="flex flex-col">
+          <h1 className="text-2xl font-normal">Trolley Bags</h1>
+          <div className="flex items-center gap-2 my-1">
+            <span className="w-15 h-px bg-black"></span>
+            <span className="w-px h-4 bg-black rotate-42"></span>
+            <span className="w-px h-4 bg-black rotate-42"></span>
+            <span className="w-15 h-px bg-black"></span>
+          </div>
+        </div>
         <button className="text-white text-sm bg-orange-600 px-6 py-2 rounded-md cursor-pointer" onClick={() => navigate("/products/" + "Trolley Bags")}>
           View All
         </button>
@@ -114,18 +128,18 @@ function SliderItems4() {
           modules={[Navigation, A11y]}
           onSwiper={(swiper) => (swiperRef.current = swiper)}
           spaceBetween={20}
-          slidesPerView={7}
-          className="my-4 drop-shadow-xl bg-white p-4 rounded-md"
+          slidesPerView={6}
+          className="my-4"
         >
           {items.map((item, index) => (
-            <SwiperSlide key={index}>
-              <div className="shadow-xl p-4 cursor-pointer rounded-md" onClick={() => handleViewProductDetails(items)}>
-                <img src={item.img} alt="" className="w-full h-48 object-cover" />
+            <SwiperSlide key={index} className="w-60! h-84!">
+              <div className="w-full h-full p-2 m-0 cursor-pointer " style={shadowStyle} onClick={() => handleViewProductDetails(item)}>
+                <img src={item.img} alt="" className="w-full h-52 object-cover" />
                 <p className="text-sm mt-2">{item.title}</p>
                 <p className="text-sm">Rs. {item.price}</p>
                 <div className="flex items-center gap-2">
                   <p className="text-sm line-through text-gray-500">Rs. {item.oldPrice} </p>
-                  <span className="text-sm text-orange-600">{item.off}</span>
+                  <span className="text-sm text-orange-600">{item.discount}</span>
                 </div>
               </div>
             </SwiperSlide>
