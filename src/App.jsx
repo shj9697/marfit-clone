@@ -1,7 +1,7 @@
 import "./App.css";
 import Home from "./pages/Home";
 import Navbar from "./component/Navbar";
-import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useParams } from "react-router-dom";
 import Footer from "./component/Footer";
 import NewArrival from "./pages/NewArrival";
 import Sale from "./pages/Sale";
@@ -17,6 +17,8 @@ import BulkContact from "./pages/BulkContact";
 import TrackingOrders from "./pages/TrackingOrders";
 import ContactForm from "./pages/ContactForm";
 import TermsAndCondition from "./pages/TermsAndCondition";
+import AddToCart from "./pages/AddToCart";
+import ShippingPolicy from "./pages/ShippingPolicy";
 
 
 function App() {
@@ -39,6 +41,8 @@ function App() {
             <Route path="/TrackOrder" element={<TrackingOrders />} />
             <Route path="/ContactForm" element={<ContactForm />} />
             <Route path="/TermsAndCondition" element={<TermsAndCondition />} />
+            <Route path="/AddToCart" element={<AddToCart />} />
+            <Route path="/ShippingPolicy" element={<ShippingPolicy />} />
           </Routes>
           <Footer />
         </BrowserRouter>

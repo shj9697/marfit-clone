@@ -1,7 +1,6 @@
 import { ListFilter } from "lucide-react";
-import { useParams } from "react-router-dom";
 import Breadcrumb from "../component/Breadcrumb";
-import { useEffect, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 
@@ -272,7 +271,7 @@ function Embose() {
 
             <div className="bg-white my-5 py-10 px-35">
                 <div className="w-full flex gap-15">
-                    <div className="flex flex-col w-70">
+                    <div className="flex flex-col ">
                         <div className="flex">
                             <div className="flex w-full">
                                 <ListFilter strokeWidth={1.75} className="h-5 w-5 my-1 mx-3" />

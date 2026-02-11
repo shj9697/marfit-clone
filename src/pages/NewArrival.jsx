@@ -76,9 +76,12 @@ const items = [
 ];
 
 function NewArrival() {
-  const navigate = useNavigate()
+
+  const navigate = useNavigate();
+
   function handleViewProductDetails(item) {
     navigate(`/categories/${item.parent}/${item.subcategory}/${item.productId}`)
+
   }
 
   return (

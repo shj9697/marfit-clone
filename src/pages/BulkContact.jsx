@@ -18,13 +18,7 @@ const BulkContact = () => {
         }));
     }, []);
 
-    const showPopup = useCallback((msg) => {
-        setPopup(msg);
 
-        setTimeout(() => {
-            setPopup("");
-        }, 2500);
-    }, []);
 
     const handleSubmit = useCallback(
         (e) => {

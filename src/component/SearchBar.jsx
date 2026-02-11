@@ -36,8 +36,8 @@ function SearchBar() {
 
     return (
         <div className="relative flex items-center justify-between gap-2 w-1/3 px-4 py-1 border border-gray-300 rounded-full">
-            <div className="search-bar-container relative w-full">
-                <div className="search-bar">
+            <div className="relative w-full">
+                <div >
                     <input type="text" placeholder="What are you Looking for?" value={query} onChange={handleChange} className="w-full outline-none border-0 placeholder-black-700" />
                 </div>
             </div>

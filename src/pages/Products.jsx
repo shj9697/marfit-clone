@@ -87,15 +87,30 @@ function Products() {
   const { id } = useParams();
   const navigate = useNavigate()
 
+  const shadowStyle = {
+    boxShadow: '1px 2px 3px rgba(0, 0, 0, .3)',
+    border: '2px solid rgba(0, 0, 0, .03)',
+  }
+
+  function handleViewProductDetails(item) {
+    navigate(`/categories/${item.parent}/${item.subcategory}/${item.productId}`)
+  }
+
   return (
     <div className="px-4 py-15 rounded-md bg-white">
       <div className="mx-6">
-        <h1 className="text-2xl font-semibold">{id}</h1>
+        <h1 className="text-2xl font-normal">{id}</h1>
+        <div className="flex items-center gap-2 my-1">
+          <span className="w-15 h-px bg-black"></span>
+          <span className="w-px h-4 bg-black rotate-42"></span>
+          <span className="w-px h-4 bg-black rotate-42"></span>
+          <span className="w-15 h-px bg-black"></span>
+        </div>
       </div>
 
-      <div className="relative w-full flex flex-wrap justify-around items-center my-6">
+      <div className="relative w-full flex flex-wrap  items-left m-6">
         {items.map((item, index) => (
-          <div key={index} className="shadow-md cursor-pointer w-1/6 p-2 mx-1 my-1" onClick={() => navigate("/ProductDetailsPage")}>
+          <div key={index} className="cursor-pointer w-1/8 p-2 m-1 shadow-lg " style={{ shadowStyle }} onClick={() => handleViewProductDetails(item)}>
             <img src={item.img} alt="" className="h-45 object-contain rounded-md w-full" />
             <p className="text-sm mb-2 text-left">{item.title}</p>
             <p className="text-sm">Rs. {item.price}</p>

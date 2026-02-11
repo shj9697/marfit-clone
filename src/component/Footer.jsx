@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 function Footer() {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col mt-16 ">
-      <div className="w-[89.9%]   ml-48 p-12 rounded-tl-[45px] bg-black  flex flex-col ">
+    <div className="flex flex-col mt-16">
+      <div className="ml-48 p-12 rounded-tl-[45px] bg-black  flex flex-col ">
         <div className="flex flex-row gap-4">
           <div className="w-1/2">
             <div className="flex flex-col">
@@ -21,8 +21,8 @@ function Footer() {
                 an eye.
               </p>
             </div>
-            <div className="flex gap-40 ">
-              <div className="mt-6 ">
+            <div className="flex gap-40 mt-6">
+              <div >
                 <h1 className="text-white text-xl font-normal">COMPANY</h1>
                 <ul className="text-gray-500  leading-9">
                   <li className="cursor-pointer" onClick={() => navigate("/TrackOrder")}>Track Orders</li>
@@ -30,21 +30,21 @@ function Footer() {
                   <li className="cursor-pointer" onClick={() => navigate("/ContactForm")}>Contact</li>
                 </ul>
               </div>
-              <div className="mt-6">
+              <div >
                 <h1 className="text-white text-xl font-normal">POLICY & RULES</h1>
                 <ul className="text-gray-500 leading-9">
                   <li className="cursor-pointer" onClick={() => navigate("/TermsAndCondition")} > Terms & Conditions</li>
-                  <li>Shipping Policy</li>
+                  <li className="cursor-pointer" onClick={() => navigate("/ShippingPolicy")}> Shipping Policy</li>
                 </ul>
               </div>
-              <div className="m-6">
+              <div >
                 <h1 className="text-white text-xl font-normal">SUPPORT</h1>
                 <ul className="text-gray-500  leading-9">
-                  <li className=" cursor-pointer flex items-center gap-2">
+                  <li className=" cursor-pointer flex items-center ">
                     <Phone size={20} />
                     +91 98755 55937
                   </li>
-                  <li className=" cursor-pointer flex items-center gap-2">
+                  <li className=" cursor-pointer flex items-center gap-1">
                     <Mail size={20} />
                     info@marfit.in
                   </li>

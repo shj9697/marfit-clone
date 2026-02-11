@@ -143,7 +143,6 @@ function SliderItems1() {
           ))}
         </Swiper>
 
-        {/* Custom Navigation Buttons */}
         <button
           onClick={() => swiperRef.current?.slidePrev()}
           className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white-600 text-black w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-colors"

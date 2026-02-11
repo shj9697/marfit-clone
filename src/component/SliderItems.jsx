@@ -4,7 +4,6 @@ import "swiper/css/navigation";
 import { Navigation, A11y } from "swiper/modules";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import ProductDetailsPage from "../pages/ProductDetailsPage";
 
 const items = [
   {

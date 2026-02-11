@@ -1,5 +1,5 @@
 import { ListFilter } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Breadcrumb from "../component/Breadcrumb";
 import { useEffect, useState, useMemo } from "react";
 
@@ -251,6 +251,7 @@ let availabilityOptions = [
 ];
 
 function SubCategories() {
+	const navigate = useNavigate();
 	const { parentId, subId } = useParams();
 	const [sortBy, setSortBy] = useState("relevance");
 	const [category, setCategory] = useState("all");
@@ -316,7 +317,9 @@ function SubCategories() {
 		setAvailability("availability");
 	};
 
-
+	function handleViewProductDetails(item) {
+		navigate(`/categories/${item.parent}/${item.subcategory}/${item.productId}`)
+	}
 
 	return (
 		<div className="w-full bg-white">
@@ -422,7 +425,8 @@ function SubCategories() {
 							<div
 								key={item.id}
 								className="cursor-pointer py-2 m-1 w-1/5 border border-gray-200 rounded-md"
-							>
+								onClick={() => handleViewProductDetails(item)}>
+
 								<img
 									src={item.img}
 									alt=""

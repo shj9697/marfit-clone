@@ -47,7 +47,7 @@ function SliderItems5() {
                         <span className="w-15 h-px bg-black"></span>
                     </div>
                 </div>
-                <button className="text-white text-sm bg-orange-600 px-6 py-2 rounded-md cursor-pointer" onClick={() => navigate("/products/" + "Deal Of The Day")}>
+                <button className="text-white text-sm bg-orange-600 px-6 py-2 rounded-md cursor-pointer" onClick={() => navigate("/products/" + "Wallets and card holder")}>
                     View All
                 </button>
             </div>

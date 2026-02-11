@@ -92,26 +92,68 @@ const items = [
   },
 ];
 
+const categories = [
+  {
+    title: "Messenger Bags",
+    img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FMessenger%20Bags%2FMessenger%20Bags?alt=media&token=4f175284-fd13-4f80-9717-be9ff833fe6e",
+
+  },
+  {
+    title: "BriefCase",
+    img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FBriefcase%2FBriefcase?alt=media&token=c653874d-97b1-490e-ad95-a111e79fd698",
+
+  },
+  {
+    title: "Sling bags",
+    img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FSling%20Bags%2FSling%20Bags?alt=media&token=91a528b1-073b-401a-84dd-6577e2b934eb",
+
+  },
+  {
+    title: "Wallets",
+    img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FOffice%20Supplies%2FOffice%20Supplies?alt=media&token=cdf203b5-5923-478a-a71d-2085cac6ccd3",
+
+  },
+  {
+    title: "Wallet Combos",
+    img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FWallet%20comob's%2FWallet%20comob's?alt=media&token=6fd163cd-73ab-494c-8e8b-e35267388c32",
+
+  },
+  {
+    title: "CardHolder",
+    img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FCard%20Holder%2FCard%20Holder?alt=media&token=4967ea01-c897-4f2e-9098-b073ec4a78c3",
+
+  },
+
+]
+
 function Categories() {
   const navigate = useNavigate();
-  const { pathId } = useParams();
+  const { parentId, subId, productId } = useParams();
+
   const swiperRef = useRef(null);
 
   function handleViewProductDetails(item) {
     navigate(`/categories/${item.parent}/${item.subcategory}`)
   }
 
+  function handleViewProductList(category) {
+    navigate(`/categories/${parentId}/${category.title}`)
+
+  }
 
 
   return (
-    <div className="mx-27 my-10">
+    <div className="ml-27 mt-10">
       <Breadcrumb
         paths={[
-          { title: pathId, link: `/categories/${pathId}` },
-
+          { title: parentId, link: `/categories/${parentId}` },
+          { title: subId, link: `/categories/${parentId}/${subId}` },
+          {
+            title: "product details",
+            link: `/categories/${parentId}/${subId}/${productId}`,
+          },
         ]}
       />
-
       <div className="flex flex-col ">
         <h1 className="text-2xl my-3 font-normal">
           Select by {pathId} Category
@@ -119,51 +161,17 @@ function Categories() {
         <span className="w-25 h-1 bg-[#fb641b]"></span>
       </div>
 
-      <div className="flex mx-5 my-5 w-full gap-2 flex-wrap">
-        <div className="w-[24%] h-[52vh] bg-white rounded  cursor-pointer hover:-translate-y-2 transition-transform duration-400 ease-out" onClick={() => handleViewProductDetails(items)}>
-          <h1 className="text-l font-medium text-gray-800 mx-2">
-            Messengers Bags
-          </h1>
-          <img
-            src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FMessenger%20Bags%2FMessenger%20Bags?alt=media&token=4f175284-fd13-4f80-9717-be9ff833fe6e"
-            alt="Messengers Bags"
-          />
-        </div>
-        <div className="w-[24%] h-[52vh] bg-white rounded cursor-pointer hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleViewProductDetails(items)}>
-          <h1 className="text-l font-medium text-gray-800 mx-2">BriefCase</h1>
-          <img
-            src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FBriefcase%2FBriefcase?alt=media&token=c653874d-97b1-490e-ad95-a111e79fd698"
-            alt="BriefCase"
-          />
-        </div>
-        <div className="w-[24%] h-[52vh] bg-white rounded cursor-pointer hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleViewProductDetails(items)}>
-          <h1 className="text-l font-medium text-gray-800 mx-2">Sling bags</h1>
-          <img
-            src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FSling%20Bags%2FSling%20Bags?alt=media&token=91a528b1-073b-401a-84dd-6577e2b934eb"
-            alt="Sling bags"
-          />
-        </div>
-        <div className="w-[24%] h-[52vh] bg-white rounded cursor-pointer hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleViewProductDetails(items)}>
-          <h1 className="text-l font-medium text-gray-800 mx-2">Wallets</h1>
-          <img
-            src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FOffice%20Supplies%2FOffice%20Supplies?alt=media&token=cdf203b5-5923-478a-a71d-2085cac6ccd3"
-            alt="Wallets"
-          />
-        </div>
-        <div className="w-[24%] h-[52vh] bg-white rounded cursor-pointer my-2 hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleViewProductDetails(items)}>
-          <h1 className="text-l font-medium text-gray-800 mx-2">Sling bags</h1>
-          <img
-            src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FSling%20Bags%2FSling%20Bags?alt=media&token=91a528b1-073b-401a-84dd-6577e2b934eb"
-            alt="Sling bags"
-          />
-        </div>
-        <div className="w-[24%] h-[52vh] bg-white rounded cursor-pointer my-2 hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleViewProductDetails(items)}>
-          <h1 className="text-l font-medium text-gray-800 mx-2">Wallets</h1>
-          <img
-            src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FOffice%20Supplies%2FOffice%20Supplies?alt=media&token=cdf203b5-5923-478a-a71d-2085cac6ccd3"
-            alt="Wallets"
-          />
-        </div>
+      <div className="flex mx-5 my-5 w-90% gap-2 flex-wrap  ">
+        {categories.map((category, index) => {
+          return (
+            <div key={index} className="hover:-translate-y-2 transition-transform duration-400 ease-out cursor-pointer bg-white rounded-md" onClick={() => handleViewProductList(category)}>
+              <h1 className="text-l font-normal text-gray-600 mx-2">{category.title}</h1>
+              <img src={category.img} alt="" className="h-72 w-72" />
+
+            </div>
+          )
+        })}
+
       </div>
       <div className="w-full">
         <div className="flex flex-col ">
@@ -180,7 +188,7 @@ function Categories() {
           >
             {items.map((item, index) => (
               <SwiperSlide key={index}>
-                <div className="p-4 cursor-pointer shadow-[-6px_0px_12px_rgba(0,0,0,0.2)]">
+                <div className="p-4 cursor-pointer shadow-[-6px_0px_12px_rgba(0,0,0,0.2)] " onClick={() => handleViewProductDetails(item)} >
                   <img
                     src={item.img}
                     alt=""
@@ -206,4 +214,4 @@ function Categories() {
   );
 }
 
-export default Categories;
+export default Categories;  
