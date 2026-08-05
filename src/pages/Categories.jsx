@@ -156,7 +156,7 @@ function Categories() {
       />
       <div className="flex flex-col ">
         <h1 className="text-2xl my-3 font-normal">
-          Select by {pathId} Category
+          Select by {parentId} Category
         </h1>
         <span className="w-25 h-1 bg-[#fb641b]"></span>
       </div>

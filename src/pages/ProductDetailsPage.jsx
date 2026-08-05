@@ -6,8 +6,6 @@ import { Navigation, A11y } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { ShoppingCart, Zap, MapPin } from "lucide-react";
-import ReactImageMagnify from 'react-image-magnify';
-import { number } from "prop-types";
 
 
 const items = [
