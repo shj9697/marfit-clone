@@ -106,7 +106,7 @@ const ContactForm = () => {
                 <textarea
                     id="message"
                     name="message"
-                    className="p-2 border border-gray-300 rounded-md bg-white text-black focus:outline-none"
+                    className="p-2 border border-gray-300 rounded-md bg-white text-black focus:outline-none min-h-20"
                     onChange={handleChange}
                     value={form.message}
                 />
