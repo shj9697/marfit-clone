@@ -15,6 +15,8 @@ const items = [
     price: 3499,
     oldPrice: 6499,
     discount: "46% OFF",
+    parent: "Women",
+    subcategory: "Shoulder Bags",
   },
   {
     id: 2,
@@ -23,6 +25,8 @@ const items = [
     price: 4299,
     oldPrice: 9999,
     discount: "57% OFF",
+    parent: "Men",
+    subcategory: "BriefCase",
   },
   {
     id: 3,
@@ -31,6 +35,8 @@ const items = [
     price: 7199,
     oldPrice: 19999,
     discount: "64% OFF",
+    parent: "Luggage & SuitCase",
+    subcategory: "Trolley Bags",
   },
   {
     id: 4,
@@ -39,6 +45,8 @@ const items = [
     price: 3599,
     oldPrice: 9999,
     discount: "64% OFF",
+    parent: "Accessories",
+    subcategory: "Jewellery Box",
   },
   {
     id: 5,
@@ -47,6 +55,8 @@ const items = [
     price: 1890,
     oldPrice: 3999,
     discount: "53% OFF",
+    parent: "Women",
+    subcategory: "CrossBody Bags",
   },
   {
     id: 6,
@@ -55,6 +65,8 @@ const items = [
     price: 1799,
     oldPrice: 3999,
     discount: "55% OFF",
+    parent: "Men",
+    subcategory: "Sling Bags",
   },
   {
     id: 7,
@@ -64,6 +76,8 @@ const items = [
     price: 2699,
     oldPrice: 5999,
     discount: "55% OFF",
+    parent: "Accessories",
+    subcategory: "Watch Box",
   },
   {
     id: 8,
@@ -73,6 +87,8 @@ const items = [
     price: 4999,
     oldPrice: 7499,
     discount: "33% OFF",
+    parent: "Men",
+    subcategory: "Messenger Bags",
   },
   {
     id: 9,
@@ -81,6 +97,8 @@ const items = [
     price: 3099,
     oldPrice: 11999,
     discount: "74% OFF",
+    parent: "Luggage & SuitCase",
+    subcategory: "Duffle Bags",
   },
   {
     id: 10,
@@ -89,6 +107,8 @@ const items = [
     price: 3119,
     oldPrice: 5799,
     discount: "46% OFF",
+    parent: "Men",
+    subcategory: "Messenger Bags",
   },
 ];
 
@@ -128,16 +148,18 @@ const categories = [
 
 function Categories() {
   const navigate = useNavigate();
-  const { parentId, subId, productId } = useParams();
+  const { pathId } = useParams();
 
   const swiperRef = useRef(null);
 
   function handleViewProductDetails(item) {
-    navigate(`/categories/${item.parent}/${item.subcategory}`)
+    navigate(
+      `/categories/${encodeURIComponent(item.parent)}/${encodeURIComponent(item.subcategory)}/${encodeURIComponent(item.productId ?? item.id)}`
+    )
   }
 
   function handleViewProductList(category) {
-    navigate(`/categories/${parentId}/${category.title}`)
+    navigate(`/categories/${encodeURIComponent(pathId)}/${encodeURIComponent(category.title)}`)
 
   }
 
@@ -145,18 +167,11 @@ function Categories() {
   return (
     <div className="ml-27 mt-10">
       <Breadcrumb
-        paths={[
-          { title: parentId, link: `/categories/${parentId}` },
-          { title: subId, link: `/categories/${parentId}/${subId}` },
-          {
-            title: "product details",
-            link: `/categories/${parentId}/${subId}/${productId}`,
-          },
-        ]}
+        paths={[{ title: pathId, link: `/categories/${encodeURIComponent(pathId)}` }]}
       />
       <div className="flex flex-col ">
         <h1 className="text-2xl my-3 font-normal">
-          Select by {parentId} Category
+          Select by {pathId} Category
         </h1>
         <span className="w-25 h-1 bg-[#fb641b]"></span>
       </div>
@@ -175,7 +190,7 @@ function Categories() {
       </div>
       <div className="w-full">
         <div className="flex flex-col ">
-          <h1 className="text-2xl my-3 font-normal">Latest Products In Men</h1>
+          <h1 className="text-2xl my-3 font-normal">Latest Products In {pathId}</h1>
           <span className="w-50 h-1 bg-[#fb641b]"></span>
         </div>
         <div className="relative">

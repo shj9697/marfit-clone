@@ -15,7 +15,7 @@ const items = [
     discount: "46% OFF",
     parent: "Women",
     subcategory: "Handbag",
-    productId: "1"
+    productId: "LB9329034TANCRO"
   },
   {
     id: 2,

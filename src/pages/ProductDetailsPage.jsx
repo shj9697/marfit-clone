@@ -1,11 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Breadcrumb from "../component/Breadcrumb";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, A11y } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import { ShoppingCart, Zap, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
+import { useCart } from "../context/CartProvider";
 
 
 const items = [
@@ -18,7 +19,7 @@ const items = [
         off: "57% OFF",
         parent: "Women",
         subcategory: "Handbag",
-        productId: "1"
+        productId: "#100"
     },
     {
         id: 2,
@@ -27,6 +28,9 @@ const items = [
         price: "3499",
         oldPrice: "6499",
         off: "46% OFF",
+        parent: "Women",
+        subcategory: "Handbag",
+        productId: "#101"
     },
     {
         id: 3,
@@ -35,6 +39,9 @@ const items = [
         price: "3499",
         oldPrice: "6499",
         off: "46% OFF",
+        parent: "Women",
+        subcategory: "Handbag",
+        productId: "#102"
     },
     {
         id: 4,
@@ -43,6 +50,9 @@ const items = [
         price: "3499",
         oldPrice: "5999",
         off: "42% OFF",
+        parent: "Women",
+        subcategory: "Handbag",
+        productId: "#103"
     },
     {
         id: 5,
@@ -51,6 +61,9 @@ const items = [
         price: "2999",
         oldPrice: "9999",
         off: "70% OFF",
+        parent: "Women",
+        subcategory: "Handbag",
+        productId: "#104"
     },
     {
         id: 6,
@@ -59,6 +72,9 @@ const items = [
         price: "3499",
         oldPrice: "7499",
         off: "55% OFF",
+        parent: "Women",
+        subcategory: "Handbag",
+        productId: "#105"
     },
     {
         id: 7,
@@ -67,6 +83,9 @@ const items = [
         price: "3499",
         oldPrice: "6999",
         off: "50% OFF",
+        parent: "Women",
+        subcategory: "Handbag",
+        productId: "#106"
     },
     {
         id: 8,
@@ -75,6 +94,9 @@ const items = [
         price: "3999",
         oldPrice: "7999",
         off: "50% OFF",
+        parent: "Women",
+        subcategory: "Handbag",
+        productId: "#107"
     },
     {
         id: 9,
@@ -83,6 +105,9 @@ const items = [
         price: "3499",
         oldPrice: "8999",
         off: "61% OFF",
+        parent: "Women",
+        subcategory: "Handbag",
+        productId: "#108"
     },
     {
         id: 10,
@@ -91,13 +116,33 @@ const items = [
         price: "3999",
         oldPrice: "9999",
         off: "60% OFF",
+        parent: "Women",
+        subcategory: "Handbag",
+        productId: "#109"
     },
 ];
 
-function ProductDetailsPage() {
+function ProductDetailsPage({ item }) {
     const navigate = useNavigate();
     const { parentId, subId, productId } = useParams();
-    const swiperRef = useRef(null);
+    const similarSwiperRef = useRef(null);
+    const alsoLikeSwiperRef = useRef(null);
+
+    // The route param is whatever the listing pages link with: productId when the
+    // product has one, otherwise its numeric id. The parent/subcategory check keeps
+    // an id collision with another category from resolving to the wrong product,
+    // since `items` here only covers Women / Handbag.
+    const product = useMemo(
+        () =>
+            items.find(
+                item =>
+                    (String(item.productId) === productId || String(item.id) === productId) &&
+                    item.parent === parentId &&
+                    item.subcategory === subId
+            ),
+        [productId, parentId, subId]
+    );
+    const { addToCartAPI } = useCart();
 
 
     const [pincode, setPincode] = useState(700000);
@@ -111,18 +156,13 @@ function ProductDetailsPage() {
     }
 
     function handleViewProductDetails(item) {
-        navigate(`/categories/${item.parent}/${item.subcategory}`)
+        navigate(`/categories/${encodeURIComponent(item.parent)}/${encodeURIComponent(item.subcategory)}/${encodeURIComponent(item.productId ?? item.id)}`)
     }
 
 
-    const handleAddToCart = () => {
-
-        navigate(`/Cart/View/All/Items/null/null`);
-    };
 
     const handleBuyNow = () => {
-
-        navigate(`/Cart/MhVgsPYT3gWcanUTPtsk/1/null/false/null`);
+        navigate(`/AddToCart`);
     };
 
     const corporateContact = () => {
@@ -145,12 +185,12 @@ function ProductDetailsPage() {
         <section>
             <Breadcrumb
                 paths={[
-                    { title: parentId, link: `/categories/${parentId}` },
-                    { title: subId, link: `/categories/${parentId}/${subId}` },
+                    { title: parentId, link: `/categories/${encodeURIComponent(parentId)}` },
                     {
-                        title: "product details",
-                        link: `/categories/${parentId}/${subId}/${productId}`,
+                        title: subId,
+                        link: `/categories/${encodeURIComponent(parentId)}/${encodeURIComponent(subId)}`,
                     },
+
                 ]}
             />
 
@@ -177,19 +217,12 @@ function ProductDetailsPage() {
                         </div>
                         <div className="mx-25 my-20 w-80% h-70  ">
                             <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLK%2F1?alt=media&token=31d02f51-a5ca-4bb9-a96d-2d92d65291a7" alt="" className="w-60 h-60 cursor-pointer object-cover " />
-
                         </div>
                     </div>
                     <div className="flex ">
-                        <button className="px-9 py-2 bg-transparent mr-5 cursor-pointer border-2 border-orange-600 whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={handleAddToCart}>ADD TO CART</button>
-                        <button className="px-9 py-2 bg-orange-600 text-white cursor-pointer whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={handleBuyNow}>BUY NOW</button>
+                        <button className="px-9 py-2 bg-transparent mr-5 cursor-pointer border-2 border-orange-600 whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => addToCartAPI(productId)}>ADD TO CART</button>
+                        <button className="px-9 py-2 bg-orange-600 text-white cursor-pointer whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleBuyNow()}>BUY NOW</button>
                     </div>
-
-
-
-
-
-
                 </div>
 
                 <div className="w-[70%] px-3 py-10 mx-15 overflow-y-scroll no-scrollbar">
@@ -214,16 +247,6 @@ function ProductDetailsPage() {
                                     <option value="8">8</option>
                                     <option value="9">9</option>
                                     <option value="10">10</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
-                                    <option value="13">13</option>
-                                    <option value="14">14</option>
-                                    <option value="15">15</option>
-                                    <option value="16">16</option>
-                                    <option value="17">17</option>
-                                    <option value="18">18</option>
-                                    <option value="19">19</option>
                                 </select>
                             </div>
                         </div>
@@ -305,7 +328,6 @@ function ProductDetailsPage() {
                         <p className="text-center my-10 ">No ratings or reviews</p>
                     </div>
 
-
                 </div>
             </div>
 
@@ -326,7 +348,7 @@ function ProductDetailsPage() {
                 <div className="relative">
                     <Swiper
                         modules={[Navigation, A11y]}
-                        onSwiper={(swiper) => (swiperRef.current = swiper)}
+                        onSwiper={(swiper) => (similarSwiperRef.current = swiper)}
                         spaceBetween={20}
                         slidesPerView={6}
                         className="my-4"
@@ -347,7 +369,7 @@ function ProductDetailsPage() {
                     </Swiper>
 
                     <button
-                        onClick={() => swiperRef.current?.slidePrev()}
+                        onClick={() => similarSwiperRef.current?.slidePrev()}
                         className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white-600 text-black w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-colors"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
@@ -355,7 +377,7 @@ function ProductDetailsPage() {
                         </svg>
                     </button>
                     <button
-                        onClick={() => swiperRef.current?.slideNext()}
+                        onClick={() => similarSwiperRef.current?.slideNext()}
                         className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white-900 text-black w-10 h-10 rounded-full shadow-xl flex items-center justify-center transition-colors"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
@@ -381,7 +403,7 @@ function ProductDetailsPage() {
                 <div className="relative">
                     <Swiper
                         modules={[Navigation, A11y]}
-                        onSwiper={(swiper) => (swiperRef.current = swiper)}
+                        onSwiper={(swiper) => (alsoLikeSwiperRef.current = swiper)}
                         spaceBetween={20}
                         slidesPerView={6}
                         className="my-4"
@@ -402,7 +424,7 @@ function ProductDetailsPage() {
                     </Swiper>
 
                     <button
-                        onClick={() => swiperRef.current?.slidePrev()}
+                        onClick={() => alsoLikeSwiperRef.current?.slidePrev()}
                         className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white-600 text-black w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-colors"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
@@ -410,7 +432,7 @@ function ProductDetailsPage() {
                         </svg>
                     </button>
                     <button
-                        onClick={() => swiperRef.current?.slideNext()}
+                        onClick={() => alsoLikeSwiperRef.current?.slideNext()}
                         className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white-900 text-black w-10 h-10 rounded-full shadow-xl flex items-center justify-center transition-colors"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
@@ -419,7 +441,6 @@ function ProductDetailsPage() {
                     </button>
                 </div>
             </div>
-
             );
         </section >
     );

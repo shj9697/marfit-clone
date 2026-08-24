@@ -32,7 +32,7 @@ function SliderItems5() {
     }
 
     function handleViewProductDetails(item) {
-        navigate(`/categories/${item.parent}/${item.subcategory}/${item.productId}`)
+        navigate(`/categories/${encodeURIComponent(item.parent)}/${encodeURIComponent(item.subcategory)}/${encodeURIComponent(item.productId ?? item.id)}`)
     }
 
     return (

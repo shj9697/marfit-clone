@@ -8,6 +8,9 @@ const items = [
     price: 3499,
     oldPrice: 6499,
     discount: "46% OFF",
+    parent: "Women",
+    subcategory: "Shoulder Bags",
+    productId: "LB9329034TANCRO"
   },
   {
     id: 2,
@@ -16,6 +19,9 @@ const items = [
     price: 4299,
     oldPrice: 9999,
     discount: "57% OFF",
+    parent: "Men",
+    subcategory: "BriefCase",
+    productId: "BC149002BRN"
   },
   {
     id: 3,
@@ -24,6 +30,9 @@ const items = [
     price: 7199,
     oldPrice: 19999,
     discount: "64% OFF",
+    parent: "Luggage & SuitCase",
+    subcategory: "Trolley Bags",
+    productId: "TB2155062BRNCRO"
   },
   {
     id: 4,
@@ -32,6 +41,9 @@ const items = [
     price: 3599,
     oldPrice: 9999,
     discount: "64% OFF",
+    parent: "Accessories",
+    subcategory: "Jewellery Box",
+    productId: "JB1149020BRN"
   },
   {
     id: 5,
@@ -40,6 +52,9 @@ const items = [
     price: 1890,
     oldPrice: 3999,
     discount: "53% OFF",
+    parent: "Women",
+    subcategory: "CrossBody Bags",
+    productId: "CB1129089GRN"
   },
   {
     id: 6,
@@ -48,6 +63,9 @@ const items = [
     price: 1799,
     oldPrice: 3999,
     discount: "55% OFF",
+    parent: "Men",
+    subcategory: "Sling Bags",
+    productId: "SL1893003TAN"
   },
   {
     id: 7,
@@ -56,6 +74,9 @@ const items = [
     price: 2699,
     oldPrice: 5999,
     discount: "55% OFF",
+    parent: "Accessories",
+    subcategory: "Watch Box",
+    productId: "WB1149006BRN"
   },
   {
     id: 8,
@@ -64,6 +85,9 @@ const items = [
     price: 4999,
     oldPrice: 7499,
     discount: "33% OFF",
+    parent: "Men",
+    subcategory: "Messenger Bags",
+    productId: "MB2155019BRN"
   },
   {
     id: 9,
@@ -72,16 +96,17 @@ const items = [
     price: 3099,
     oldPrice: 11999,
     discount: "74% OFF",
+    parent: "Luggage & SuitCase",
+    subcategory: "Duffle Bags",
+    productId: "TB2155002BRN"
   },
 ];
 
 function NewArrival() {
-
   const navigate = useNavigate();
 
   function handleViewProductDetails(item) {
-    navigate(`/categories/${item.parent}/${item.subcategory}/${item.productId}`)
-
+    navigate(`/categories/${encodeURIComponent(item.parent)}/${encodeURIComponent(item.subcategory)}/${encodeURIComponent(item.productId)}`)
   }
 
   return (
@@ -95,10 +120,9 @@ function NewArrival() {
           <span className="w-20 h-1 bg-black"></span>
         </div>
       </div>
-
       <div className="relative w-full flex flex-wrap justify-start items-center my-3 mx-10">
         {items.map((item, index) => (
-          <div key={index} className="shadow-xl cursor-pointer w-1/6 p-2 mx-1 my-1" onClick={() => handleViewProductDetails(items)}>
+          <div key={index} className="shadow-xl cursor-pointer w-1/6 p-2 mx-1 my-1" onClick={() => handleViewProductDetails(item)}>
             <img src={item.img} alt="" className="h-45 object-contain rounded-md w-full" />
             <p className="text-sm mb-2 text-left">{item.title}</p>
             <p className="text-sm">Rs. {item.price}</p>

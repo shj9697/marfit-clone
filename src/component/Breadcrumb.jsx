@@ -7,10 +7,17 @@ function Breadcrumb({ paths }) {
       <div className="flex items-center gap-2 w-[85%] mx-auto h-[50px]">
         <Link to="/">Home</Link>
         {paths?.map((path, index) => {
+          const isCurrent = index === paths.length - 1;
           return (
-            <div className="flex items-center gap-2">
+            <div key={path.link ?? index} className="flex items-center gap-2">
               <ChevronRight size={16} />
-              <Link to={path.link} key={index}>{path.title}</Link>
+              {isCurrent ? (
+                <span aria-current="page" className="text-gray-600 truncate max-w-[420px]">
+                  {path.title}
+                </span>
+              ) : (
+                <Link to={path.link}>{path.title}</Link>
+              )}
             </div>
           );
         })}

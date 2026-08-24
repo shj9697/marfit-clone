@@ -13,6 +13,8 @@ const items = [
         price: 3499,
         oldPrice: 6499,
         discount: "46% OFF",
+        parent: "Women",
+        subcategory: "Shoulder Bags",
     },
     {
         id: 2,
@@ -21,6 +23,8 @@ const items = [
         price: 4299,
         oldPrice: 9999,
         discount: "57% OFF",
+        parent: "Men",
+        subcategory: "BriefCase",
     },
     {
         id: 3,
@@ -29,6 +33,8 @@ const items = [
         price: 7199,
         oldPrice: 19999,
         discount: "64% OFF",
+        parent: "Luggage & SuitCase",
+        subcategory: "Trolley Bags",
     },
     {
         id: 4,
@@ -37,6 +43,8 @@ const items = [
         price: 3599,
         oldPrice: 9999,
         discount: "64% OFF",
+        parent: "Accessories",
+        subcategory: "Jewellery Box",
     },
     {
         id: 5,
@@ -45,6 +53,8 @@ const items = [
         price: 1890,
         oldPrice: 3999,
         discount: "53% OFF",
+        parent: "Women",
+        subcategory: "CrossBody Bags",
     },
     {
         id: 6,
@@ -53,6 +63,8 @@ const items = [
         price: 1799,
         oldPrice: 3999,
         discount: "55% OFF",
+        parent: "Men",
+        subcategory: "Sling Bags",
     },
     {
         id: 7,
@@ -62,6 +74,8 @@ const items = [
         price: 2699,
         oldPrice: 5999,
         discount: "55% OFF",
+        parent: "Accessories",
+        subcategory: "Watch Box",
     },
     {
         id: 8,
@@ -72,6 +86,8 @@ const items = [
         price: 4999,
         oldPrice: 7499,
         discount: "33% OFF",
+        parent: "Men",
+        subcategory: "Messenger Bags",
     },
     {
         id: 9,
@@ -81,6 +97,8 @@ const items = [
         price: 3099,
         oldPrice: 11999,
         discount: "74% OFF",
+        parent: "Luggage & SuitCase",
+        subcategory: "Duffle Bags",
     },
     {
         id: 10,
@@ -90,6 +108,8 @@ const items = [
         price: 3119,
         oldPrice: 5799,
         discount: "46% OFF",
+        parent: "Men",
+        subcategory: "Messenger Bags",
     },
     {
         id: 11,
@@ -100,6 +120,8 @@ const items = [
         price: 4999,
         oldPrice: 14999,
         discount: "46% OFF",
+        parent: "Men",
+        subcategory: "Messenger Bags",
     },
     {
         id: 12,
@@ -108,6 +130,8 @@ const items = [
         price: 2999,
         oldPrice: 11999,
         discount: "75% OFF",
+        parent: "Men",
+        subcategory: "BriefCase",
     },
     {
         id: 13,
@@ -116,6 +140,8 @@ const items = [
         price: 4999,
         oldPrice: 11999,
         discount: "58% OFF",
+        parent: "Luggage & SuitCase",
+        subcategory: "Trolley Bags",
     },
     {
         id: 14,
@@ -126,6 +152,8 @@ const items = [
         price: 3599,
         oldPrice: 9999,
         discount: "64% OFF",
+        parent: "Men",
+        subcategory: "Messenger Bags",
     },
     {
         id: 15,
@@ -134,6 +162,8 @@ const items = [
         price: 4999,
         oldPrice: 11999,
         discount: "58% OFF",
+        parent: "Luggage & SuitCase",
+        subcategory: "Trolley Bags",
     },
     {
         id: 16,
@@ -144,6 +174,8 @@ const items = [
         price: 4999,
         oldPrice: 12999,
         discount: "62% OFF",
+        parent: "Men",
+        subcategory: "Messenger Bags",
     },
     {
         id: 17,
@@ -154,6 +186,8 @@ const items = [
         price: 4999,
         oldPrice: 14999,
         discount: "67% OFF",
+        parent: "Men",
+        subcategory: "Messenger Bags",
     },
     {
         id: 18,
@@ -164,6 +198,8 @@ const items = [
         price: 4999,
         oldPrice: 11999,
         discount: "58% OFF",
+        parent: "Men",
+        subcategory: "Messenger Bags",
     },
     {
         id: 19,
@@ -174,6 +210,8 @@ const items = [
         price: 4999,
         oldPrice: 11999,
         discount: "58% OFF",
+        parent: "Men",
+        subcategory: "Messenger Bags",
     },
     {
         id: 20,
@@ -183,6 +221,8 @@ const items = [
         price: 3499,
         oldPrice: 9999,
         discount: "65% OFF",
+        parent: "Men",
+        subcategory: "Messenger Bags",
     },
 
 ];
@@ -218,7 +258,7 @@ function Embose() {
     const [availability, setAvailability] = useState([]);
 
     function handleViewProductDetails(item) {
-        navigate(`/categories/${item.parent}/${item.subcategory}/${item.productId}`)
+        navigate(`/categories/${encodeURIComponent(item.parent)}/${encodeURIComponent(item.subcategory)}/${encodeURIComponent(item.productId ?? item.id)}`)
     }
 
     const handleSortBy = (value = "relevance") => setSortBy(value);
@@ -364,7 +404,7 @@ function Embose() {
                         {filteredItems.map(item => (
                             <div
                                 key={item.id}
-                                className="cursor-pointer py-2 m-1 w-1/5 border border-gray-200 rounded-md" onClick={() => handleViewProductDetails(items)}
+                                className="cursor-pointer py-2 m-1 w-1/5 border border-gray-200 rounded-md" onClick={() => handleViewProductDetails(item)}
                             >
                                 <img
                                     src={item.img}

@@ -9,6 +9,8 @@ const items = [
     price: 4499,
     oldPrice: 14999,
     discount: "70% OFF",
+    parent: "Men",
+    subcategory: "Messenger Bags",
   },
   {
     id: 2,
@@ -17,6 +19,8 @@ const items = [
     price: 3499,
     oldPrice: 6499,
     discount: "46% OFF",
+    parent: "Women",
+    subcategory: "Shoulder Bags",
   },
   {
     id: 3,
@@ -25,6 +29,8 @@ const items = [
     price: 3119,
     oldPrice: 5799,
     discount: "46% OFF",
+    parent: "Men",
+    subcategory: "Messenger Bags",
   },
   {
     id: 4,
@@ -33,6 +39,8 @@ const items = [
     price: 3119,
     oldPrice: 5799,
     discount: "46% OFF",
+    parent: "Men",
+    subcategory: "Messenger Bags",
   },
   {
     id: 5,
@@ -41,6 +49,8 @@ const items = [
     price: 7999,
     oldPrice: 17999,
     discount: "56% OFF",
+    parent: "Luggage & SuitCase",
+    subcategory: "Trolley Bags",
   },
   {
     id: 6,
@@ -50,6 +60,8 @@ const items = [
     price: 2999,
     oldPrice: 11999,
     discount: "75% OFF",
+    parent: "Men",
+    subcategory: "Messenger Bags",
   },
   {
     id: 7,
@@ -58,6 +70,8 @@ const items = [
     price: 4999,
     oldPrice: 9999,
     discount: "50% OFF",
+    parent: "Men",
+    subcategory: "Messenger Bags",
   },
   {
     id: 8,
@@ -66,6 +80,8 @@ const items = [
     price: 3119,
     oldPrice: 5799,
     discount: "46% OFF",
+    parent: "Men",
+    subcategory: "Messenger Bags",
   },
   {
     id: 9,
@@ -74,6 +90,8 @@ const items = [
     price: 4299,
     oldPrice: 9999,
     discount: "57% OFF",
+    parent: "Men",
+    subcategory: "BriefCase",
   },
   {
     id: 10,
@@ -82,6 +100,8 @@ const items = [
     price: 3119,
     oldPrice: 5799,
     discount: "46% OFF",
+    parent: "Men",
+    subcategory: "Messenger Bags",
   },
   {
     id: 11,
@@ -90,6 +110,8 @@ const items = [
     price: 1499,
     oldPrice: 2999,
     discount: "50% OFF",
+    parent: "Men",
+    subcategory: "Sling Bags",
   },
 ];
 
@@ -98,7 +120,7 @@ const items = [
 function Sale() {
   const navigate = useNavigate();
   function handleViewProductDetails(item) {
-    navigate(`/categories/${item.parent}/${item.subcategory}/${item.productId}`)
+    navigate(`/categories/${encodeURIComponent(item.parent)}/${encodeURIComponent(item.subcategory)}/${encodeURIComponent(item.productId ?? item.id)}`)
   }
 
   return (
@@ -117,7 +139,7 @@ function Sale() {
         {items.map((item, index) => (
           <div
             key={index}
-            className="shadow-xl cursor-pointer w-1/6 p-2 mx-1 my-1" onClick={() => handleViewProductDetails(items)}
+            className="shadow-xl cursor-pointer w-1/6 p-2 mx-1 my-1" onClick={() => handleViewProductDetails(item)}
           >
             <img
               src={item.img}

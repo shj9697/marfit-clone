@@ -14,6 +14,8 @@ const items = [
     price: 4999,
     oldPrice: 14999,
     discount: "46% OFF",
+    parent: "Men",
+    subcategory: "Handbag"
   },
   {
     id: 2,
@@ -22,6 +24,8 @@ const items = [
     price: 2999,
     oldPrice: 11999,
     discount: "75% OFF",
+    parent: "Women",
+    subcategory: "Handbag"
   },
   {
     id: 3,
@@ -30,6 +34,8 @@ const items = [
     price: 4999,
     oldPrice: 11999,
     discount: "58% OFF",
+    parent: "Women",
+    subcategory: "Handbag"
   },
   {
     id: 4,
@@ -38,6 +44,8 @@ const items = [
     price: 3599,
     oldPrice: 9999,
     discount: "64% OFF",
+    parent: "Women",
+    subcategory: "Handbag"
   },
   {
     id: 5,
@@ -46,6 +54,8 @@ const items = [
     price: 4999,
     oldPrice: 11999,
     discount: "58% OFF",
+    parent: "Women",
+    subcategory: "Handbag"
   },
   {
     id: 6,
@@ -54,6 +64,8 @@ const items = [
     price: 4999,
     oldPrice: 12999,
     discount: "62% OFF",
+    parent: "Women",
+    subcategory: "Handbag"
   },
   {
     id: 7,
@@ -62,6 +74,8 @@ const items = [
     price: 4999,
     oldPrice: 14999,
     discount: "67% OFF",
+    parent: "Women",
+    subcategory: "Handbag"
   },
   {
     id: 8,
@@ -70,6 +84,8 @@ const items = [
     price: 4999,
     oldPrice: 11999,
     discount: "58% OFF",
+    parent: "Women",
+    subcategory: "Handbag"
   },
   {
     id: 9,
@@ -78,6 +94,8 @@ const items = [
     price: 4999,
     oldPrice: 11999,
     discount: "58% OFF",
+    parent: "Women",
+    subcategory: "Handbag"
   },
   {
     id: 10,
@@ -86,6 +104,8 @@ const items = [
     price: 3499,
     oldPrice: 9999,
     discount: "65% OFF",
+    parent: "Women",
+    subcategory: "Handbag"
   },
 ];
 

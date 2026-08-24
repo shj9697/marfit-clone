@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { getProductsAPI } from "../api/productapi";
 
 const items = [
   {
@@ -8,6 +9,8 @@ const items = [
     price: 3499,
     oldPrice: 6499,
     discount: "46% OFF",
+    parent: "Women",
+    subcategory: "Shoulder Bags",
   },
   {
     id: 2,
@@ -16,6 +19,8 @@ const items = [
     price: 4299,
     oldPrice: 9999,
     discount: "57% OFF",
+    parent: "Men",
+    subcategory: "BriefCase",
   },
   {
     id: 3,
@@ -24,6 +29,8 @@ const items = [
     price: 7199,
     oldPrice: 19999,
     discount: "64% OFF",
+    parent: "Luggage & SuitCase",
+    subcategory: "Trolley Bags",
   },
   {
     id: 4,
@@ -32,6 +39,8 @@ const items = [
     price: 3599,
     oldPrice: 9999,
     discount: "64% OFF",
+    parent: "Accessories",
+    subcategory: "Jewellery Box",
   },
   {
     id: 5,
@@ -40,6 +49,8 @@ const items = [
     price: 1890,
     oldPrice: 3999,
     discount: "53% OFF",
+    parent: "Women",
+    subcategory: "CrossBody Bags",
   },
   {
     id: 6,
@@ -48,6 +59,8 @@ const items = [
     price: 1799,
     oldPrice: 3999,
     discount: "55% OFF",
+    parent: "Men",
+    subcategory: "Sling Bags",
   },
   {
     id: 7,
@@ -56,6 +69,8 @@ const items = [
     price: 2699,
     oldPrice: 5999,
     discount: "55% OFF",
+    parent: "Accessories",
+    subcategory: "Watch Box",
   },
   {
     id: 8,
@@ -64,6 +79,8 @@ const items = [
     price: 4999,
     oldPrice: 7499,
     discount: "33% OFF",
+    parent: "Men",
+    subcategory: "Messenger Bags",
   },
   {
     id: 9,
@@ -72,6 +89,8 @@ const items = [
     price: 3099,
     oldPrice: 11999,
     discount: "74% OFF",
+    parent: "Luggage & SuitCase",
+    subcategory: "Duffle Bags",
   },
   {
     id: 10,
@@ -80,6 +99,8 @@ const items = [
     price: 3119,
     oldPrice: 5799,
     discount: "46% OFF",
+    parent: "Men",
+    subcategory: "Messenger Bags",
   },
 ];
 
@@ -93,8 +114,43 @@ function Products() {
   }
 
   function handleViewProductDetails(item) {
-    navigate(`/categories/${item.parent}/${item.subcategory}/${item.productId}`)
+    navigate(`/categories/${encodeURIComponent(item.parent)}/${encodeURIComponent(item.subcategory)}/${encodeURIComponent(item.productId ?? item.id)}`)
   }
+
+
+  // const [product, setProduct] = useState([]);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
+
+  // useEffect(() => {
+  //   let cancelled = false;
+
+  //   async function load() {
+  //     try {
+  //       setLoading(true);
+  //       setError(null);
+  //       const data = await getProductsAPI();
+  //       if (!cancelled) setProduct(data.products);
+  //     } catch (err) {
+  //       if (!cancelled) setError(err.message);
+  //     } finally {
+  //       if (!cancelled) setLoading(false);
+  //     }
+  //   }
+  //   load();
+  //   return () => { cancelled = true; };
+  // }, []);
+
+
+  // if (loading) {
+  //   return <p>Loading</p>
+  // }
+  // if (product.length === 0) {
+  //   <p>No Product Found</p>
+  // }
+  // if (error) {
+  //   return <p>Error : {err.message}</p>
+  // }
 
   return (
     <div className="px-4 py-15 rounded-md bg-white">

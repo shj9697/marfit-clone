@@ -14,6 +14,8 @@ const items = [
     price: "9999",
     oldPrice: "17999",
     off: "44% OFF",
+    parent: "Luggage & SuitCase",
+    subcategory: "Trolley Bags",
   },
   {
     id: 2,
@@ -22,6 +24,8 @@ const items = [
     price: "4299",
     oldPrice: "9999",
     off: "57% OFF",
+    parent: "Luggage & SuitCase",
+    subcategory: "Trolley Bags",
   },
   {
     id: 3,
@@ -30,6 +34,8 @@ const items = [
     price: "7199",
     oldPrice: "19999",
     off: "64% OFF",
+    parent: "Luggage & SuitCase",
+    subcategory: "Trolley Bags",
   },
   {
     id: 4,
@@ -38,6 +44,8 @@ const items = [
     price: "3599",
     oldPrice: "9999",
     off: "64% OFF",
+    parent: "Luggage & SuitCase",
+    subcategory: "Trolley Bags",
   },
   {
     id: 5,
@@ -46,6 +54,8 @@ const items = [
     price: "1890",
     oldPrice: "3999",
     off: "53% OFF",
+    parent: "Luggage & SuitCase",
+    subcategory: "Trolley Bags",
   },
   {
     id: 6,
@@ -54,6 +64,8 @@ const items = [
     price: "7999",
     oldPrice: "21999",
     off: "64% OFF",
+    parent: "Luggage & SuitCase",
+    subcategory: "Trolley Bags",
   },
   {
     id: 7,
@@ -62,6 +74,8 @@ const items = [
     price: "7199",
     oldPrice: "19999",
     off: "64% OFF",
+    parent: "Luggage & SuitCase",
+    subcategory: "Trolley Bags",
   },
   {
     id: 8,
@@ -70,6 +84,8 @@ const items = [
     price: "7999",
     oldPrice: "14999",
     off: "47% OFF",
+    parent: "Luggage & SuitCase",
+    subcategory: "Trolley Bags",
   },
   {
     id: 9,
@@ -78,6 +94,8 @@ const items = [
     price: "7999",
     oldPrice: "19999",
     off: "60% OFF",
+    parent: "Luggage & SuitCase",
+    subcategory: "Trolley Bags",
   },
   {
     id: 10,
@@ -86,6 +104,8 @@ const items = [
     price: "7999",
     oldPrice: "21999",
     off: "64% OFF",
+    parent: "Luggage & SuitCase",
+    subcategory: "Trolley Bags",
   },
 ];
 
@@ -101,7 +121,7 @@ function SliderItems4() {
 
 
   function handleViewProductDetails(item) {
-    navigate(`/categories/${item.parent}/${item.subcategory}/${item.productId}`)
+    navigate(`/categories/${encodeURIComponent(item.parent)}/${encodeURIComponent(item.subcategory)}/${encodeURIComponent(item.productId ?? item.id)}`)
   }
 
 
