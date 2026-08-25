@@ -17,15 +17,15 @@ function Dropdown({ title, list }) {
             {/* Child menus */}
             <div className="absolute left-[50%] translate-x-[-55%] top-[30px] mt-2 hidden w-48 bg-white shadow-lg group-hover:block z-50 border border-gray-200">
                 <ul className="relative py-2 after:content-[''] after:absolute after:bg-white after:w-2 after:h-2 after:rotate-45 after:top-[-5px] after:left-[50%] after:border after:border-gray-200 after:border-r-0 after:border-b-0">
-                    {list?.map((item, index) => (
-                        <li key={item.name ?? index}>
+                    {list?.map((item, _) => (
+                        <li key={item.id}>
                             <Link
                                 to={`/categories/${encodeURIComponent(title)}/${encodeURIComponent(item.name)}`}
                                 className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                             >
                                 <div className="flex items-center gap-2">
-                                    {item?.image && (
-                                        <img src={item.image} alt={item.name} className="w-4 h-4" />
+                                    {item?.imageUrl && (
+                                        <img src={item.imageUrl} alt={item.name} className="w-4 h-4" />
                                     )}
                                     {item?.name || ""}
                                 </div>

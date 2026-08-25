@@ -1,126 +1,41 @@
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Dropdown from "./Dropdown";
-
-const menuList = [
-	{
-		title: "Men",
-		list: [
-			{
-				id: 1,
-				name: "Messenger Bags",
-				image:
-					"https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FMessenger%20Bags%2FMessenger%20Bags?alt=media&token=4f175284-fd13-4f80-9717-be9ff833fe6e",
-			},
-			{
-				id: 2,
-				name: "BriefCase",
-				image:
-					"https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FMessenger%20Bags%2FMessenger%20Bags?alt=media&token=4f175284-fd13-4f80-9717-be9ff833fe6e",
-			},
-			{
-				id: 3,
-				name: "Sling Bags",
-				image:
-					"https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FMessenger%20Bags%2FMessenger%20Bags?alt=media&token=4f175284-fd13-4f80-9717-be9ff833fe6e",
-			},
-			{
-				id: 4,
-				name: "Wallets",
-				image:
-					"https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FMessenger%20Bags%2FMessenger%20Bags?alt=media&token=4f175284-fd13-4f80-9717-be9ff833fe6e",
-			},
-			{
-				id: 5,
-				name: "Wallet Combo's",
-				image:
-					"https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FMessenger%20Bags%2FMessenger%20Bags?alt=media&token=4f175284-fd13-4f80-9717-be9ff833fe6e",
-			},
-			{
-				id: 6,
-				name: "Card Holder",
-				image:
-					"https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FMessenger%20Bags%2FMessenger%20Bags?alt=media&token=4f175284-fd13-4f80-9717-be9ff833fe6e",
-			},
-		],
-		path: "/men",
-	},
-	{
-		title: "Luggage & SuitCase",
-		list: [
-			{
-				id: 1,
-				name: "Trolley Bags",
-				image:
-					"https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FMessenger%20Bags%2FMessenger%20Bags?alt=media&token=4f175284-fd13-4f80-9717-be9ff833fe6e",
-			},
-			{
-				id: 2,
-				name: "Duffle Bags",
-				image:
-					"https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FMessenger%20Bags%2FMessenger%20Bags?alt=media&token=4f175284-fd13-4f80-9717-be9ff833fe6e",
-			},
-		],
-		path: "/luggage",
-	},
-	{
-		title: "Accessories",
-		list: [
-			{
-				id: 1,
-				name: "Jewellery Box",
-				image:
-					"https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FMessenger%20Bags%2FMessenger%20Bags?alt=media&token=4f175284-fd13-4f80-9717-be9ff833fe6e",
-			},
-			{
-				id: 2,
-				name: "Office Supplies",
-				image:
-					"https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FMessenger%20Bags%2FMessenger%20Bags?alt=media&token=4f175284-fd13-4f80-9717-be9ff833fe6e",
-			},
-			{
-				id: 3,
-				name: "Watch Box",
-				image:
-					"https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FMessenger%20Bags%2FMessenger%20Bags?alt=media&token=4f175284-fd13-4f80-9717-be9ff833fe6e",
-			},
-			{
-				id: 4,
-				name: "Passport Holder",
-				image:
-					"https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FMessenger%20Bags%2FMessenger%20Bags?alt=media&token=4f175284-fd13-4f80-9717-be9ff833fe6e",
-			},
-		],
-		path: "/accessories",
-	},
-	{
-		title: "Women",
-		list: [
-			{
-				id: 1,
-				name: "Shoulder Bags",
-				image:
-					"https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FMessenger%20Bags%2FMessenger%20Bags?alt=media&token=4f175284-fd13-4f80-9717-be9ff833fe6e",
-			},
-			{
-				id: 2,
-				name: "HandPurse",
-				image:
-					"https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FMessenger%20Bags%2FMessenger%20Bags?alt=media&token=4f175284-fd13-4f80-9717-be9ff833fe6e",
-			},
-			{
-				id: 3,
-				name: "CrossBody Bags",
-				image:
-					"https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fcategories%2FMen%2FsubCategory%2FMessenger%20Bags%2FMessenger%20Bags?alt=media&token=4f175284-fd13-4f80-9717-be9ff833fe6e",
-			},
-		],
-		path: "/women",
-	},
-];
+import { useEffect, useState } from "react";
+import { getProductCategoriesAPI } from "../api/productCategoriesApi";
 
 function CategoryDropdown() {
 	const navigate = useNavigate();
+
+	const [categories, setCategories] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
+
+	useEffect(() => {
+		let cancelled = false;
+
+		async function load() {
+			try {
+				setLoading(true);
+				setError(null);
+				const data = await getProductCategoriesAPI();
+				if (!cancelled) setCategories(data.categories);
+			} catch (err) {
+				if (!cancelled) setError(err.message);
+			} finally {
+				if (!cancelled) setLoading(false);
+			}
+		}
+		load();
+		return () => { cancelled = true; };
+	}, []);
+
+	if (loading) {
+		return <p>Loading......</p>
+	}
+	if (error) {
+		return <p>Error : {error}</p>
+	}
+
 	return (
 		<div className="flex gap-12 items-center justify-center h-10 text-base font-bold sticky top-15 z-50 bg-white shadow-[0_3px_6px_0_#dee0e2]">
 			<Link
@@ -130,11 +45,11 @@ function CategoryDropdown() {
 			>
 				New Arrivals
 			</Link>
-			{menuList.map((item, index) => (
+			{categories.map((item, _) => (
 				<Dropdown
-					key={index}
-					title={item.title}
-					list={item.list}
+					key={item.id}
+					title={item.name}
+					list={item.children.sort((a, b) => a.sortOrder - b.sortOrder)}
 				/>
 			))}
 			<Link

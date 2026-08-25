@@ -1,12 +1,20 @@
-function Main() {
+import { Link } from "react-router-dom";
+
+function AboutUs({ leftContent = null, rightContent = null }) {
+
+  if (!leftContent && !rightContent) return null;
+
+
   return (
     <div className="flex mx-26 h-130">
       <div className="w-1/3">
-        <img
-          src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fadvertisement%2FaboutLeft%2F0?alt=media&token=5db71ad6-4363-458c-a19b-e4a7a2f0be00"
-          alt=""
-          className="w-full h-full object-cover"
-        />
+        <Link to={leftContent.linkUrl}>
+          <img
+            src={leftContent.imageUrl}
+            alt=""
+            className="w-full h-full object-cover"
+          />
+        </Link>
       </div>
       <div className="w-1/3 bg-black flex flex-col justify-center p-16 items-center">
         <img
@@ -23,14 +31,16 @@ function Main() {
         </p>
       </div>
       <div className="w-1/3">
-        <img
-          src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fadvertisement%2FaboutRight%2F0?alt=media&token=e9cc3999-7d0c-4cf8-806b-db30f472d27b"
-          alt=""
-          className="w-full h-full object-cover"
-        />
+        <Link to={rightContent.linkUrl}>
+          <img
+            src={rightContent.imageUrl}
+            alt=""
+            className="w-full h-full object-cover"
+          />
+        </Link>
       </div>
     </div>
   );
 }
 
-export default Main;
+export default AboutUs;

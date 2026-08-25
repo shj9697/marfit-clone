@@ -1,11 +1,15 @@
-function Banner2() {
-    const handleClick = () => {
-        window.location.href = "/Sale"
-    }
+import { Link } from "react-router-dom";
+
+function Banner2({ imgUrl, path }) {
+
+    if (!imgUrl) return null;
+
     return (
-        <div className=" mx-26">
-            <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/settings%2Fadvertisement%2FbottomBanner2%2FNaN?alt=media&token=9bffa94d-ff5d-4255-b738-7d3f727e2ab5f" alt="" className="w-full object-contain" onClick={handleClick} />
-        </div>
+        <Link to={path} >
+            <div className="px-80 py-10 relative w-[89%] mx-26 bg-white">
+                <img src={imgUrl} />
+            </div>
+        </Link>
     )
 }
 
