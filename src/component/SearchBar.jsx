@@ -52,5 +52,4 @@ function SearchBar() {
         </div>
     );
 }
-
 export default SearchBar; 

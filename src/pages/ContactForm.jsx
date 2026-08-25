@@ -9,23 +9,6 @@ const ContactForm = () => {
         message: "",
     });
 
-    const [popup, setPopup] = useState("");
-
-    const handleChange = useCallback((e) => {
-        setForm((prev) => ({
-            ...prev,
-            [e.target.name]: e.target.value,
-        }));
-    }, []);
-
-    const showPopup = useCallback((msg) => {
-        setPopup(msg);
-
-        setTimeout(() => {
-            setPopup("");
-        }, 2500);
-    }, []);
-
     const handleSubmit = useCallback(
         (e) => {
             e.preventDefault();

@@ -19,6 +19,8 @@ import TermsAndCondition from "./pages/TermsAndCondition";
 import AddToCart from "./pages/AddToCart";
 import ShippingPolicy from "./pages/ShippingPolicy";
 import NotFound from "./pages/notFound";
+import "swiper/css";
+import "swiper/css/navigation";
 
 function App() {
   return (

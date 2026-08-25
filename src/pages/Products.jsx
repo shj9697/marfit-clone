@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { getProductsAPI } from "../api/productapi";
 
 const items = [
   {
@@ -116,42 +115,6 @@ function Products() {
   function handleViewProductDetails(item) {
     navigate(`/categories/${encodeURIComponent(item.parent)}/${encodeURIComponent(item.subcategory)}/${encodeURIComponent(item.productId ?? item.id)}`)
   }
-
-
-  // const [product, setProduct] = useState([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
-
-  // useEffect(() => {
-  //   let cancelled = false;
-
-  //   async function load() {
-  //     try {
-  //       setLoading(true);
-  //       setError(null);
-  //       const data = await getProductsAPI();
-  //       if (!cancelled) setProduct(data.products);
-  //     } catch (err) {
-  //       if (!cancelled) setError(err.message);
-  //     } finally {
-  //       if (!cancelled) setLoading(false);
-  //     }
-  //   }
-  //   load();
-  //   return () => { cancelled = true; };
-  // }, []);
-
-
-  // if (loading) {
-  //   return <p>Loading</p>
-  // }
-  // if (product.length === 0) {
-  //   <p>No Product Found</p>
-  // }
-  // if (error) {
-  //   return <p>Error : {err.message}</p>
-  // }
-
   return (
     <div className="px-4 py-15 rounded-md bg-white">
       <div className="mx-6">

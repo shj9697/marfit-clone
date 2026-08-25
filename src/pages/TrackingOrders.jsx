@@ -13,7 +13,6 @@ const TrackingOrders = () => {
                     name="name"
                     type="text"
                     className="p-2 border border-gray-300 rounded-md bg-white text-black focus:outline-none"
-
                 />
             </div>
             <div className="text-center">
@@ -24,9 +23,6 @@ const TrackingOrders = () => {
                     Send
                 </button>
             </div>
-
-
-
         </div>
     )
 }
