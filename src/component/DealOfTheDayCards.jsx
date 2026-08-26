@@ -8,16 +8,12 @@ function DealOfTheDayCards({ list = [] }) {
     navigate("/deal-of-the-day")
   }
 
-  function handleViewProductDetails(item) {
-    navigate(`/categories/${encodeURIComponent(item.parent)}/${encodeURIComponent(item.subcategory)}/${encodeURIComponent(item.productId ?? item.id)}`)
-  };
 
   return (
     <SliderItem
       title={"Deal Of The Day"}
       list={list}
       handleViewAll={handleViewProduct}
-      handleProductDetails={handleViewProductDetails}
     />
   );
 }

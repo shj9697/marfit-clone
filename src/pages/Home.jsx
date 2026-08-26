@@ -43,7 +43,6 @@ function Home() {
     return <p>Error : {error}</p>
   };
 
-
   return (
     <div className="w-full">
       <HeroSection banner={homePageContent?.banners?.hero} />

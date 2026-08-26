@@ -1,5 +1,6 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { addToCartAPI, getCartAPI, removeFromCartAPI } from "../api/cartapi";
+import toast from "react-hot-toast";
 
 const CartContext = createContext(null);
 
@@ -29,9 +30,9 @@ export function CartProvider({ children }) {
     return () => { cancelled = true; };
   }, []);
 
-  const addToCart = async (productId) => {
+  const addToCart = async (productId, quantity = 1) => {
     setLoading(true);
-    const response = await addToCartAPI(productId);
+    const response = await addToCartAPI(productId, quantity);
     if (response.status) {
       setCart(response.data);
       setLoading(false);

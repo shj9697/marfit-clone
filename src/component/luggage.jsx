@@ -8,16 +8,11 @@ function Luggage({ list = [] }) {
     navigate("/categories/luggage");
   }
 
-  function handleViewProductDetails(item) {
-    navigate(`/categories/${encodeURIComponent(item.parent)}/${encodeURIComponent(item.subcategory)}/${encodeURIComponent(item.productId ?? item.id)}`)
-  }
-
   return (
     <SliderItem
       title={"Luggage & Suitcases"}
       list={list}
       handleViewAll={handleViewProduct}
-      handleProductDetails={handleViewProductDetails}
     />
   );
 }
