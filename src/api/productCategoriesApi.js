@@ -11,3 +11,19 @@ export async function getProductCategoriesAPI() {
         message: convertedData.error.message
     };
 };
+
+
+export async function getProductCategoriesBySlugAPI(slug) {
+    const res = await fetch(`http://localhost:4000/api/categories/` + slug);
+    const convertedData = await res.json();
+    if (res.ok) {
+        return {
+            categories: convertedData.data,
+        };
+    }
+    return {
+        categories: [],
+        message: convertedData.error.message
+    };
+};
+

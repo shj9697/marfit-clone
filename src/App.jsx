@@ -3,8 +3,6 @@ import Home from "./pages/Home";
 import Navbar from "./component/Navbar";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Footer from "./component/Footer";
-import NewArrival from "./pages/NewArrival";
-import Sale from "./pages/Sale";
 import Franchise from "./pages/Franchise";
 import Products from "./pages/Products";
 import { Toaster } from "react-hot-toast";
@@ -21,6 +19,7 @@ import ShippingPolicy from "./pages/ShippingPolicy";
 import NotFound from "./pages/notFound";
 import "swiper/css";
 import "swiper/css/navigation";
+import CollectionContent from "./pages/CollectionContent";
 
 function App() {
   return (
@@ -30,12 +29,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products/:id" element={<Products />} />
-          <Route path="/new-arrival" element={<NewArrival />} />
-          <Route path="/sale" element={<Sale />} />
+          <Route exact path="/:slug" element={<CollectionContent />} />
           <Route path="/franchise" element={<Franchise />} />
-          <Route path="/categories/:pathId" element={<Categories />} />
+          <Route path="/categories/:slug" element={<Categories />} />
           <Route path="/categories/:parentId/:subId" element={<SubCategories />} />
-          <Route path="/emboss" element={<Embose />} />
+          <Route exact path="/emboss" element={<Embose />} />
           <Route path="/categories/:parentId/:subId/:productId" element={<ProductDetailsPage />} />
           <Route path="/bulkContact" element={<BulkContact />} />
           <Route path="/TrackOrder" element={<TrackingOrders />} />

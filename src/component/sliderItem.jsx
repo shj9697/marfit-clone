@@ -1,18 +1,14 @@
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, A11y } from "swiper/modules";
+import ProductCard from "./ProductCard";
 
 
-const SliderItem = ({ title, handleViewAll, list, handleProductDetails }) => {
+const SliderItem = ({ title, handleViewAll, list }) => {
     const swiperRef = useRef(null);
 
-    const shadowStyle = {
-        boxShadow: '1px 2px 3px rgba(0, 0, 0, .3)',
-        border: '2px solid rgba(0, 0, 0, .03)',
-    }
-
     return (
-        <div className="mx-26 my-4 p-3 rounded-md bg-white ">
+        <div className="mx-26 my-4 p-3 rounded-md bg-white">
             <div className="flex items-center justify-between">
                 <div className="flex flex-col">
                     <h1 className="text-2xl font-normal">{title}</h1>
@@ -23,33 +19,27 @@ const SliderItem = ({ title, handleViewAll, list, handleProductDetails }) => {
                         <span className="w-15 h-px bg-black"></span>
                     </div>
                 </div>
-                <button
-                    className="text-white text-sm bg-orange-600 px-6 py-2 rounded-md cursor-pointer"
-                    onClick={handleViewAll}
-                >
-                    View All
-                </button>
+                {handleViewAll && (
+                    <button
+                        className="text-white text-sm bg-orange-600 px-6 py-2 rounded-md cursor-pointer"
+                        onClick={handleViewAll}
+                    >
+                        View All
+                    </button>
+                )}
             </div>
 
-            <div className="relative">
+            <div className="relative w-full">
                 <Swiper
                     modules={[Navigation, A11y]}
                     onSwiper={(swiper) => (swiperRef.current = swiper)}
                     spaceBetween={20}
                     slidesPerView={6}
-                    className="my-4"
+                    className="py-4"
                 >
-                    {list.map((item, index) => (
-                        <SwiperSlide key={index} className="w-60! h-84!">
-                            <div className="w-full h-full p-2 m-0 cursor-pointer " style={shadowStyle} onClick={() => handleProductDetails(item)}>
-                                <img src={item.img} alt="" className="w-full h-52 object-cover" />
-                                <p className="text-sm mt-2">{item.title}</p>
-                                <p className="text-sm">Rs. {item.price}</p>
-                                <div className="flex items-center gap-2">
-                                    <p className="text-sm line-through text-gray-500">Rs. {item.oldPrice} </p>
-                                    <span className="text-sm text-orange-600">{item.discount}</span>
-                                </div>
-                            </div>
+                    {list.map((item, _) => (
+                        <SwiperSlide key={item.id} className="w-60! h-84!">
+                            <ProductCard item={item} />
                         </SwiperSlide>
                     ))}
                 </Swiper>

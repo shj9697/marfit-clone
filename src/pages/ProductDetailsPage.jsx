@@ -7,6 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { MapPin } from "lucide-react";
 import { useCart } from "../context/CartProvider";
+import ProductCard from "../component/ProductCard";
 
 
 const items = [
@@ -355,15 +356,7 @@ function ProductDetailsPage({ item }) {
                     >
                         {items.map((item, index) => (
                             <SwiperSlide key={index} className="w-60! h-84!">
-                                <div className="w-full h-full p-2 m-0 cursor-pointer shadow-lg  " style={shadowStyle} onClick={() => handleViewProductDetails(item)}>
-                                    <img src={item.img} alt="" className="w-full h-52 object-cover" />
-                                    <p className="text-sm mt-2">{item.title}</p>
-                                    <p className="text-sm">Rs. {item.price}</p>
-                                    <div className="flex items-center gap-2">
-                                        <p className="text-sm line-through text-gray-500">Rs. {item.oldPrice} </p>
-                                        <span className="text-sm text-orange-600">{item.discount}</span>
-                                    </div>
-                                </div>
+                                <ProductCard item={item} key={item.id} />
                             </SwiperSlide>
                         ))}
                     </Swiper>

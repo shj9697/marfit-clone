@@ -1,4 +1,5 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import ProductCard from "../component/ProductCard";
 
 const items = [
   {
@@ -105,16 +106,7 @@ const items = [
 
 function Products() {
   const { id } = useParams();
-  const navigate = useNavigate()
 
-  const shadowStyle = {
-    boxShadow: '1px 2px 3px rgba(0, 0, 0, .3)',
-    border: '2px solid rgba(0, 0, 0, .03)',
-  }
-
-  function handleViewProductDetails(item) {
-    navigate(`/categories/${encodeURIComponent(item.parent)}/${encodeURIComponent(item.subcategory)}/${encodeURIComponent(item.productId ?? item.id)}`)
-  }
   return (
     <div className="px-4 py-15 rounded-md bg-white">
       <div className="mx-6">
@@ -127,17 +119,9 @@ function Products() {
         </div>
       </div>
 
-      <div className="relative w-full flex flex-wrap  items-left m-6">
-        {items.map((item, index) => (
-          <div key={index} className="cursor-pointer w-1/8 p-2 m-1 shadow-lg " style={{ shadowStyle }} onClick={() => handleViewProductDetails(item)}>
-            <img src={item.img} alt="" className="h-45 object-contain rounded-md w-full" />
-            <p className="text-sm mb-2 text-left">{item.title}</p>
-            <p className="text-sm">Rs. {item.price}</p>
-            <div className="flex items-center gap-2">
-              <p className="text-sm line-through text-gray-500">Rs. {item.oldPrice} </p>
-              <span className="text-sm text-orange-600">{item.discount}</span>
-            </div>
-          </div>
+      <div className="relative w-full flex flex-wrap items-left m-6">
+        {items.map((item, _) => (
+          <ProductCard item={item} key={item.id} />
         ))}
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { ListFilter } from "lucide-react";
 import Breadcrumb from "../component/Breadcrumb";
 import { useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import ProductCard from "../component/ProductCard";
 
 
 const items = [
@@ -251,15 +251,10 @@ let availabilityOptions = [
 ]
 
 function Embose() {
-    const navigate = useNavigate();
     const [sortBy, setSortBy] = useState("relevance");
     const [category, setCategory] = useState("all");
     const [subCategory, setSubCategory] = useState("all");
     const [availability, setAvailability] = useState([]);
-
-    function handleViewProductDetails(item) {
-        navigate(`/categories/${encodeURIComponent(item.parent)}/${encodeURIComponent(item.subcategory)}/${encodeURIComponent(item.productId ?? item.id)}`)
-    }
 
     const handleSortBy = (value = "relevance") => setSortBy(value);
     const handleCategoryBy = (value = "all") => setCategory(value);
@@ -402,28 +397,7 @@ function Embose() {
 
                     <div className="flex flex-wrap w-[80%]">
                         {filteredItems.map(item => (
-                            <div
-                                key={item.id}
-                                className="cursor-pointer py-2 m-1 w-1/5 border border-gray-200 rounded-md" onClick={() => handleViewProductDetails(item)}
-                            >
-                                <img
-                                    src={item.img}
-                                    alt=""
-                                    className="h-45 w-full object-cover rounded-md"
-                                />
-                                <div className="p-3">
-                                    <p className="text-sm">{item.title}</p>
-                                    <p className="text-sm">Rs. {item.price}</p>
-                                    <div className="flex gap-2">
-                                        <p className="line-through text-gray-500">
-                                            Rs. {item.oldPrice}
-                                        </p>
-                                        <span className="text-orange-600">
-                                            {item.discount}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
+                            <ProductCard item={item} key={item.id} />
                         ))}
                     </div>
                 </div>

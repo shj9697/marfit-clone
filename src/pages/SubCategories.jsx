@@ -2,6 +2,7 @@ import { ListFilter } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import Breadcrumb from "../component/Breadcrumb";
 import { useEffect, useState, useMemo } from "react";
+import ProductCard from "../component/ProductCard";
 
 
 const items = [
@@ -471,29 +472,7 @@ function SubCategories() {
 
 					<div className="flex flex-wrap w-[80%]">
 						{filteredItems.map(item => (
-							<div
-								key={item.id}
-								className="cursor-pointer py-2 m-1 w-1/5 border border-gray-200 rounded-md"
-								onClick={() => handleViewProductDetails(item)}>
-
-								<img
-									src={item.img}
-									alt=""
-									className="h-45 w-full object-cover rounded-md"
-								/>
-								<div className="p-3">
-									<p className="text-sm">{item.title}</p>
-									<p className="text-sm">Rs. {item.price}</p>
-									<div className="flex gap-2">
-										<p className="line-through text-gray-500">
-											Rs. {item.oldPrice}
-										</p>
-										<span className="text-orange-600">
-											{item.discount}
-										</span>
-									</div>
-								</div>
-							</div>
+							<ProductCard item={item} key={item.id} />
 						))}
 					</div>
 				</div>

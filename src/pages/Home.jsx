@@ -1,14 +1,14 @@
-import SliderItems from '../component/SliderItems';
 import Banner from '../component/Banner';
-import SliderItems1 from '../component/SliderItems1'
 import Banner2 from '../component/Banner2';
-import SliderItem3 from '../component/SliderItem3';
 import AboutUs from '../component/AboutUs';
-import SliderItems4 from '../component/SliderItems4';
 import HeroSection from '../component/HeroSection';
-import SliderItems5 from '../component/SliderItems5';
 import { useEffect, useState } from 'react';
 import { getHomePageContentAPI } from '../api/home';
+import DealOfTheDayCards from '../component/DealOfTheDayCards';
+import TrendingNow from '../component/trendingNow';
+import BestSellers from '../component/bestSellers';
+import Luggage from '../component/luggage';
+import Accessories from '../component/accessories';
 
 function Home() {
 
@@ -24,6 +24,7 @@ function Home() {
         setLoading(true);
         setError(null);
         const data = await getHomePageContentAPI();
+        console.log(data)
         if (!cancelled) setHomePageContent(data.data);
       } catch (err) {
         if (!cancelled) setError(err.message);
@@ -46,15 +47,15 @@ function Home() {
   return (
     <div className="w-full">
       <HeroSection banner={homePageContent?.banners?.hero} />
-      <SliderItems />
+      <DealOfTheDayCards list={homePageContent?.collections?.find(item => item.slug === 'deal-of-the-day')?.products} />
       <Banner imgUrl={homePageContent?.banners?.["mid-1"]?.imageUrl} path={homePageContent?.banners?.["mid-1"]?.linkUrl} />
-      <SliderItems1 />
+      <TrendingNow list={homePageContent?.collections?.find(item => item.slug === 'trending')?.products} />
       <Banner2 imgUrl={homePageContent?.banners?.["mid-2"]?.imageUrl} path={homePageContent?.banners?.["mid-2"]?.linkUrl} />
-      <SliderItem3 />
+      <BestSellers list={homePageContent?.collections?.find(item => item.slug === "best-sellers")?.products} />
       <AboutUs leftContent={homePageContent?.banners?.["mid-3"]?.left} rightContent={homePageContent?.banners?.["mid-3"]?.right} />
-      <SliderItems4 />
+      <Luggage list={homePageContent?.collections?.find(item => item.slug === "luggage")?.products} />
       <Banner2 imgUrl={homePageContent?.banners?.["mid-4"]?.imageUrl} path={homePageContent?.banners?.["mid-4"]?.linkUrl} />
-      <SliderItems5 />
+      <Accessories list={homePageContent?.collections?.find(item => item.slug === "accessories")?.products} />
     </div>
   )
 }

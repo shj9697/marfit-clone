@@ -2,11 +2,11 @@ import { ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 
 
-function Dropdown({ title, list }) {
+function Dropdown({ title = "", list = [], slug = "" }) {
     return (
         <div className="relative group h-full">
             <div className="flex items-center gap-1 cursor-pointer hover:text-orange-600 h-full">
-                <Link to={`/categories/${encodeURIComponent(title)}`}>
+                <Link to={`/categories/${encodeURIComponent(slug)}`}>
                     <span className="font-medium">{title}</span>
                 </Link>
                 <ChevronDown

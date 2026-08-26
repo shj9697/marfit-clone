@@ -114,11 +114,11 @@ const items = [
   },
 ];
 
-function SliderItem3() {
+function BestSellers({ list = [] }) {
   const navigate = useNavigate();
 
   function handleViewProduct() {
-    navigate("/products/" + "Shoulder Bags")
+    navigate("/best-sellers")
   }
 
   function handleViewProductDetails(item) {
@@ -127,12 +127,12 @@ function SliderItem3() {
 
   return (
     <SliderItem
-      title={"Shoulder Bags"}
-      list={items}
+      title={"Best Sellers"}
+      list={list}
       handleViewAll={handleViewProduct}
       handleProductDetails={handleViewProductDetails}
     />
   );
 }
 
-export default SliderItem3;
+export default BestSellers;

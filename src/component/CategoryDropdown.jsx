@@ -50,6 +50,7 @@ function CategoryDropdown() {
 					key={item.id}
 					title={item.name}
 					list={item.children.sort((a, b) => a.sortOrder - b.sortOrder)}
+					slug={item.slug}
 				/>
 			))}
 			<Link
