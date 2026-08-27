@@ -38,7 +38,7 @@ const SliderItem = ({ title, handleViewAll, list }) => {
                     className="py-4"
                 >
                     {list.map((item, _) => (
-                        <SwiperSlide key={item.id} className="w-60! h-84!">
+                        <SwiperSlide key={item.id} className="w-64! h-88!">
                             <ProductCard item={item} />
                         </SwiperSlide>
                     ))}

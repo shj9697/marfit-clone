@@ -1,11 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Navigation, A11y } from "swiper/modules";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Breadcrumb from "../component/Breadcrumb";
-import ProductCard from "../component/ProductCard";
 import { getProductCategoriesBySlugAPI } from "../api/productCategoriesApi";
 import SliderItem from "../component/sliderItem";
 
@@ -152,7 +149,6 @@ const categories = [
 function Categories() {
 	const navigate = useNavigate();
 	const { slug } = useParams();
-	const swiperRef = useRef(null);
 
 	const [data, setData] = useState({ title: "", products: [] });
 	const [loading, setLoading] = useState(true);

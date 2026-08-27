@@ -32,7 +32,7 @@ function App() {
           <Route exact path="/:slug" element={<CollectionContent />} />
           <Route path="/franchise" element={<Franchise />} />
           <Route path="/categories/:slug" element={<Categories />} />
-          <Route path="/categories/:parentId/:subId" element={<SubCategories />} />
+          <Route path="/categories/:categorySlug/:subCategorySlug" element={<SubCategories />} />
           <Route exact path="/emboss" element={<Embose />} />
           <Route path="/categories/:parentId/:subId/:productId" element={<ProductDetailsPage />} />
           <Route path="/bulkContact" element={<BulkContact />} />

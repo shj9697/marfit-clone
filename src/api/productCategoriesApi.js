@@ -27,3 +27,17 @@ export async function getProductCategoriesBySlugAPI(slug) {
     };
 };
 
+
+export async function getProductCategoriesBySubSlugAPI(categorySlug, subCategorySlug) {
+    const res = await fetch(`http://localhost:4000/api/categories/${categorySlug}/${subCategorySlug}`);
+    const convertedData = await res.json();
+    if (res.ok) {
+        return {
+            categories: convertedData.data,
+        };
+    }
+    return {
+        categories: [],
+        message: convertedData.error.message
+    };
+};

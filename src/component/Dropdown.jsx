@@ -20,7 +20,7 @@ function Dropdown({ title = "", list = [], slug = "" }) {
                     {list?.map((item, _) => (
                         <li key={item.id}>
                             <Link
-                                to={`/categories/${encodeURIComponent(title)}/${encodeURIComponent(item.name)}`}
+                                to={`/categories/${encodeURIComponent(slug)}/${encodeURIComponent(item.slug)}`}
                                 className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                             >
                                 <div className="flex items-center gap-2">

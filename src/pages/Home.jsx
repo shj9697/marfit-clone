@@ -24,7 +24,6 @@ function Home() {
         setLoading(true);
         setError(null);
         const data = await getHomePageContentAPI();
-        console.log(data)
         if (!cancelled) setHomePageContent(data.data);
       } catch (err) {
         if (!cancelled) setError(err.message);

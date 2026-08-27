@@ -1,8 +1,9 @@
-import { ListFilter } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Breadcrumb from "../component/Breadcrumb";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import ProductCard from "../component/ProductCard";
+import Filter from "../component/Filter";
+import { getProductCategoriesBySlugAPI, getProductCategoriesBySubSlugAPI } from "../api/productCategoriesApi";
 
 
 const items = [
@@ -226,87 +227,60 @@ const items = [
 
 ];
 
-let categoryOptions = [
-	{
-		label: "All",
-		value: "All"
-	},
-	{
-		label: "Men",
-		value: "Men"
-	},
-	{
-		label: "Luggage & SuitCase",
-		value: "Luggage & SuitCase"
-	},
-	{
-		label: "Accessories",
-		value: "Accessories"
-	},
-	{
-		label: "Women",
-		value: "Women"
-	},
-];
 
-let subCategoriesOptions = [
-	{
-		label: "All",
-		value: "All"
-	},
-	{
-		label: "Messenger Bags",
-		value: "Messenger Bags"
-	},
-	{
-		label: "BriefCase",
-		value: "BriefCase"
-	},
-	{
-		label: "Sling Bags",
-		value: "Sling Bags"
-	},
-	{
-		label: "Wallets",
-		value: "Wallets"
-	},
-	{
-		label: "Wallet Combos",
-		value: "Wallet Combos"
-	},
-	{
-		label: "CardHolder",
-		value: "CardHolder"
-	},
-];
-
-let availabilityOptions = [
-	{
-		label: "Embose",
-		value: "Embose",
-	},
-	{
-		label: "Out Of Stock",
-		value: "Out of Stock"
-	}
-];
 
 function SubCategories() {
-	const navigate = useNavigate();
-	const { parentId, subId } = useParams();
+	const { categorySlug, subCategorySlug } = useParams();
 	const [sortBy, setSortBy] = useState("relevance");
 	const [category, setCategory] = useState("all");
 	const [subCategory, setSubCategory] = useState("all");
 	const [availability, setAvailability] = useState([]);
 
 	useEffect(() => {
-		if (parentId) {
-			setCategory(parentId);
+		if (categorySlug) {
+			setCategory(categorySlug);
 		}
-		if (subId) {
-			setSubCategory(subId);
+		if (subCategorySlug) {
+			setSubCategory(subCategorySlug);
 		}
-	}, [parentId, subId]);
+	}, [categorySlug, subCategorySlug]);
+
+	const [data, setData] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
+
+	useEffect(() => {
+		let cancelled = false;
+
+		async function load() {
+			try {
+				setLoading(true);
+				setError(null);
+				const categoryData = await getProductCategoriesBySlugAPI(categorySlug);
+				const subCategorydata = await getProductCategoriesBySubSlugAPI(categorySlug, subCategorySlug);
+				if (!cancelled) {
+					setData({
+						categoryData: categoryData.categories,
+						subCategoryData: subCategorydata.categories
+					});
+				}
+			} catch (err) {
+				if (!cancelled) setError(err.message);
+			} finally {
+				if (!cancelled) setLoading(false);
+			}
+		}
+		load();
+		return () => { cancelled = true; };
+	}, [categorySlug, subCategorySlug]);
+	console.log(data)
+
+	if (loading) {
+		return <p>Loading......</p>
+	}
+	if (error) {
+		return <p>Error : {error}</p>
+	};
 
 	const handleSortBy = (value) => setSortBy(value);
 
@@ -323,40 +297,6 @@ function SubCategories() {
 		}
 	};
 
-	const filteredItems = useMemo(() => {
-		let result = [...items];
-
-		const isUnset = (value, placeholder) => {
-			const normalized = value?.toLowerCase();
-			return !normalized || normalized === "all" || normalized === placeholder;
-		};
-
-		// Match on the product's own parent/subcategory fields — matching against
-		// item.title only worked by coincidence of how titles are worded.
-		if (!isUnset(category, "category")) {
-			result = result.filter(
-				item => item.parent?.toLowerCase() === category.toLowerCase()
-			);
-		}
-
-		if (!isUnset(subCategory, "subcategory")) {
-			result = result.filter(
-				item => item.subcategory?.toLowerCase() === subCategory.toLowerCase()
-			);
-		}
-
-
-		if (sortBy === "price-low-to-high") {
-			result.sort((a, b) => a.price - b.price);
-		}
-
-		if (sortBy === "price-high-to-low") {
-			result.sort((a, b) => b.price - a.price);
-		}
-
-		return result;
-	}, [category, subCategory, sortBy]);
-
 	const handleReset = () => {
 		setSortBy("relevance");
 		setCategory("category");
@@ -364,114 +304,33 @@ function SubCategories() {
 		setAvailability("availability");
 	};
 
-	function handleViewProductDetails(item) {
-		navigate(`/categories/${encodeURIComponent(item.parent)}/${encodeURIComponent(item.subcategory)}/${encodeURIComponent(item.productId ?? item.id)}`)
-	}
-
 	return (
 		<div className="w-full bg-white">
 			<Breadcrumb
 				paths={[
-					{ title: parentId, link: `/categories/${encodeURIComponent(parentId)}` },
+					{ title: categorySlug, link: `/categories/${encodeURIComponent(categorySlug)}` },
 					{
-						title: subId,
-						link: `/categories/${encodeURIComponent(parentId)}/${encodeURIComponent(subId)}`,
+						title: subCategorySlug,
+						link: `/categories/${encodeURIComponent(categorySlug)}/${encodeURIComponent(subCategorySlug)}`,
 					},
 				]}
 			/>
 
 			<div className="bg-white my-5 py-10 px-35">
 				<div className="w-full flex gap-15">
-					<div className="flex flex-col w-70">
-						<div className="flex">
-							<div className="flex w-full">
-								<ListFilter strokeWidth={1.75} className="h-5 w-5 my-1 mx-3" />
-								<p className="text-xl">Filters</p>
-							</div>
-							<button
-								onClick={handleReset}
-								className="p-1 border border-gray-200 w-[30%] rounded cursor-pointer"
-							>
-								Reset
-							</button>
-						</div>
-
-						<div className="border border-gray-200 rounded-md p-4 my-2">
-							<h1>SORT BY</h1>
-
-							<div className="flex">
-								<input
-									type="checkbox"
-									checked={sortBy === "relevance"}
-									onChange={() => handleSortBy("relevance")}
-								/>
-								<label className="ml-2">RELEVANCE</label>
-							</div>
-
-							<div className="flex">
-								<input
-									type="checkbox"
-									checked={sortBy === "price-low-to-high"}
-									onChange={() => handleSortBy("price-low-to-high")}
-								/>
-								<label className="ml-2">PRICE LOW TO HIGH</label>
-							</div>
-
-							<div className="flex">
-								<input
-									type="checkbox"
-									checked={sortBy === "price-high-to-low"}
-									onChange={() => handleSortBy("price-high-to-low")}
-								/>
-								<label className="ml-2">PRICE HIGH TO LOW</label>
-							</div>
-						</div>
-
-						<div className="border border-gray-200 rounded-md p-4">
-							<h1>CATEGORIES</h1>
-							{categoryOptions.map(item => (
-								<div key={item.value} className="flex items-center gap-2">
-									<input
-										type="checkbox"
-										checked={category === item.value}
-										onChange={() => handleCategoryBy(item.value)}
-									/>
-									<span>{item.label}</span>
-								</div>
-							))}
-						</div>
-
-						<div className="border border-gray-200 rounded-md p-4 my-2">
-							<h1>SUB CATEGORIES</h1>
-							{subCategoriesOptions.map(item => (
-								<div key={item.value} className="flex items-center gap-2">
-									<input
-										type="checkbox"
-										checked={subCategory === item.value}
-										onChange={() => handleSubCategoryBy(item.value)}
-									/>
-									<span>{item.label}</span>
-								</div>
-							))}
-						</div>
-
-						<div className="border border-gray-200 rounded-md p-4 my-2">
-							<h1>AVAILABILITY</h1>
-							{availabilityOptions.map(item => (
-								<div key={item.value} className="flex items-center gap-2">
-									<input
-										type="checkbox"
-										checked={availability.includes(item.value)}
-										onChange={(event) => handleAvailability(item.value, event)}
-									/>
-									<span>{item.label}</span>
-								</div>
-							))}
-						</div>
-					</div>
-
+					<Filter
+						handleSortBy={handleSortBy}
+						handleCategoryBy={handleCategoryBy}
+						handleSubCategoryBy={handleSubCategoryBy}
+						handleAvailability={handleAvailability}
+						handleReset={handleReset}
+						sortBy={sortBy}
+						category={category}
+						subCategory={subCategory}
+						availability={availability}
+					/>
 					<div className="flex flex-wrap w-[80%]">
-						{filteredItems.map(item => (
+						{[].map(item => (
 							<ProductCard item={item} key={item.id} />
 						))}
 					</div>
