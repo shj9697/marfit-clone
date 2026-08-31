@@ -28,7 +28,6 @@ const CollectionContent = () => {
         load();
         return () => { cancelled = true; };
     }, [slug]);
-
     if (loading) {
         return <p>Loading......</p>
     }

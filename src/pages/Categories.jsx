@@ -9,7 +9,6 @@ import SliderItem from "../component/sliderItem";
 function Categories() {
 	const navigate = useNavigate();
 	const { slug } = useParams();
-
 	const [data, setData] = useState({ title: "", products: [] });
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);

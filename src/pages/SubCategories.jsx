@@ -1,11 +1,10 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Breadcrumb from "../component/Breadcrumb";
 import { useEffect, useState } from "react";
 import ProductCard from "../component/ProductCard";
 import Filter from "../component/Filter";
 import { getProductCategoriesBySlugAPI, getProductCategoriesBySubSlugAPI } from "../api/productCategoriesApi";
-
-
+import { getProductsAPI } from "../api/productapi";
 
 function SubCategories() {
 	const { categorySlug, subCategorySlug } = useParams();
@@ -14,7 +13,6 @@ function SubCategories() {
 	const [subCategory, setSubCategory] = useState("");
 	const [availability, setAvailability] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
-	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (categorySlug) {
@@ -35,10 +33,19 @@ function SubCategories() {
 			try {
 				setLoading(true);
 				setError(null);
-				const categoryData = await getProductCategoriesBySlugAPI(categorySlug);
-				const subCategorydata = await getProductCategoriesBySubSlugAPI(categorySlug, subCategorySlug);
+				const params = {
+					page: currentPage,
+					limit: 2,
+					category: category,
+					subCategory: subCategory,
+					sort: sortBy,
+				};
+				const productListData = await getProductsAPI(params);
+				const categoryData = await getProductCategoriesBySlugAPI(category);
+				const subCategorydata = await getProductCategoriesBySubSlugAPI(category, subCategory);
 				if (!cancelled) {
 					setData({
+						productListData: productListData || null,
 						categoryData: categoryData.categories || [],
 						subCategoryData: subCategorydata.categories || []
 					});
@@ -51,7 +58,7 @@ function SubCategories() {
 		}
 		load();
 		return () => { cancelled = true; };
-	}, [categorySlug, subCategorySlug]);
+	}, [category, subCategory, currentPage, sortBy]);
 
 	if (loading) {
 		return <p>Loading......</p>
@@ -81,11 +88,11 @@ function SubCategories() {
 	};
 
 	const handleNextPage = () => {
-		navigate("/sale")
+		setCurrentPage(prev => prev + 1);
 	}
 
 	const handlePrevPage = () => {
-		navigate("/sale")
+		setCurrentPage(prev => prev - 1);
 	}
 
 	return (
@@ -113,16 +120,16 @@ function SubCategories() {
 						subCategory={subCategory}
 						availability={availability}
 					/>
-					<div className="flex  flex-wrapw-[80%]">
-						<div className="w-full grid grid-cols-3">
-							{(data?.products || []).map(item => (
+					<div className="flex flex-col items-center w-[80%] gap-4 pb-4">
+						<div className="w-full grid grid-cols-3 gap-4">
+							{(data?.productListData?.products || []).map(item => (
 								<ProductCard item={item} key={item.id} />
 							))}
 						</div>
 						<div className="flex justify-center items-center px-2 gap-2">
-							<button className="bg-orange-600 text-white px-6 py-2 cursor-pointer" onClick={(e) => { handlePrevPage(e) }}> Prev</button>
-							<h1>Page {currentPage} of {20}</h1>
-							<button className="bg-orange-600 text-white px-6 py-2 cursor-pointer" onClick={(e) => { handleNextPage(e) }}>Next</button>
+							<button className="bg-orange-600 text-white px-6 py-2 cursor-pointer" onClick={handlePrevPage}> Prev</button>
+							<h1>Page {currentPage} of {data?.productListData?.totalPages || 1}</h1>
+							<button className="bg-orange-600 text-white px-6 py-2 cursor-pointer" onClick={handleNextPage}>Next</button>
 						</div>
 					</div>
 				</div>

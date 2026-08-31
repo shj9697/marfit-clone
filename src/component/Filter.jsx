@@ -1,6 +1,6 @@
 import { ListFilter } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { getProductCategoriesAPI, getProductCategoriesBySlugAPI, getProductCategoriesBySubSlugAPI } from '../api/productCategoriesApi';
+import { getProductCategoriesAPI, getProductCategoriesBySlugAPI } from '../api/productCategoriesApi';
 
 const Filter = ({ sortBy, category, subCategory, availability, handleSortBy, handleCategoryBy, handleSubCategoryBy, handleAvailability, handleReset }) => {
 
@@ -19,7 +19,6 @@ const Filter = ({ sortBy, category, subCategory, availability, handleSortBy, han
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-
     useEffect(() => {
         let cancelled = false;
         async function load() {
@@ -28,7 +27,6 @@ const Filter = ({ sortBy, category, subCategory, availability, handleSortBy, han
                 setError(null);
                 const categoryData = await getProductCategoriesAPI();
                 const subCategorydata = await getProductCategoriesBySlugAPI(category);
-                console.log(categoryData);
                 console.log(subCategorydata);
                 if (!cancelled) {
                     setData({
