@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Breadcrumb from "../component/Breadcrumb";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, A11y } from "swiper/modules";
@@ -8,158 +8,17 @@ import "swiper/css/navigation";
 import { MapPin } from "lucide-react";
 import { useCart } from "../context/CartProvider";
 import ProductCard from "../component/ProductCard";
+import { getRelatedProductsAPI } from "../api/productapi";
 
-
-const items = [
-    {
-        id: 1,
-        img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FLB9329001BRNCRO%2F1?alt=media&token=38ab0377-0a98-4056-9f76-a54ae5f21a35",
-        title: "Genuine Leather Women Shoulder HandBag",
-        price: "2999",
-        oldPrice: "6999",
-        off: "57% OFF",
-        parent: "Women",
-        subcategory: "Handbag",
-        productId: "#100"
-    },
-    {
-        id: 2,
-        img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FLB9329040PURPLECRO%2FGenuine%20Leather%20Women%20Shoulder%20Handbag%20-%20LB9329040PURPLECRO?alt=media&token=5ac4da3d-7e1d-47b7-be5d-723ef3a1fb51",
-        title: "Genuine Leather Women Shoulder HandBag",
-        price: "3499",
-        oldPrice: "6499",
-        off: "46% OFF",
-        parent: "Women",
-        subcategory: "Handbag",
-        productId: "#101"
-    },
-    {
-        id: 3,
-        img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FLB9329034GRNCRO%2FGenuine%20Green%20Leather%20Women%20Handbag%20-%20LB9329034GRNCRO?alt=media&token=a4926f1b-ff30-4920-8b37-c2b956427f9e",
-        title: "Genuine Green Leather Women HandBag",
-        price: "3499",
-        oldPrice: "6499",
-        off: "46% OFF",
-        parent: "Women",
-        subcategory: "Handbag",
-        productId: "#102"
-    },
-    {
-        id: 4,
-        img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FLB9329026RED%2FGenuine%20Leather%20Women%20Shoulder%20Handbag%20-%20LB9329026RED?alt=media&token=bcbe5601-8c74-4a83-990f-8f399f4c6f3b",
-        title: "Genuine Leather Women Shoulder HandBag",
-        price: "3499",
-        oldPrice: "5999",
-        off: "42% OFF",
-        parent: "Women",
-        subcategory: "Handbag",
-        productId: "#103"
-    },
-    {
-        id: 5,
-        img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FLB9329002BRNCRO%2FGenuine%20Leather%20Women%20Shoulder%20Handbag%20-%20LB9329002BRNCRO%20?alt=media&token=e9768975-e2a4-4bca-aedb-66acdad60be8",
-        title: "Genuine Leather Women Shoulder HandBag",
-        price: "2999",
-        oldPrice: "9999",
-        off: "70% OFF",
-        parent: "Women",
-        subcategory: "Handbag",
-        productId: "#104"
-    },
-    {
-        id: 6,
-        img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FLB9329030TAN%2FGenuine%20Tan%20Leather%20Women%20Handbag%20?alt=media&token=353bd968-0ae1-44f9-b08d-38465b4140d5",
-        title: "Genuine Tan Leather Women Handbag LB9329030TAN",
-        price: "3499",
-        oldPrice: "7499",
-        off: "55% OFF",
-        parent: "Women",
-        subcategory: "Handbag",
-        productId: "#105"
-    },
-    {
-        id: 7,
-        img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FLB9329035BLU%2FGenuine%20Blue%20Leather%20Women%20Shoulder%20Handbag%20-%20LB9329035BLU?alt=media&token=739ab66e-7ca0-4ec7-8d1e-891baf914168",
-        title: "Genuine Blue Leather Women Shoulder Handbag LB9329035BLU",
-        price: "3499",
-        oldPrice: "6999",
-        off: "50% OFF",
-        parent: "Women",
-        subcategory: "Handbag",
-        productId: "#106"
-    },
-    {
-        id: 8,
-        img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FLB9329032TANCRO%2FGenuine%20Leather%20Women%20Shoulder%20Croc%20Handbag%20-%20LB9329032TANCRO?alt=media&token=2354d4b9-4aa5-41d5-8718-f478b9b9e362",
-        title: "Genuine Leather Women Shoulder Croc Handbag LB9329032TANCRO",
-        price: "3999",
-        oldPrice: "7999",
-        off: "50% OFF",
-        parent: "Women",
-        subcategory: "Handbag",
-        productId: "#107"
-    },
-    {
-        id: 9,
-        img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FLB9329006MRN%2FGenuine%20Maroon%20Leather%20Women%20Shoulder%20Handbag%20-%20LB9329006MRN?alt=media&token=74ad0515-7456-4657-a756-a612307e9ee0",
-        title: "Genuine Leather Women Shoulder Handbag - LB9329006MRN",
-        price: "3499",
-        oldPrice: "8999",
-        off: "61% OFF",
-        parent: "Women",
-        subcategory: "Handbag",
-        productId: "#108"
-    },
-    {
-        id: 10,
-        img: "https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FLB9329033GRNCRO%2FGenuine%20Leather%20Women%20Shoulder%20Croc%20Handbag%20-LB9329033GRNCRO?alt=media&token=be83065a-60c7-499b-9971-7f6b87571ba5",
-        title: "Genuine Leather Women Shoulder Croc Handbag LB9329033GRNCRO",
-        price: "3999",
-        oldPrice: "9999",
-        off: "60% OFF",
-        parent: "Women",
-        subcategory: "Handbag",
-        productId: "#109"
-    },
-];
-
-function ProductDetailsPage({ item }) {
+function ProductDetailsPage() {
     const navigate = useNavigate();
     const { parentId, subId, productId } = useParams();
     const similarSwiperRef = useRef(null);
     const alsoLikeSwiperRef = useRef(null);
-
-    // The route param is whatever the listing pages link with: productId when the
-    // product has one, otherwise its numeric id. The parent/subcategory check keeps
-    // an id collision with another category from resolving to the wrong product,
-    // since `items` here only covers Women / Handbag.
-    const product = useMemo(
-        () =>
-            items.find(
-                item =>
-                    (String(item.productId) === productId || String(item.id) === productId) &&
-                    item.parent === parentId &&
-                    item.subcategory === subId
-            ),
-        [productId, parentId, subId]
-    );
     const { addToCartAPI } = useCart();
-
-
     const [pincode, setPincode] = useState(700000);
     const [message, setMessage] = useState("");
     const [messageType, setMessageType] = useState("");
-
-
-    const shadowStyle = {
-        boxShadow: '1px 2px 3px rgba(0, 0, 0, .3)',
-        border: '2px solid rgba(0, 0, 0, .03)',
-    }
-
-    function handleViewProductDetails(item) {
-        navigate(`/categories/${encodeURIComponent(item.parent)}/${encodeURIComponent(item.subcategory)}/${encodeURIComponent(item.productId ?? item.id)}`)
-    }
-
 
 
     const handleBuyNow = () => {
@@ -176,22 +35,49 @@ function ProductDetailsPage({ item }) {
             setMessage("Not-availble at your pincode");
             setMessageType('error');
         } else {
-            setMessage("Delivery within Feb 05, 2026 - Feb 06, 2026.");
+            setMessage("Delivery within Sep 05, 2026 - Sep 06, 2026.");
             setMessageType('success');
         }
     }
 
+    const [data, setData] = useState([]);
+    const [similar, setSimilar] = useState([])
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        let cancelled = false;
+        async function load() {
+            try {
+                setLoading(true);
+                setError(null);
+                const data = await getRelatedProductsAPI(productId);
+                if (!cancelled)
+                    setSimilar(data.similar);
+                setData(data.youMayAlsoLike);
+            } catch (err) {
+                if (!cancelled) setError(err.message);
+            } finally {
+                if (!cancelled) setLoading(false);
+            }
+        }
+        load();
+        return () => { cancelled = true; };
+    }, [productId]);
+
+    if (loading) {
+        return <p>Loading......</p>
+    }
+    if (error) {
+        return <p>Error : {error}</p>
+    };
 
     return (
         <section>
             <Breadcrumb
                 paths={[
                     { title: parentId, link: `/categories/${encodeURIComponent(parentId)}` },
-                    {
-                        title: subId,
-                        link: `/categories/${encodeURIComponent(parentId)}/${encodeURIComponent(subId)}`,
-                    },
-
+                    { title: subId, link: `/categories/${encodeURIComponent(parentId)}/${encodeURIComponent(subId)}` },
                 ]}
             />
 
@@ -354,9 +240,9 @@ function ProductDetailsPage({ item }) {
                         slidesPerView={6}
                         className="my-4"
                     >
-                        {items.map((item, index) => (
-                            <SwiperSlide key={index} className="w-60! h-84!">
-                                <ProductCard item={item} key={item.id} />
+                        {similar.map((item) => (
+                            <SwiperSlide key={item.id} className="w-60! h-84!">
+                                <ProductCard item={item} />
                             </SwiperSlide>
                         ))}
                     </Swiper>
@@ -401,17 +287,9 @@ function ProductDetailsPage({ item }) {
                         slidesPerView={6}
                         className="my-4"
                     >
-                        {items.map((item, index) => (
-                            <SwiperSlide key={index} className="w-60! h-84!">
-                                <div className="w-full h-full p-2 m-0 cursor-pointer shadow-lg  " style={shadowStyle} onClick={() => handleViewProductDetails(item)}>
-                                    <img src={item.img} alt="" className="w-full h-52 object-cover" />
-                                    <p className="text-sm mt-2">{item.title}</p>
-                                    <p className="text-sm">Rs. {item.price}</p>
-                                    <div className="flex items-center gap-2">
-                                        <p className="text-sm line-through text-gray-500">Rs. {item.oldPrice} </p>
-                                        <span className="text-sm text-orange-600">{item.discount}</span>
-                                    </div>
-                                </div>
+                        {data.map((item) => (
+                            <SwiperSlide key={item.id} className="w-60! h-84!">
+                                <ProductCard item={item} />
                             </SwiperSlide>
                         ))}
                     </Swiper>
@@ -434,7 +312,6 @@ function ProductDetailsPage({ item }) {
                     </button>
                 </div>
             </div>
-            );
         </section >
     );
 }

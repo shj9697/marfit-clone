@@ -26,14 +26,12 @@ function Navbar() {
         Off.
       </div>
 
-      <div className="w-full flex items-center h-[60px] sticky top-0 z-50 bg-white shadow-[0_2px_4px_0_#c9ccd1]">
-        <div className="flex w-1/3 px-18 py-1 cursor-pointer sm:">
+      <div className="w-full flex items-center h-15 sticky top-0 z-50 bg-white shadow-[0_2px_4px_0_#c9ccd1]">
+        <div className="flex w-1/3 px-18 py-1 cursor-pointer ">
           <img src={icon} className="h-9" onClick={handleClick} />
           <img src={logo} className="h-9" onClick={handleClick} />
         </div>
-
         <SearchBar />
-
         <div className="flex w-1/3 px-18 py-1 justify-end items-end gap-4 cursor-pointer">
           <button className="px-8 py-0 rounded-full outline-none border-gray-300 cursor-pointer text-orange-600 font-semibold flex gap-3.5 border-0">
             <User />

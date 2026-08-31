@@ -5,7 +5,7 @@ const ProductCard = ({ item }) => {
     const navigate = useNavigate();
 
     const handleViewProductDetails = (item) => {
-        navigate(`/categories/${encodeURIComponent(item.parent)}/${encodeURIComponent(item.subcategory)}/${encodeURIComponent(item.productId ?? item.id)}`)
+        navigate(`/categories/${item.categoryRef.slug}/${item.subcategoryRef.slug}/${item.id}`)
     }
 
     return (

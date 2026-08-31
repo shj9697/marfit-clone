@@ -3,7 +3,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, A11y } from "swiper/modules";
 import ProductCard from "./ProductCard";
 
-
 const SliderItem = ({ title, handleViewAll, list }) => {
     const swiperRef = useRef(null);
 

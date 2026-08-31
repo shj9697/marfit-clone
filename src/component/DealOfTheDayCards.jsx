@@ -8,7 +8,6 @@ function DealOfTheDayCards({ list = [] }) {
     navigate("/deal-of-the-day")
   }
 
-
   return (
     <SliderItem
       title={"Deal Of The Day"}

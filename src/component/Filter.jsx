@@ -1,60 +1,8 @@
 import { ListFilter } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { getProductCategoriesAPI, getProductCategoriesBySlugAPI, getProductCategoriesBySubSlugAPI } from '../api/productCategoriesApi';
 
 const Filter = ({ sortBy, category, subCategory, availability, handleSortBy, handleCategoryBy, handleSubCategoryBy, handleAvailability, handleReset }) => {
-
-    let categoryOptions = [
-        {
-            label: "All",
-            value: "All"
-        },
-        {
-            label: "Men",
-            value: "Men"
-        },
-        {
-            label: "Luggage & SuitCase",
-            value: "Luggage & SuitCase"
-        },
-        {
-            label: "Accessories",
-            value: "Accessories"
-        },
-        {
-            label: "Women",
-            value: "Women"
-        },
-    ];
-
-    let subCategoriesOptions = [
-        {
-            label: "All",
-            value: "All"
-        },
-        {
-            label: "Messenger Bags",
-            value: "Messenger Bags"
-        },
-        {
-            label: "BriefCase",
-            value: "BriefCase"
-        },
-        {
-            label: "Sling Bags",
-            value: "Sling Bags"
-        },
-        {
-            label: "Wallets",
-            value: "Wallets"
-        },
-        {
-            label: "Wallet Combos",
-            value: "Wallet Combos"
-        },
-        {
-            label: "CardHolder",
-            value: "CardHolder"
-        },
-    ];
 
     let availabilityOptions = [
         {
@@ -66,6 +14,44 @@ const Filter = ({ sortBy, category, subCategory, availability, handleSortBy, han
             value: "Out of Stock"
         }
     ];
+
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+
+    useEffect(() => {
+        let cancelled = false;
+        async function load() {
+            try {
+                setLoading(true);
+                setError(null);
+                const categoryData = await getProductCategoriesAPI();
+                const subCategorydata = await getProductCategoriesBySlugAPI(category);
+                console.log(categoryData);
+                console.log(subCategorydata);
+                if (!cancelled) {
+                    setData({
+                        categoryData: categoryData?.categories || [],
+                        subCategoryData: subCategorydata?.categories?.children || []
+                    });
+                }
+            } catch (err) {
+                if (!cancelled) setError(err.message);
+            } finally {
+                if (!cancelled) setLoading(false);
+            }
+        }
+        load();
+        return () => { cancelled = true; };
+    }, [category, subCategory]);
+
+    if (loading) {
+        return <p>Loading......</p>
+    }
+    if (error) {
+        return <p>Error : {error}</p>
+    };
 
     return (
         <div className="flex flex-col w-70">
@@ -114,31 +100,49 @@ const Filter = ({ sortBy, category, subCategory, availability, handleSortBy, han
 
             <div className="border border-gray-200 rounded-md p-4">
                 <h1>CATEGORIES</h1>
-                {categoryOptions.map(item => (
-                    <div key={item.value} className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={category === ""}
+                        onChange={() => handleCategoryBy("")}
+                    />
+                    <span>All</span>
+                </div>
+                {(data?.categoryData || []).map((item, _) => (
+                    <div key={item.id} className="flex items-center gap-2">
                         <input
                             type="checkbox"
-                            checked={category === item.value}
-                            onChange={() => handleCategoryBy(item.value)}
+                            checked={category === item.slug}
+                            onChange={() => handleCategoryBy(item.slug)}
                         />
-                        <span>{item.label}</span>
+                        <span>{item.name}</span>
                     </div>
                 ))}
             </div>
 
-            <div className="border border-gray-200 rounded-md p-4 my-2">
-                <h1>SUB CATEGORIES</h1>
-                {subCategoriesOptions.map(item => (
-                    <div key={item.value} className="flex items-center gap-2">
+            {category && (
+                <div className="border border-gray-200 rounded-md p-4 my-2">
+                    <h1>SUB CATEGORIES</h1>
+                    <div className="flex items-center gap-2">
                         <input
                             type="checkbox"
-                            checked={subCategory === item.value}
-                            onChange={() => handleSubCategoryBy(item.value)}
+                            checked={subCategory === ""}
+                            onChange={() => handleSubCategoryBy("")}
                         />
-                        <span>{item.label}</span>
+                        <span>All</span>
                     </div>
-                ))}
-            </div>
+                    {(data?.subCategoryData || []).map((item, _) => (
+                        <div key={item.id} className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={subCategory === item.slug}
+                                onChange={() => handleSubCategoryBy(item.slug)}
+                            />
+                            <span>{item.name}</span>
+                        </div>
+                    ))}
+                </div>
+            )}
 
             <div className="border border-gray-200 rounded-md p-4 my-2">
                 <h1>AVAILABILITY</h1>
