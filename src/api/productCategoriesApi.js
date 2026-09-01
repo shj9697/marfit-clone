@@ -1,5 +1,7 @@
+const apiUrl = import.meta.env.VITE_API_URL || "";
+
 export async function getProductCategoriesAPI() {
-    const res = await fetch(`http://localhost:4000/api/categories`);
+    const res = await fetch(`${apiUrl}/api/categories`);
     const convertedData = await res.json();
     if (res.ok) {
         return {
@@ -14,7 +16,7 @@ export async function getProductCategoriesAPI() {
 
 
 export async function getProductCategoriesBySlugAPI(slug) {
-    const res = await fetch(`http://localhost:4000/api/categories/` + slug);
+    const res = await fetch(`${apiUrl}/api/categories/` + slug);
     const convertedData = await res.json();
     if (res.ok) {
         return {
@@ -29,7 +31,7 @@ export async function getProductCategoriesBySlugAPI(slug) {
 
 
 export async function getProductCategoriesBySubSlugAPI(categorySlug, subCategorySlug) {
-    const res = await fetch(`http://localhost:4000/api/categories/${categorySlug}/${subCategorySlug}`);
+    const res = await fetch(`${apiUrl}/api/categories/${categorySlug}/${subCategorySlug}`);
     const convertedData = await res.json();
     if (res.ok) {
         return {
@@ -47,7 +49,7 @@ export async function getProductsBySubCategoryAPI(categorySlug, subCategorySlug,
     const query = new URLSearchParams(
         Object.entries(params).filter(([, value]) => value !== undefined && value !== null && value !== "")
     );
-    const res = await fetch(`http://localhost:4000/api/categories/${encodeURIComponent(categorySlug)}/${encodeURIComponent(subCategorySlug)}/products?${query}`);
+    const res = await fetch(`${apiUrl}/api/categories/${encodeURIComponent(categorySlug)}/${encodeURIComponent(subCategorySlug)}/products?${query}`);
     const convertedData = await res.json();
     if (res.ok) {
         return {

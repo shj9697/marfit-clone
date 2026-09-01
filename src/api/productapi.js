@@ -1,3 +1,5 @@
+const apiUrl = import.meta.env.VITE_API_URL || "";
+
 export async function getProductsAPI({ page, limit, category, subCategory, search, sort, minPrice, maxPrice, embossable, inStock }) {
     const params = new URLSearchParams();
     params.append("page", page);
@@ -11,7 +13,7 @@ export async function getProductsAPI({ page, limit, category, subCategory, searc
     embossable && params.append("embossable", embossable);
     inStock && params.append("inStock", inStock);
 
-    const res = await fetch(`http://localhost:4000/api/products?${params}`);
+    const res = await fetch(`${apiUrl}/api/products?${params}`);
     const convertedData = await res.json();
     if (res.ok) {
         return {
@@ -29,7 +31,7 @@ export async function getProductsAPI({ page, limit, category, subCategory, searc
 };
 
 export async function getRelatedProductsAPI(identifier, limit = 10) {
-    const res = await fetch(`http://localhost:4000/api/products/${identifier}/related?limit=${limit}`);
+    const res = await fetch(`${apiUrl}/api/products/${identifier}/related?limit=${limit}`);
     const convertedData = await res.json();
     if (res.ok) {
         return {

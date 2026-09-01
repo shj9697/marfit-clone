@@ -1,5 +1,7 @@
+const apiUrl = import.meta.env.VITE_API_URL || "";
+
 export async function getCartAPI() {
-    const res = await fetch(`http://localhost:4000/api/cart`);
+    const res = await fetch(`${apiUrl}/api/cart`);
     const convertedData = await res.json();
     if (res.ok) {
         return {
@@ -17,7 +19,7 @@ export async function getCartAPI() {
 };
 
 export async function addToCartAPI(productId, quantity = 1) {
-    const res = await fetch(`http://localhost:4000/api/cart/items`, {
+    const res = await fetch(`${apiUrl}/api/cart/items`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ productId, quantity }),
@@ -37,7 +39,7 @@ export async function addToCartAPI(productId, quantity = 1) {
 };
 
 export async function removeFromCartAPI(productId) {
-    const res = await fetch("http://localhost:4000/api/cart/items/remove", {
+    const res = await fetch(`${apiUrl}/api/cart/items/remove`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ productId }),

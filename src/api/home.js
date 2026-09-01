@@ -1,5 +1,7 @@
+const apiUrl = import.meta.env.VITE_API_URL || "";
+
 export async function getHomePageContentAPI() {
-    const res = await fetch(`http://localhost:4000/api/home`);
+    const res = await fetch(`${apiUrl}/api/home`);
     const convertedData = await res.json();
     if (res.ok) {
         return {
