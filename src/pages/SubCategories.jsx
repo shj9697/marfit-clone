@@ -11,8 +11,9 @@ function SubCategories() {
 	const [sortBy, setSortBy] = useState("relevance");
 	const [category, setCategory] = useState("");
 	const [subCategory, setSubCategory] = useState("");
-	const [availability, setAvailability] = useState([]);
 	const [currentPage, setCurrentPage] = useState(1);
+	const [stock, setStock] = useState(true);
+	const [embossable, setEmbossable] = useState(false);
 
 	useEffect(() => {
 		if (categorySlug) {
@@ -35,13 +36,16 @@ function SubCategories() {
 				setError(null);
 				const params = {
 					page: currentPage,
-					limit: 2,
+					limit: 5,
 					category: category,
 					subCategory: subCategory,
 					sort: sortBy,
+					embossable: embossable,
+					inStock: stock
 				};
 				const productListData = await getProductsAPI(params);
 				const categoryData = await getProductCategoriesBySlugAPI(category);
+				console.log(categoryData)
 				const subCategorydata = await getProductCategoriesBySubSlugAPI(category, subCategory);
 				if (!cancelled) {
 					setData({
@@ -58,7 +62,7 @@ function SubCategories() {
 		}
 		load();
 		return () => { cancelled = true; };
-	}, [category, subCategory, currentPage, sortBy]);
+	}, [category, subCategory, currentPage, sortBy, embossable, stock]);
 
 	if (loading) {
 		return <p>Loading......</p>
@@ -70,21 +74,13 @@ function SubCategories() {
 	const handleSortBy = (value) => setSortBy(value);
 	const handleCategoryBy = (value) => setCategory(value);
 	const handleSubCategoryBy = (value) => setSubCategory(value);
-
-	const handleAvailability = (value, event) => {
-		const isChecked = event.target.checked;
-		if (isChecked) {
-			setAvailability(prev => ([...prev, value]));
-		} else {
-			setAvailability(prev => prev.filter(item => item !== value));
-		}
-	};
+	const handleIsEmbossableBy = (value) => setEmbossable(value);
+	const handleStock = (value) => setStock(value);
 
 	const handleReset = () => {
 		setSortBy("relevance");
 		setCategory("category");
 		setSubCategory("subCategory");
-		setAvailability("availability");
 	};
 
 	const handleNextPage = () => {
@@ -113,12 +109,14 @@ function SubCategories() {
 						handleSortBy={handleSortBy}
 						handleCategoryBy={handleCategoryBy}
 						handleSubCategoryBy={handleSubCategoryBy}
-						handleAvailability={handleAvailability}
 						handleReset={handleReset}
 						sortBy={sortBy}
 						category={category}
 						subCategory={subCategory}
-						availability={availability}
+						embossable={embossable}
+						handleIsEmbossableBy={handleIsEmbossableBy}
+						stock={stock}
+						handleStock={handleStock}
 					/>
 					<div className="flex flex-col items-center w-[80%] gap-4 pb-4">
 						<div className="w-full grid grid-cols-3 gap-4">
@@ -127,9 +125,9 @@ function SubCategories() {
 							))}
 						</div>
 						<div className="flex justify-center items-center px-2 gap-2">
-							<button className="bg-orange-600 text-white px-6 py-2 cursor-pointer" onClick={handlePrevPage}> Prev</button>
+							<button disabled={currentPage <= 1} className="bg-orange-600 text-white px-6 py-2 cursor-pointer disabled:bg-white" onClick={handlePrevPage}> Prev</button>
 							<h1>Page {currentPage} of {data?.productListData?.totalPages || 1}</h1>
-							<button className="bg-orange-600 text-white px-6 py-2 cursor-pointer" onClick={handleNextPage}>Next</button>
+							<button disabled={currentPage >= data?.productListData?.totalPages} className="bg-orange-600 text-white px-6 py-2 cursor-pointer disabled:bg-white" onClick={handleNextPage}>Next</button>
 						</div>
 					</div>
 				</div>

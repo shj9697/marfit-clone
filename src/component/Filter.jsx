@@ -2,18 +2,7 @@ import { ListFilter } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getProductCategoriesAPI, getProductCategoriesBySlugAPI } from '../api/productCategoriesApi';
 
-const Filter = ({ sortBy, category, subCategory, availability, handleSortBy, handleCategoryBy, handleSubCategoryBy, handleAvailability, handleReset }) => {
-
-    let availabilityOptions = [
-        {
-            label: "Embose",
-            value: "Embose",
-        },
-        {
-            label: "Out Of Stock",
-            value: "Out of Stock"
-        }
-    ];
+const Filter = ({ sortBy, category, subCategory, handleSortBy, handleCategoryBy, handleSubCategoryBy, handleReset, handleIsEmbossableBy, handleStock, embossable, stock }) => {
 
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -27,7 +16,6 @@ const Filter = ({ sortBy, category, subCategory, availability, handleSortBy, han
                 setError(null);
                 const categoryData = await getProductCategoriesAPI();
                 const subCategorydata = await getProductCategoriesBySlugAPI(category);
-                console.log(subCategorydata);
                 if (!cancelled) {
                     setData({
                         categoryData: categoryData?.categories || [],
@@ -144,16 +132,22 @@ const Filter = ({ sortBy, category, subCategory, availability, handleSortBy, han
 
             <div className="border border-gray-200 rounded-md p-4 my-2">
                 <h1>AVAILABILITY</h1>
-                {availabilityOptions.map(item => (
-                    <div key={item.value} className="flex items-center gap-2">
-                        <input
-                            type="checkbox"
-                            checked={availability.includes(item.value)}
-                            onChange={(event) => handleAvailability(item.value, event)}
-                        />
-                        <span>{item.label}</span>
-                    </div>
-                ))}
+                <div className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={embossable}
+                        onChange={(event) => handleIsEmbossableBy(event.target.checked)}
+                    />
+                    <span>Embose</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        checked={stock}
+                        onChange={(event) => handleStock(event.target.checked)}
+                    />
+                    <span>In Stock</span>
+                </div>
             </div>
         </div>
     )
