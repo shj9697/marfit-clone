@@ -49,7 +49,7 @@ export async function getProductsBySubCategoryAPI(categorySlug, subCategorySlug,
     const query = new URLSearchParams(
         Object.entries(params).filter(([, value]) => value !== undefined && value !== null && value !== "")
     );
-    const res = await fetch(`${apiUrl}/api/categories/${encodeURIComponent(categorySlug)}/${encodeURIComponent(subCategorySlug)}/products?${query}`);
+    const res = await fetch(`${apiUrl}/api/categories/${categorySlug}/${subCategorySlug}/products?${query}`);
     const convertedData = await res.json();
     if (res.ok) {
         return {

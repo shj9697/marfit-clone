@@ -20,7 +20,6 @@ function ProductDetailsPage() {
     const [message, setMessage] = useState("");
     const [messageType, setMessageType] = useState("");
 
-
     const handleBuyNow = () => {
         navigate(`/AddToCart`);
     };
@@ -76,8 +75,8 @@ function ProductDetailsPage() {
         <section>
             <Breadcrumb
                 paths={[
-                    { title: parentId, link: `/categories/${encodeURIComponent(parentId)}` },
-                    { title: subId, link: `/categories/${encodeURIComponent(parentId)}/${encodeURIComponent(subId)}` },
+                    { title: parentId, link: `/categories/${parentId}` },
+                    { title: subId, link: `/categories/${parentId}/${subId}` },
                 ]}
             />
 
@@ -108,7 +107,7 @@ function ProductDetailsPage() {
                     </div>
                     <div className="flex ">
                         <button className="px-9 py-2 bg-transparent mr-5 cursor-pointer border-2 border-orange-600 whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => addToCartAPI(productId)}>ADD TO CART</button>
-                        <button className="px-9 py-2 bg-orange-600 text-white cursor-pointer whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleBuyNow()}>BUY NOW</button>
+                        <button className="px-9 py-2 bg-orange-600 text-white cursor-pointer whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleBuyNow(productId)}>BUY NOW</button>
                     </div>
                 </div>
 

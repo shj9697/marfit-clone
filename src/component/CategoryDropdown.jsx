@@ -5,14 +5,12 @@ import { getProductCategoriesAPI } from "../api/productCategoriesApi";
 
 function CategoryDropdown() {
 	const navigate = useNavigate();
-
 	const [categories, setCategories] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		let cancelled = false;
-
 		async function load() {
 			try {
 				setLoading(true);
