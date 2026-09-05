@@ -8,7 +8,7 @@ import "swiper/css/navigation";
 import { MapPin } from "lucide-react";
 import { useCart } from "../context/CartProvider";
 import ProductCard from "../component/ProductCard";
-import { getRelatedProductsAPI } from "../api/productapi";
+import { getProductDetailsAPI, getRelatedProductsAPI } from "../api/productapi";
 
 function ProductDetailsPage() {
     const navigate = useNavigate();
@@ -19,14 +19,47 @@ function ProductDetailsPage() {
     const [pincode, setPincode] = useState(700000);
     const [message, setMessage] = useState("");
     const [messageType, setMessageType] = useState("");
+    const [data, setData] = useState([]);
+    const [similar, setSimilar] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [productDetails, setProductDetails] = useState(null);
+    const [activeImage, setActiveImage] = useState(0);
+
+    useEffect(() => {
+        let cancelled = false;
+        async function load() {
+            try {
+                setLoading(true);
+                setError(null);
+                const data = await getRelatedProductsAPI(productId);
+                const productDetails = await getProductDetailsAPI(productId);
+                console.log(productDetails)
+                if (!cancelled) {
+                    setSimilar(data.similar);
+                    setData(data.youMayAlsoLike);
+                    setProductDetails(productDetails.data);
+                }
+            } catch (err) {
+                if (!cancelled) setError(err.message);
+            } finally {
+                if (!cancelled) setLoading(false);
+            }
+        }
+        load();
+        return () => { cancelled = true; };
+    }, [productId]);
 
     const handleBuyNow = () => {
         navigate(`/AddToCart`);
     };
 
     const corporateContact = () => {
-
         navigate(`/bulkContact?SKU`);
+    }
+
+    const handleImages = (index) => {
+        setActiveImage(index);
     }
 
     const pincodeVerify = () => {
@@ -38,31 +71,6 @@ function ProductDetailsPage() {
             setMessageType('success');
         }
     }
-
-    const [data, setData] = useState([]);
-    const [similar, setSimilar] = useState([])
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        let cancelled = false;
-        async function load() {
-            try {
-                setLoading(true);
-                setError(null);
-                const data = await getRelatedProductsAPI(productId);
-                if (!cancelled)
-                    setSimilar(data.similar);
-                setData(data.youMayAlsoLike);
-            } catch (err) {
-                if (!cancelled) setError(err.message);
-            } finally {
-                if (!cancelled) setLoading(false);
-            }
-        }
-        load();
-        return () => { cancelled = true; };
-    }, [productId]);
 
     if (loading) {
         return <p>Loading......</p>
@@ -79,30 +87,20 @@ function ProductDetailsPage() {
                     { title: subId, link: `/categories/${parentId}/${subId}` },
                 ]}
             />
-
             <div className="flex w-full h-160 bg-white px-35">
                 <div className="flex flex-col w-[30%] pt-3  ">
-                    <div className="flex">
-
-                        <div className=" w-20%  h-[570px] ">
-                            <div className="my-2">
-                                <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLK%2F1?alt=media&token=31d02f51-a5ca-4bb9-a96d-2d92d65291a7" alt="" className="w-14 h-14 cursor-pointer" />
-                            </div>
-                            <div className="my-2">
-                                <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLK%2F2?alt=media&token=633c78ba-a2cc-497f-8846-7b31b5fd9d1b" alt="" className="w-14 h-14 cursor-pointer" />
-                            </div>
-                            <div className="my-2">
-                                <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLK%2F3?alt=media&token=25e37ffb-17f4-4eb7-8531-d694a856f5e3" alt="" className="w-14 h-14 cursor-pointer" />
-                            </div>
-                            <div className="my-2">
-                                <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLK%2F4?alt=media&token=031f7ee7-b607-42ff-8f66-596440287e5d" alt="" className="w-14 h-14 cursor-pointer" />
-                            </div>
-                            <div className="my-2">
-                                <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLK%2F5?alt=media&token=6413431f-356c-4140-9010-5dbb461868d1" alt="" className="w-14 h-14 cursor-pointer" />
-                            </div>
+                    <div className="flex h-[450px]">
+                        <div className="flex flex-col w-[20%] h-full gap-2">
+                            {(productDetails?.images || []).map((img, index) => {
+                                return (
+                                    <div key={img.id} className={`w-16 h-16 p-2 rounded-lg border-2 ${activeImage === index ? "border-orange-500" : "border-transparent"}`}>
+                                        <img src={img.url} alt={img.alt} className="w-full h-full cursor-pointer object-contain" onClick={() => handleImages(index)} />
+                                    </div>
+                                )
+                            })}
                         </div>
-                        <div className="mx-25 my-20 w-80% h-70  ">
-                            <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLK%2F1?alt=media&token=31d02f51-a5ca-4bb9-a96d-2d92d65291a7" alt="" className="w-60 h-60 cursor-pointer object-cover " />
+                        <div className="w-[80%] h-full">
+                            <img src={(productDetails?.images || [])?.[activeImage]?.url || ""} alt={(productDetails?.images || [])?.[activeImage]?.alt || "product-image"} className="w-full h-full cursor-pointer object-contain" />
                         </div>
                     </div>
                     <div className="flex ">
@@ -110,13 +108,14 @@ function ProductDetailsPage() {
                         <button className="px-9 py-2 bg-orange-600 text-white cursor-pointer whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleBuyNow(productId)}>BUY NOW</button>
                     </div>
                 </div>
-
                 <div className="w-[70%] px-3 py-10 mx-15 overflow-y-scroll no-scrollbar">
-                    <h1 className="text-4xl leading-10">Genuine Leather Laptop Messenger Bag For<br></br> Men - MB2155063GRN</h1>
-                    <div className="flex items-center gap-2 my-2">
-                        <p className="text-4xl">₹4999 </p>
-                        <p className="line-through text-gray-600 text-2xl">₹14999</p>
-                        <p className="text-orange-600 font-medium text-md">67% off</p>
+                    <div>
+                        <h1 className="text-4xl leading-10">{productDetails.title}</h1>
+                        <div className="flex items-center gap-2 my-2">
+                            <p className="text-4xl">₹{productDetails.price} </p>
+                            <p className="line-through text-gray-600 text-2xl">₹{productDetails.oldPrice}</p>
+                            <p className="text-orange-600 font-medium text-md">{productDetails.discount}</p>
+                        </div>
                     </div>
                     <div className="flex  w-[50%]">
                         <div className="flex flex-col  w-[20%]" >
@@ -136,8 +135,6 @@ function ProductDetailsPage() {
                                 </select>
                             </div>
                         </div>
-
-
                         <div className="flex flex-col ml-4">
                             <h1 className="text-lg font-semibold">Color</h1>
                             <div className="flex">
@@ -166,21 +163,17 @@ function ProductDetailsPage() {
                             <MapPin className="text-orange-500" />
                             <input onChange={e => setPincode(e.target.value)} type="text" value={pincode} className="w-[100px] outline-none" />
                             <button className="text-orange-500 font-medium cursor-pointer" onClick={pincodeVerify}>Check</button>
-
                         </div>
                     </div>
                     <p className={`${messageType === 'error' ? 'text-orange-500' : 'text-green-500'} font-medium ml-21`}>{message}</p>
-
-
                     <div className="py-4 h-20 ">
-                        <div className="w-full h-[2px] bg-gray-500 mb-4"></div>
+                        <div className="w-full h-0.5 bg-gray-500 mb-4"></div>
                         <p className="text-2xl ml-5">Product Details</p>
-                        <div className="w-full h-[2px] bg-gray-500 mt-4"></div>
+                        <div className="w-full h-0.5 bg-gray-500 mt-4"></div>
                     </div>
-
                     <p className="mt-2">BUY 100% Original Leather Products From MARFIT. Leather will long last and will never peel off like an artificial Leather. Customer satisfaction guaranteed. PRODUCT DETAIL : Removable, adjustable nylon long shoulder strap | Metal Hardware : durable enough for daily use Zip-top closure pure genuine leather CFC zipper | Handle type : Fixed solid full grain leather double handle , carried in 3 ways Handbags , Shoulder bag & Satchels . TO PROCESS AND CLAIM WARRANTY : Customer needs to send the product to the MARFIT, Kolkata. The Product will be rectified and send back to the Customer. This warranty shall be void if the product is damaged due to misuse, abuse, physical mishandling or natural causes such as flood, fire, earthquake or other perils.</p>
-                    <div className="flex  w-150 mx-2 ">
-                        <div className="w-[35%]  p-5 leading-12 text-gray-600 font-semibold">
+                    <div className="flex w-150 mx-2 ">
+                        <div className="w-[30%]  p-5 leading-12 text-gray-600 font-semibold">
                             <h1>Height</h1>
                             <h1>Width</h1>
                             <h1>Thickness</h1>
@@ -191,7 +184,6 @@ function ProductDetailsPage() {
                             <h1>Weight</h1>
                             <h1>Compartments</h1>
                             <h1>Covered in Warranty</h1>
-
                             <h1>Domestic Warranty</h1>
                         </div>
                         <div className="w-[70%]  p-5 leading-12">
@@ -209,14 +201,12 @@ function ProductDetailsPage() {
                         </div>
                     </div>
                     <div className="py-4 h-20 ">
-                        <div className="w-full h-[2px] bg-gray-500 mb-4"></div>
+                        <div className="w-full h-0.5 bg-gray-500 mb-4"></div>
                         <p className="text-2xl font-semibold ml-5">Ratings & Review</p>
                         <p className="text-center my-10 ">No ratings or reviews</p>
                     </div>
-
                 </div>
             </div>
-
             <div className="mx-26 my-4 p-3 rounded-md bg-white ">
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col">
@@ -228,9 +218,7 @@ function ProductDetailsPage() {
                             <span className="w-15 h-px bg-black"></span>
                         </div>
                     </div>
-
                 </div>
-
                 <div className="relative">
                     <Swiper
                         modules={[Navigation, A11y]}
@@ -245,7 +233,6 @@ function ProductDetailsPage() {
                             </SwiperSlide>
                         ))}
                     </Swiper>
-
                     <button
                         onClick={() => similarSwiperRef.current?.slidePrev()}
                         className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white-600 text-black w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-colors"
@@ -264,7 +251,6 @@ function ProductDetailsPage() {
                     </button>
                 </div>
             </div>
-
             <div className="mx-26 my-4 p-3 rounded-md bg-white ">
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col">
@@ -276,7 +262,6 @@ function ProductDetailsPage() {
                             <span className="w-15 h-px bg-black"></span>
                         </div>
                     </div>
-
                 </div>
                 <div className="relative">
                     <Swiper
@@ -292,7 +277,6 @@ function ProductDetailsPage() {
                             </SwiperSlide>
                         ))}
                     </Swiper>
-
                     <button
                         onClick={() => alsoLikeSwiperRef.current?.slidePrev()}
                         className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white-600 text-black w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-colors"

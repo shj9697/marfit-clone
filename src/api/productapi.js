@@ -46,5 +46,16 @@ export async function getRelatedProductsAPI(identifier, limit = 10) {
     };
 };
 
-
+export async function getProductDetailsAPI(id) {
+    const res = await fetch(`${apiUrl}/api/products/${id}`);
+    const convertedData = await res.json();
+    if (res.ok) {
+        return {
+            data: convertedData.data
+        }
+    }
+    return {
+        data: []
+    }
+}
 
