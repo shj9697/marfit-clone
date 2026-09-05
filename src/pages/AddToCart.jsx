@@ -1,14 +1,14 @@
-import { Home } from "lucide-react";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartProvider";
+import CartPage from "./cartPage";
 
 
 const AddToCart = () => {
-    const [cart, setCart] = useState([]);
+    const { cart } = useCart();
     const navigate = useNavigate();
 
     const Homepage = () => {
-        window.location.href = "/"
+        navigate('/')
     }
 
     return (
@@ -20,8 +20,17 @@ const AddToCart = () => {
                     <button className="bg-[#FB6B25] text-white p-4 rounded-md cursor-pointer" onClick={() => Homepage()}>Continue to shopping</button>
                 </div>
                 :
-                null
+                <div>
+                    {cart.items.map(() => {
+                        return (
+                            <div>
+                                <CartPage item={items} key={items.id} />
+                            </div>
+                        )
+                    })}
+                </div>
             }
+            {cart.totalAmount > 0 ? <div>Total Amount : {cart.totalAmount}</div> : null}
         </div>
     )
 };

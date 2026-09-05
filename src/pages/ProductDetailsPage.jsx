@@ -25,6 +25,7 @@ function ProductDetailsPage() {
     const [error, setError] = useState(null);
     const [productDetails, setProductDetails] = useState(null);
     const [activeImage, setActiveImage] = useState(0);
+    const { cart, addToCart } = useCart();
 
     useEffect(() => {
         let cancelled = false;

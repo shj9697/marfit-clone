@@ -13,7 +13,6 @@ export function CartProvider({ children }) {
 
   useEffect(() => {
     let cancelled = false;
-
     async function load() {
       try {
         setLoading(true);
@@ -30,9 +29,9 @@ export function CartProvider({ children }) {
     return () => { cancelled = true; };
   }, []);
 
-  const addToCart = async (productId, quantity = 1) => {
+  const addToCart = async (productId) => {
     setLoading(true);
-    const response = await addToCartAPI(productId, quantity);
+    const response = await addToCartAPI(productId);
     if (response.status) {
       setCart(response.data);
       setLoading(false);
