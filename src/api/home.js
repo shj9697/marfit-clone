@@ -5,11 +5,26 @@ export async function getHomePageContentAPI() {
     const convertedData = await res.json();
     if (res.ok) {
         return {
-            data: convertedData.data,
+            data: convertedData?.data,
         };
     }
     return {
         data: null,
-        message: convertedData.error.message
+        message: convertedData?.error?.message
     };
 };
+
+
+export async function getPincodeAPI(code) {
+    const res = await fetch(`${apiUrl}/api/pincodes/${code}`);
+    const convertedData = await res.json();
+    if (res.ok) {
+        return {
+            data: convertedData?.data
+        }
+    }
+    return {
+        data: null,
+        message: convertedData?.error?.message
+    };
+}

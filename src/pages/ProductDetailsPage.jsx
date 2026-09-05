@@ -9,13 +9,14 @@ import { MapPin } from "lucide-react";
 import { useCart } from "../context/CartProvider";
 import ProductCard from "../component/ProductCard";
 import { getProductDetailsAPI, getRelatedProductsAPI } from "../api/productapi";
+import { getPincodeAPI } from "../api/home";
+
 
 function ProductDetailsPage() {
     const navigate = useNavigate();
     const { parentId, subId, productId } = useParams();
     const similarSwiperRef = useRef(null);
     const alsoLikeSwiperRef = useRef(null);
-    const { addToCartAPI } = useCart();
     const [pincode, setPincode] = useState(700000);
     const [message, setMessage] = useState("");
     const [messageType, setMessageType] = useState("");
@@ -25,7 +26,7 @@ function ProductDetailsPage() {
     const [error, setError] = useState(null);
     const [productDetails, setProductDetails] = useState(null);
     const [activeImage, setActiveImage] = useState(0);
-    const { cart, addToCart } = useCart();
+    const { addToCart } = useCart();
 
     useEffect(() => {
         let cancelled = false;
@@ -35,7 +36,6 @@ function ProductDetailsPage() {
                 setError(null);
                 const data = await getRelatedProductsAPI(productId);
                 const productDetails = await getProductDetailsAPI(productId);
-                console.log(productDetails)
                 if (!cancelled) {
                     setSimilar(data.similar);
                     setData(data.youMayAlsoLike);
@@ -51,6 +51,18 @@ function ProductDetailsPage() {
         return () => { cancelled = true; };
     }, [productId]);
 
+
+    const pincodeVerify = async () => {
+        const { data } = await getPincodeAPI(pincode);
+        if (data?.serviceable) {
+            setMessage(data?.message || "Available at your Pincode");
+            setMessageType('success');
+        } else {
+            setMessage(data?.message || "Not-availble at your pincode");
+            setMessageType('error');
+        }
+    }
+
     const handleBuyNow = () => {
         navigate(`/AddToCart`);
     };
@@ -61,17 +73,7 @@ function ProductDetailsPage() {
 
     const handleImages = (index) => {
         setActiveImage(index);
-    }
-
-    const pincodeVerify = () => {
-        if (pincode < 700000 || pincode > 700150) {
-            setMessage("Not-availble at your pincode");
-            setMessageType('error');
-        } else {
-            setMessage("Delivery within Sep 05, 2026 - Sep 06, 2026.");
-            setMessageType('success');
-        }
-    }
+    };
 
     if (loading) {
         return <p>Loading......</p>
@@ -105,7 +107,7 @@ function ProductDetailsPage() {
                         </div>
                     </div>
                     <div className="flex ">
-                        <button className="px-9 py-2 bg-transparent mr-5 cursor-pointer border-2 border-orange-600 whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => addToCartAPI(productId)}>ADD TO CART</button>
+                        <button className="px-9 py-2 bg-transparent mr-5 cursor-pointer border-2 border-orange-600 whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => addToCart(productId)}>ADD TO CART</button>
                         <button className="px-9 py-2 bg-orange-600 text-white cursor-pointer whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleBuyNow(productId)}>BUY NOW</button>
                     </div>
                 </div>
