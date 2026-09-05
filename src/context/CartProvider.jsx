@@ -18,7 +18,6 @@ export function CartProvider({ children }) {
         setLoading(true);
         setError(null);
         const data = await getCartAPI();
-        console.log(data)
         if (!cancelled) setCart(data);
       } catch (err) {
         if (!cancelled) setError(err.message);

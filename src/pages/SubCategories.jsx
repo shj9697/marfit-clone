@@ -44,7 +44,6 @@ function SubCategories() {
 					inStock: stock
 				};
 				const productListData = await getProductsAPI(params);
-				console.log(productListData)
 				const categoryData = await getProductCategoriesBySlugAPI(category);
 				const subCategorydata = await getProductCategoriesBySubSlugAPI(category, subCategory);
 				if (!cancelled) {

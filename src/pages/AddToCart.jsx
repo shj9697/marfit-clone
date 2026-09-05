@@ -30,7 +30,6 @@ const AddToCart = () => {
                     })}
                 </div>
             }
-            {cart.totalAmount > 0 ? <div>Total Amount : {cart.totalAmount}</div> : null}
         </div>
     )
 };

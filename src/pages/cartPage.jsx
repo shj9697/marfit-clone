@@ -1,9 +1,7 @@
 import CartItem from '../component/cartItem';
-import { useCart } from '../context/CartProvider'
 
 const CartPage = ({ item }) => {
 
-    const { addToCart, removeFromCart } = useCart();
 
     return (
         <div className='flex flex-row'>
