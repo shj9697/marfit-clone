@@ -8,7 +8,7 @@ export default function HeroSection({ banner = [] }) {
 	const swiperRef1 = useRef(null);
 
 	return (
-		<div className="relative">
+		<div className="relative bg-white">
 			{banner.length ?
 				banner.length === 1
 					?

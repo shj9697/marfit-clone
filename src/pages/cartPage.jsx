@@ -1,21 +1,19 @@
+import CartDetails from '../component/cartDetails';
 import CartItem from '../component/cartItem';
 
-const CartPage = ({ item }) => {
-
+const CartPage = ({ items, summary }) => {
 
     return (
-        <div className='flex flex-row'>
-            <div className='my-10 mx-13 w-full'>
-                <div>
-                    <h1 className='text-2xl'>Your Cart</h1>
-                    <div className="flex items-center gap-2 my-1">
-                        <span className="w-15 h-1 bg-orange-500"></span>
-                    </div>
-                </div>
-                <CartItem item={item} />
+        <div className='flex items-start w-full my-10'>
+            <div className='w-[69%] flex flex-col gap-4'>
+                {items.map((item) => (
+                    <CartItem key={item.productId} item={item} />
+                ))}
+            </div>
+            <div className='ml-5'>
+                <CartDetails totalAmount={summary.totalAmount} />
             </div>
         </div>
     )
 }
-
 export default CartPage

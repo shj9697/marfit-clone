@@ -63,8 +63,10 @@ function ProductDetailsPage() {
         }
     }
 
-    const handleBuyNow = () => {
-        navigate(`/AddToCart`);
+    const handleBuyNow = async (productId) => {
+        await addToCart(productId);
+        navigate(`/AddToCart`,
+            { state: { buyNowId: productId } });
     };
 
     const corporateContact = () => {

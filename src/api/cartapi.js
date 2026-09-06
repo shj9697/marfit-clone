@@ -11,14 +11,14 @@ export async function getCartAPI() {
         };
     }
     return {
-        item: [],
+        items: [],
         totalAmount: 0,
         totalItems: 0,
         message: convertedData.error.message
     };
 };
 
-export async function addToCartAPI(productId, quantity = 1) {
+export async function addToCartAPI(productId, quantity) {
     const res = await fetch(`${apiUrl}/api/cart/items`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -38,11 +38,11 @@ export async function addToCartAPI(productId, quantity = 1) {
     return { status: false, message: convertedData.error.message };
 };
 
-export async function removeFromCartAPI(productId) {
-    const res = await fetch(`${apiUrl}/api/cart/items/remove`, {
-        method: 'POST',
+export async function updateCartItemAPI(productId, quantity) {
+    const res = await fetch(`${apiUrl}/api/cart/items`, {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productId }),
+        body: JSON.stringify({ productId, quantity }),
     });
     const convertedData = await res.json();
 
@@ -57,4 +57,26 @@ export async function removeFromCartAPI(productId) {
         };
     };
     return { status: false, message: convertedData.error.message };
+};
+
+export async function productDeleteFromCartAPI(productId) {
+    const res = await fetch(`${apiUrl}/api/cart/items/${productId}`, {
+        method: 'DELETE',
+    });
+    const convertedData = await res.json();
+
+    if (res.ok) {
+        return {
+            status: true,
+            data: {
+                items: convertedData.data.items,
+                totalItems: convertedData.data.summary.itemCount,
+                totalAmount: convertedData.data.summary.subtotal
+            }
+        };
+    };
+    return {
+        status: false,
+        message: convertedData.error.message
+    };
 };

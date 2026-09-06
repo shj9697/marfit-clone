@@ -1,12 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { addToCartAPI, getCartAPI, removeFromCartAPI } from "../api/cartapi";
+import { addToCartAPI, getCartAPI, productDeleteFromCartAPI, updateCartItemAPI } from "../api/cartapi";
 import toast from "react-hot-toast";
 
 const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
-
-
   const [cart, setCart] = useState({ items: [], totalItems: 0, totalAmount: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,6 +16,7 @@ export function CartProvider({ children }) {
         setLoading(true);
         setError(null);
         const data = await getCartAPI();
+        console.log(data)
         if (!cancelled) setCart(data);
       } catch (err) {
         if (!cancelled) setError(err.message);
@@ -45,8 +44,9 @@ export function CartProvider({ children }) {
   };
 
   const removeFromCart = async (productId) => {
+    const chechQuantity = cart.items.find((cartItems) => cartItems.productId === productId);
     setLoading(true);
-    const response = await removeFromCartAPI(productId);
+    const response = await updateCartItemAPI(productId, chechQuantity.quantity - 1);
     if (response.status) {
       setCart(response.data);
       setLoading(false);
@@ -58,7 +58,22 @@ export function CartProvider({ children }) {
     };
   };
 
-  const value = { cart, addToCart, removeFromCart, cartLoading: loading, cartError: error };
+  const productDeleteFromCart = async (productId) => {
+    setLoading(true);
+    const response = await productDeleteFromCartAPI(productId);
+    console.log(response)
+    if (response.status) {
+      setCart(response.data);
+      setLoading(false);
+      toast.success('Item removed from cart');
+    } else {
+      setLoading(false);
+      setError(response.message);
+      toast.error('There was an error');
+    };
+  };
+
+  const value = { cart, addToCart, removeFromCart, productDeleteFromCart, cartLoading: loading, cartError: error };
 
   return (
     <CartContext.Provider value={value}>
