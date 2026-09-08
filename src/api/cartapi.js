@@ -80,3 +80,22 @@ export async function productDeleteFromCartAPI(productId) {
         message: convertedData.error.message
     };
 };
+
+
+// export async function orderDetailsPageAPI() {
+//     const res = await fetch(`${apiUrl}/api/orders`);
+//     const convertedData = await res.json();
+//     if (res.ok) {
+//         return {
+//             status: true,
+//             data: {
+//                 orders: convertedData.data,
+//             }
+//         };
+//     };
+//     return {
+//         status: false,
+//         message: convertedData.error.message
+//     };
+
+// }

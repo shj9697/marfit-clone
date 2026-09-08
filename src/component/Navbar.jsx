@@ -16,7 +16,7 @@ function Navbar() {
   const navigate = useNavigate()
 
   function handleViewCart() {
-    navigate("/AddToCart")
+    navigate("/cart")
   }
   const handleClick = () => {
     navigate("/")

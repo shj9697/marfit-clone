@@ -14,12 +14,13 @@ import BulkContact from "./pages/BulkContact";
 import TrackingOrders from "./pages/TrackingOrders";
 import ContactForm from "./pages/ContactForm";
 import TermsAndCondition from "./pages/TermsAndCondition";
-import AddToCart from "./pages/AddToCart";
 import ShippingPolicy from "./pages/ShippingPolicy";
 import NotFound from "./pages/notFound";
 import "swiper/css";
 import "swiper/css/navigation";
 import CollectionContent from "./pages/CollectionContent";
+import CartPage from "./pages/cartPage";
+import AddressDetails from "./component/AddressDetails";
 
 function App() {
   return (
@@ -39,8 +40,9 @@ function App() {
           <Route path="/TrackOrder" element={<TrackingOrders />} />
           <Route path="/ContactForm" element={<ContactForm />} />
           <Route path="/TermsAndCondition" element={<TermsAndCondition />} />
-          <Route path="/AddToCart" element={<AddToCart />} />
+          <Route path="/cart" element={<CartPage />} />
           <Route path="/ShippingPolicy" element={<ShippingPolicy />} />
+          <Route path="/AddressDetails" element={<AddressDetails />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />

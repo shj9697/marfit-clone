@@ -65,7 +65,7 @@ function ProductDetailsPage() {
 
     const handleBuyNow = async (productId) => {
         await addToCart(productId);
-        navigate(`/AddToCart`,
+        navigate(`/cart`,
             { state: { buyNowId: productId } });
     };
 
