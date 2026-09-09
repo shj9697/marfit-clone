@@ -24,10 +24,8 @@ function Navbar() {
   return (
     <>
       <div className="w-full bg-black m-0 p-3 text-white text-[12px] text-center tracking-wide h-12">
-        Free Shipping on all orders above Rs. 799 . Use Code FRIDAY20 for 20%
-        Off.
+        Use Code SALE26 for extra 10% Off
       </div>
-
       <div className="w-full flex items-center h-15 sticky top-0 z-50 bg-white shadow-[0_2px_4px_0_#c9ccd1]">
         <div className="flex w-1/3 px-18 py-1 cursor-pointer ">
           <img src={icon} className="h-9" onClick={handleClick} />
@@ -52,7 +50,6 @@ function Navbar() {
               )}
               Cart
             </button>
-
           </div>
         </div>
       </div>

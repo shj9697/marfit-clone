@@ -6,7 +6,6 @@ import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { GetState, GetCity } from "react-country-state-city";
 
-
 const AddressDetails = ({ handleChoosePayment }) => {
 
     const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +28,6 @@ const AddressDetails = ({ handleChoosePayment }) => {
 
     const countryId = 101;
 
-
     useEffect(() => {
         if (countryId)
             GetState(parseInt(countryId)).then((result) => {
@@ -49,7 +47,6 @@ const AddressDetails = ({ handleChoosePayment }) => {
         setStateId(e.target.value);
         setCityId("");
     };
-
 
     return (
         <div className="w-full">

@@ -19,7 +19,7 @@ const Payment = ({ handleChooseTransaction }) => {
                 <p className="text-[14px] text-gray-500">Pay via razorpay ₹ 15 off</p>
             </div>
 
-            <button onClick={handleChooseTransaction} className="bg-orange-500 text-white rounded p-3 text-center w-full cursor-pointer"> ORDER FOR ₹{cart.totalAmount}</button>
+            <button className="bg-orange-500 text-white rounded p-3 text-center w-full cursor-pointer"> ORDER FOR ₹{cart.totalAmount}</button>
         </div>
     )
 }
