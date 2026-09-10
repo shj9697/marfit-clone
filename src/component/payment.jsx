@@ -1,7 +1,7 @@
 import { CircleSmall, CreditCard } from "lucide-react";
 import { useCart } from "../context/CartProvider";
 
-const Payment = ({ handleChooseTransaction }) => {
+const Payment = () => {
 
     const { cart } = useCart();
 

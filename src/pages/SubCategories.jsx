@@ -36,7 +36,7 @@ function SubCategories() {
 				setError(null);
 				const params = {
 					page: currentPage,
-					limit: 5,
+					limit: 6,
 					category: category,
 					subCategory: subCategory,
 					sort: sortBy,

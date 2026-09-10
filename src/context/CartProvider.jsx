@@ -16,7 +16,6 @@ export function CartProvider({ children }) {
         setLoading(true);
         setError(null);
         const data = await getCartAPI();
-        console.log(data)
         if (!cancelled) setCart(data);
       } catch (err) {
         if (!cancelled) setError(err.message);
@@ -31,7 +30,6 @@ export function CartProvider({ children }) {
   const addToCart = async (productId) => {
     setLoading(true);
     const response = await addToCartAPI(productId);
-    console.log(response)
     if (response.status) {
       setCart(response.data);
       setLoading(false);
@@ -61,7 +59,6 @@ export function CartProvider({ children }) {
   const productDeleteFromCart = async (productId) => {
     setLoading(true);
     const response = await productDeleteFromCartAPI(productId);
-    console.log(response)
     if (response.status) {
       setCart(response.data);
       setLoading(false);
