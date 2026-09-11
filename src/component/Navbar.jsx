@@ -124,60 +124,54 @@ function Navbar() {
           (
             <>
               <form onSubmit={handleSubmit(onSubmit, onError)}>
-                <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600 mt-15">
+                <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600 mt-4">
                   <input
                     type="text"
                     placeholder="Enter Username"
-                    className="border-gray-400 outline-0 p-2 text-[12px] flex-1"
+                    className="border-gray-400 outline-0 py-2 text-[12px] flex-1"
                     {...register("username", { required: "Enter Username" })}
                   />
                 </div>
 
-                <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600 mt-8">
+                <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600 mt-4">
                   <input
                     type="text"
                     placeholder="Referral Code (Optional)"
-                    className="border-gray-400 outline-0 p-2 text-[12px] flex-1"
+                    className="border-gray-400 outline-0 py-2 text-[12px] flex-1"
                     {...register("referralCode")}
                   />
                 </div>
 
-                <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600 mt-8">
+                <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600 mt-4">
                   <input
                     type="text"
                     placeholder="Enter Mail Id"
-                    className="border-gray-400 outline-0 p-2 text-[12px] flex-1"
+                    className="border-gray-400 outline-0 py-2 text-[12px] flex-1"
                     {...register("mailid", {
                       required: "Not a valid email!",
                       pattern: {
                         value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                        message: "Enter Valid Email",
                       },
                     })}
                   />
                 </div>
 
-                <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600 mt-8">
-                  <input
-                    type="password"
-                    placeholder="Enter Password"
-                    className="border-gray-400 outline-0 p-2 text-[12px] flex-1"
-                    {...register("password", {
-                      required: "Enter Password",
-                      minLength: {
-                        value: 6,
-                        message: "Password must be at least 6 characters",
-                      },
-                    })}
-                  />
+                <div className="w-full flex items-center border-0 gap-2 mt-4">
+                  <input type="checkbox" name="" id="" />
+                  <p className="text-[12px]">I agree to the <span className="text-orange-500 text-[12px]">TERMS & CONDITION.</span></p>
                 </div>
 
-                <button type="submit" className="bg-orange-500 text-white p-3 mt-10 text-center w-full cursor-pointer rounded-[10px]">
+                <button type="submit" className="bg-orange-500 text-white p-3 mt-4 text-center w-full cursor-pointer rounded-[10px]">
                   REGISTER
                 </button>
               </form>
 
-              <div className="flex flex-col items-center mt-10">
+              <div className="flex flex-col items-center gap-10 mt-4">
+                <div className="flex items-center gap-2">
+                  <span className="w-32 h-px bg-gray-500" />
+                  <span className="text-gray-500">OR</span>
+                  <span className="w-32 h-px bg-gray-500" />
+                </div>
                 <button
                   type="button"
                   onClick={() => switchMode("login")}
@@ -201,13 +195,12 @@ function Navbar() {
                       type="text"
                       readOnly={step === "password"}
                       placeholder="Enter Email/Mobile Number"
-                      className="border-gray-400 outline-0 p-2 text-[12px] flex-1"
+                      className="border-gray-400 outline-0 py-2 text-[12px] flex-1"
                       {...register("email",
                         {
                           required: "Not a valid email!",
                           pattern: {
                             value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$|^\+?[1-9]\d{1,14}$/,
-                            message: "Enter Valid Email/Mobile Number",
                           },
                           onChange: handleInputChange
                         })}
@@ -220,12 +213,11 @@ function Navbar() {
                     <input
                       type="password"
                       placeholder="Enter Password"
-                      className="border-gray-400 outline-0 p-2 text-[12px] flex-1"
+                      className="border-gray-400 outline-0 text-[12px] flex-1"
                       {...register("password", {
                         required: "Enter Password",
                         minLength: {
                           value: 6,
-                          message: "The password is invalid or the user does not have a password",
                         },
                       })}
                     />
@@ -237,12 +229,11 @@ function Navbar() {
               </form>
 
               <div className="flex flex-col items-center gap-10 mt-10">
-                {step === "identifier" &&
-                  <div className="flex items-center gap-2">
-                    <span className="w-32 h-px bg-gray-500" />
-                    <span className="text-gray-500">OR</span>
-                    <span className="w-32 h-px bg-gray-500" />
-                  </div>}
+                <div className="flex items-center gap-2">
+                  <span className="w-32 h-px bg-gray-500" />
+                  <span className="text-gray-500">OR</span>
+                  <span className="w-32 h-px bg-gray-500" />
+                </div>
                 <img src="/assets/images/google.png" alt="Sign in with Google" className="h-7 w-7" />
                 <button
                   type="button"
