@@ -60,6 +60,7 @@ function Navbar() {
           toast.error("Registration failed");
         }
         toast.success("Registered SuccessFully");
+        closeModal();
       } catch {
         toast.error("Something went wrong. Please try again.");
       }
