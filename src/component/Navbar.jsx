@@ -7,6 +7,8 @@ import { useState } from "react";
 import LoginModal from "./LoginModal";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
+import { getAuthenticationAPI } from "../api/authentication";
+import Registration from "./registration";
 
 const icon =
   "data:image/png;base64,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";
@@ -46,19 +48,33 @@ function Navbar() {
     reset();
   }
 
-  const onSubmit = () => {
+  const onSubmit = async (formData) => {
     if (mode === "register") {
-      toast.success("Registered SuccessFully");
-      closeModal();
-      return;
+      try {
+        const result = await getAuthenticationAPI(
+          formData.email,
+          formData.password,
+          formData.name
+        );
+        if (!result.status) {
+          toast.error("Registration failed");
+        }
+        toast.success("Registered SuccessFully");
+      } catch {
+        toast.error("Something went wrong. Please try again.");
+      }
+      return null;
     }
+
     if (step === "identifier") {
       setStep("password");
       return;
     }
+
     toast.success("Form Submitted SuccessFully");
     closeModal();
-  }
+  };
+
 
   const onError = (errors) => {
     toast.error(
@@ -120,131 +136,7 @@ function Navbar() {
             <img src={logo} className="h-9" />
           </div>
         </div>
-        {mode === "register" ?
-          (
-            <>
-              <form onSubmit={handleSubmit(onSubmit, onError)}>
-                <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600 mt-4">
-                  <input
-                    type="text"
-                    placeholder="Enter Username"
-                    className="border-gray-400 outline-0 py-2 text-[12px] flex-1"
-                    {...register("username", { required: "Enter Username" })}
-                  />
-                </div>
-
-                <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600 mt-4">
-                  <input
-                    type="text"
-                    placeholder="Referral Code (Optional)"
-                    className="border-gray-400 outline-0 py-2 text-[12px] flex-1"
-                    {...register("referralCode")}
-                  />
-                </div>
-
-                <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600 mt-4">
-                  <input
-                    type="text"
-                    placeholder="Enter Mail Id"
-                    className="border-gray-400 outline-0 py-2 text-[12px] flex-1"
-                    {...register("mailid", {
-                      required: "Not a valid email!",
-                      pattern: {
-                        value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                      },
-                    })}
-                  />
-                </div>
-
-                <div className="w-full flex items-center border-0 gap-2 mt-4">
-                  <input type="checkbox" name="" id="" />
-                  <p className="text-[12px]">I agree to the <span className="text-orange-500 text-[12px]">TERMS & CONDITION.</span></p>
-                </div>
-
-                <button type="submit" className="bg-orange-500 text-white p-3 mt-4 text-center w-full cursor-pointer rounded-[10px]">
-                  REGISTER
-                </button>
-              </form>
-
-              <div className="flex flex-col items-center gap-10 mt-4">
-                <div className="flex items-center gap-2">
-                  <span className="w-32 h-px bg-gray-500" />
-                  <span className="text-gray-500">OR</span>
-                  <span className="w-32 h-px bg-gray-500" />
-                </div>
-                <button
-                  type="button"
-                  onClick={() => switchMode("login")}
-                  className="text-orange-500 text-[13px] cursor-pointer"
-                >
-                  Existing User? Login
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              <form onSubmit={handleSubmit(onSubmit, onError)}>
-                <div className={step === "password" ? "flex justify-center items-center mt-15 opacity-70" : "flex justify-center items-center mt-15"}>
-                  <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600">
-                    {isPhoneInput &&
-                      <div className="flex flex-row items-center gap-2 mr-2 w-fit">
-                        <p className="">+91</p>
-                        <div className="w-0.5 rounded-md h-4 bg-amber-600" />
-                      </div>}
-                    <input
-                      type="text"
-                      readOnly={step === "password"}
-                      placeholder="Enter Email/Mobile Number"
-                      className="border-gray-400 outline-0 py-2 text-[12px] flex-1"
-                      {...register("email",
-                        {
-                          required: "Not a valid email!",
-                          pattern: {
-                            value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$|^\+?[1-9]\d{1,14}$/,
-                          },
-                          onChange: handleInputChange
-                        })}
-                    />
-                  </div>
-                </div>
-
-                {step === "password" &&
-                  <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600 mt-8">
-                    <input
-                      type="password"
-                      placeholder="Enter Password"
-                      className="border-gray-400 outline-0 text-[12px] flex-1"
-                      {...register("password", {
-                        required: "Enter Password",
-                        minLength: {
-                          value: 6,
-                        },
-                      })}
-                    />
-                  </div>}
-
-                <button type="submit" className="bg-orange-500 text-white p-3 mt-10 text-center w-full cursor-pointer rounded-[10px]" >
-                  {step === "password" ? "LOGIN" : "NEXT"}
-                </button>
-              </form>
-
-              <div className="flex flex-col items-center gap-10 mt-10">
-                <div className="flex items-center gap-2">
-                  <span className="w-32 h-px bg-gray-500" />
-                  <span className="text-gray-500">OR</span>
-                  <span className="w-32 h-px bg-gray-500" />
-                </div>
-                <img src="/assets/images/google.png" alt="Sign in with Google" className="h-7 w-7" />
-                <button
-                  type="button"
-                  onClick={() => switchMode("register")}
-                  className="text-orange-500 text-[13px] cursor-pointer"
-                >
-                  New to Marfit ? Create an account
-                </button>
-              </div>
-            </>
-          )}
+        <Registration isPhoneInput={isPhoneInput} switchMode={switchMode} onSubmit={onSubmit} onError={onError} handleInputChange={handleInputChange} register={register} handleSubmit={handleSubmit} mode={mode} step={step} />
       </LoginModal>
     </>
   );

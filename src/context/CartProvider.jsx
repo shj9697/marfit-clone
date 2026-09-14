@@ -29,45 +29,51 @@ export function CartProvider({ children }) {
 
   const addToCart = async (productId) => {
     setLoading(true);
-    const response = await addToCartAPI(productId);
-    if (response.status) {
-      setCart(response.data);
-      setLoading(false);
-      toast.success("Item added to Cart");
-    } else {
-      setLoading(false);
-      setError(response.message);
+    try {
+      const response = await addToCartAPI(productId, 1);
+      if (response.status) {
+        setCart(response.data);
+        toast.success("Item added to Cart");
+      }
+    } catch (err) {
+      setError(err.message);
       toast.error('There was an error');
-    };
+    } finally {
+      setLoading(false);
+    }
   };
 
   const removeFromCart = async (productId) => {
-    const chechQuantity = cart.items.find((cartItems) => cartItems.productId === productId);
+    const checkQuantity = cart.items.find((cartItems) => cartItems.productId === productId);
     setLoading(true);
-    const response = await updateCartItemAPI(productId, chechQuantity.quantity - 1);
-    if (response.status) {
-      setCart(response.data);
-      setLoading(false);
-      toast.success('Item removed from cart');
-    } else {
-      setLoading(false);
-      setError(response.message);
+    try {
+      const response = await updateCartItemAPI(productId, checkQuantity?.quantity - 1);
+      if (response.status) {
+        setCart(response.data);
+        toast.success('Item removed from cart');
+      }
+    } catch (err) {
+      setError(err.message);
       toast.error('There was an error');
-    };
+    } finally {
+      setLoading(false);
+    }
   };
 
   const productDeleteFromCart = async (productId) => {
     setLoading(true);
-    const response = await productDeleteFromCartAPI(productId);
-    if (response.status) {
-      setCart(response.data);
-      setLoading(false);
-      toast.success('Item removed from cart');
-    } else {
-      setLoading(false);
-      setError(response.message);
+    try {
+      const response = await productDeleteFromCartAPI(productId);
+      if (response.status) {
+        setCart(response.data);
+        toast.success('Item removed from cart');
+      }
+    } catch (err) {
+      setError(err.message);
       toast.error('There was an error');
-    };
+    } finally {
+      setLoading(false);
+    }
   };
 
   const value = { cart, addToCart, removeFromCart, productDeleteFromCart, cartLoading: loading, cartError: error };
