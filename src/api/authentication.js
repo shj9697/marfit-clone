@@ -19,7 +19,6 @@ export async function getAuthenticationAPI(email, password, name) {
             }
         };
     };
-
     return { status: false, message: convertedData.error?.message };
 };
 
