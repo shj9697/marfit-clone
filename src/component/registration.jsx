@@ -1,9 +1,102 @@
+import { useState } from "react";
+import LoginModal from "./LoginModal";
+import { useForm } from "react-hook-form";
+import { getAuthenticationAPI, loginAPI } from "../api/authentication";
+import { brandIcon, brandLogo } from "./Navbar";
+import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthProvider";
 
-const Registration = ({ mode, step, isPhoneInput, switchMode, onSubmit, onError, handleInputChange, handleSubmit, register }) => {
+const Registration = ({ isOpen, closeModal }) => {
+    const { setUser, user } = useAuth();
+    const { register, handleSubmit, reset } = useForm({ mode: "onSubmit" });
 
+
+    const [step, setStep] = useState("identifier");
+    const [mode, setMode] = useState("login");
+    const [isPhoneInput, setIsPhoneInput] = useState(false);
+
+    const switchMode = (nextMode) => {
+        setMode(nextMode);
+        setStep("identifier");
+        setIsPhoneInput(false);
+        reset();
+    }
+
+    const onError = (errors) => {
+        toast.error(
+            errors.username?.message ||
+            errors.mailid?.message ||
+            errors.password?.message ||
+            errors.email?.message ||
+            "Not a valid email"
+        );
+    };
+
+    const handleInputChange = (e) => {
+        if (e.target.value.length) {
+            const isOnlyNumber = !isNaN(e.target.value);
+            setIsPhoneInput(isOnlyNumber);
+        }
+    }
+
+    const onSubmit = async (formData) => {
+        if (mode === "register") {
+            try {
+                const result = await getAuthenticationAPI(
+                    formData.email,
+                    formData.password,
+                    formData.name
+                );
+                if (!result.status) {
+                    toast.error("Registration failed");
+                }
+                toast.success("Registered SuccessFully");
+                handleCloseModal();
+            } catch {
+                toast.error("Something went wrong. Please try again.");
+            }
+            return null;
+        } else {
+            if (step === "identifier") {
+                setStep("password");
+                return;
+            }
+            try {
+                const loginData = await loginAPI(
+                    formData.email,
+                    formData.password
+                );
+                console.log(loginData);
+                if (!loginData?.status) {
+                    toast.error("Login failed");
+                }
+                setUser(loginData?.data || null);
+                toast.success("Login SuccessFully");
+                handleCloseModal();
+            } catch (error) {
+                console.log(error);
+                toast.error("Something went wrong. Please try again.");
+            }
+            return null;
+        }
+    };
+
+    const handleCloseModal = () => {
+        setStep("identifier");
+        setIsPhoneInput(false);
+        setMode("login");
+        reset();
+        closeModal();
+    }
 
     return (
-        <div>
+        <LoginModal isOpen={isOpen} onClose={closeModal}>
+            <div className="w-full flex items-start justify-center bg-white">
+                <div className="flex items-center mt-6">
+                    <img src={brandIcon} className="h-9" />
+                    <img src={brandLogo} className="h-9" />
+                </div>
+            </div>
             {mode === "register" ?
                 (
                     <>
@@ -145,7 +238,7 @@ const Registration = ({ mode, step, isPhoneInput, switchMode, onSubmit, onError,
                         </div>
                     </>
                 )}
-        </div>
+        </LoginModal>
     )
 }
 

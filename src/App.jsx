@@ -21,31 +21,37 @@ import "swiper/css/navigation";
 import CollectionContent from "./pages/CollectionContent";
 import CartPage from "./pages/cartPage";
 import AddressDetails from "./component/AddressDetails";
+import { AuthProvider } from "./context/AuthProvider";
+import { CartProvider } from "./context/CartProvider";
 
 function App() {
   return (
     <div className="w-full bg-[#eef0f3]">
       <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products/:id" element={<Products />} />
-          <Route exact path="/:slug" element={<CollectionContent />} />
-          <Route path="/franchise" element={<Franchise />} />
-          <Route path="/categories/:slug" element={<Categories />} />
-          <Route path="/categories/:categorySlug/:subCategorySlug" element={<SubCategories />} />
-          <Route exact path="/emboss" element={<Embose />} />
-          <Route path="/categories/:parentId/:subId/:productId" element={<ProductDetailsPage />} />
-          <Route path="/bulkContact" element={<BulkContact />} />
-          <Route path="/TrackOrder" element={<TrackingOrders />} />
-          <Route path="/ContactForm" element={<ContactForm />} />
-          <Route path="/TermsAndCondition" element={<TermsAndCondition />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/ShippingPolicy" element={<ShippingPolicy />} />
-          <Route path="/AddressDetails" element={<AddressDetails />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Footer />
+        <AuthProvider>
+          <CartProvider>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/products/:id" element={<Products />} />
+              <Route exact path="/:slug" element={<CollectionContent />} />
+              <Route path="/franchise" element={<Franchise />} />
+              <Route path="/categories/:slug" element={<Categories />} />
+              <Route path="/categories/:categorySlug/:subCategorySlug" element={<SubCategories />} />
+              <Route exact path="/emboss" element={<Embose />} />
+              <Route path="/categories/:parentId/:subId/:productId" element={<ProductDetailsPage />} />
+              <Route path="/bulkContact" element={<BulkContact />} />
+              <Route path="/TrackOrder" element={<TrackingOrders />} />
+              <Route path="/ContactForm" element={<ContactForm />} />
+              <Route path="/TermsAndCondition" element={<TermsAndCondition />} />
+              <Route path="/ShippingPolicy" element={<ShippingPolicy />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/AddressDetails" element={<AddressDetails />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Footer />
+          </CartProvider>
+        </AuthProvider>
       </BrowserRouter>
       <Toaster />
     </div>

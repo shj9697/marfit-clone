@@ -20,7 +20,7 @@ const CartPage = () => {
 
     const Homepage = () => {
         navigate('/')
-    }
+    };
 
     return (
         <div className="w-full px-20">

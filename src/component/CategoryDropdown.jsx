@@ -35,7 +35,7 @@ function CategoryDropdown() {
 	}
 
 	return (
-		<div className="flex gap-12 items-center justify-center h-10 text-base font-bold sticky top-15 z-50 bg-white shadow-[0_3px_6px_0_#dee0e2]">
+		<div className="flex gap-12 items-center justify-center h-10 text-base font-bold sticky top-15 z-30 bg-white shadow-[0_3px_6px_0_#dee0e2]">
 			<Link
 				to="/new-arrival"
 				className="text-sm text-orange-600"

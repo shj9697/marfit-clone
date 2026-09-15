@@ -1,10 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { addToCartAPI, getCartAPI, productDeleteFromCartAPI, updateCartItemAPI } from "../api/cartapi";
 import toast from "react-hot-toast";
+import { useAuth } from "./AuthProvider";
 
 const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
+  const { user } = useAuth();
   const [cart, setCart] = useState({ items: [], totalItems: 0, totalAmount: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,8 +17,8 @@ export function CartProvider({ children }) {
       try {
         setLoading(true);
         setError(null);
-        const data = await getCartAPI();
-        if (!cancelled) setCart(data);
+        const cartData = await getCartAPI();
+        if (!cancelled) setCart(cartData.data);
       } catch (err) {
         if (!cancelled) setError(err.message);
       } finally {
@@ -25,7 +27,7 @@ export function CartProvider({ children }) {
     }
     load();
     return () => { cancelled = true; };
-  }, []);
+  }, [user]);
 
   const addToCart = async (productId) => {
     setLoading(true);
@@ -37,6 +39,7 @@ export function CartProvider({ children }) {
       }
     } catch (err) {
       setError(err.message);
+      console.log(err);
       toast.error('There was an error');
     } finally {
       setLoading(false);

@@ -11,8 +11,8 @@ const CartItem = ({ item }) => {
                 <img src={item.img} alt={item.title} className='h-40 w-40' />
             </div>
             <div className='w-[80%]'>
-                <div className="flex justify-between">
-                    <h1 className="text-[15px]">{item.title}</h1>
+                <div className="flex justify-between gap-4">
+                    <h1 className="text-[15px] line-clamp-1">{item.title}</h1>
                     <button
                         type="button"
                         className="flex items-center pr-2 cursor-pointer"

@@ -2,11 +2,11 @@ import { ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 
 
-function Dropdown({ title = "", list = [], slug = "" }) {
+function Dropdown({ title = "", list = [], slug = "", path = "" }) {
     return (
         <div className="relative group h-full">
             <div className="flex items-center gap-1 cursor-pointer hover:text-orange-600 h-full">
-                <Link to={`/categories/${slug}`}>
+                <Link to={path || `/categories/${slug}`}>
                     <span className="font-medium">{title}</span>
                 </Link>
                 <ChevronDown
@@ -20,7 +20,7 @@ function Dropdown({ title = "", list = [], slug = "" }) {
                     {list?.map((item, _) => (
                         <li key={item.id}>
                             <Link
-                                to={`/categories/${slug}/${item.slug}`}
+                                to={item?.path || `/categories/${slug}/${item.slug}`}
                                 className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                             >
                                 <div className="flex items-center gap-2">
