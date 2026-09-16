@@ -1,4 +1,4 @@
-import { ChevronDown, LogOut } from "lucide-react";
+import { ChevronDown, Heart, Lock, LogOut, UserRound } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
 
@@ -11,20 +11,20 @@ function ProfileDropdown() {
         {
             id: "profile",
             name: "Profile",
-            path: '/profile',
-            icon: ""
+            path: '/dashboard/profile',
+            icon: <UserRound className="size-4" />
         },
         {
             id: "wishlist",
             name: "Wishlist",
-            path: '/wishlist',
-            icon: ""
+            path: '/dashboard/wishlist',
+            icon: <Heart className="size-4" />
         },
         {
             id: "orders",
             name: "My Orders",
-            path: '/orders',
-            icon: ""
+            path: '/dashboard/orders',
+            icon: <Lock className="size-4" />
         },
         {
             id: "logout",
@@ -61,7 +61,7 @@ function ProfileDropdown() {
                                     to={item?.path || "/"}
                                     className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                                 >
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-2 text-orange-600">
                                         {item?.icon || ""}
                                         {item?.name || ""}
                                     </div>

@@ -19,7 +19,7 @@ export const brandLogo =
 const Navbar = () => {
   const navigate = useNavigate();
   const { cart } = useCart();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   function handleViewCart() {

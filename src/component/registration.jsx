@@ -7,10 +7,8 @@ import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthProvider";
 
 const Registration = ({ isOpen, closeModal }) => {
-    const { setUser, user } = useAuth();
+    const { setUser } = useAuth();
     const { register, handleSubmit, reset } = useForm({ mode: "onSubmit" });
-
-
     const [step, setStep] = useState("identifier");
     const [mode, setMode] = useState("login");
     const [isPhoneInput, setIsPhoneInput] = useState(false);

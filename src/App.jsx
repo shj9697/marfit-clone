@@ -31,23 +31,19 @@ import Address from "./pages/Address";
 
 function App() {
   return (
-    <div className="w-full bg-[#eef0f3]">
+    <div className="w-full min-h-screen flex flex-col bg-[#eef0f3]">
       <BrowserRouter>
         <AuthProvider>
           <CartProvider>
             <Navbar />
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/Dashboard" element={<Dashboard />}>
-                <Route index element={<Navigate to="Profile" replace />} />
-                <Route path="Profile" element={<Profile />} />
-                <Route path="Orders" element={<Orders />} />
-                <Route path="Wishlist" element={<Wishlist />} />
-                <Route path="Address" element={<Address />} />
+              <Route path="/dashboard" element={<Dashboard />}>
+                <Route path="profile" element={<Profile />} />
+                <Route path="orders" element={<Orders />} />
+                <Route path="wishlist" element={<Wishlist />} />
+                <Route path="address" element={<Address />} />
               </Route>
-              <Route path="/profile" element={<Navigate to="/Dashboard/Profile" replace />} />
-              <Route path="/orders" element={<Navigate to="/Dashboard/Orders" replace />} />
-              <Route path="/wishlist" element={<Navigate to="/Dashboard/Wishlist" replace />} />
               <Route path="/products/:id" element={<Products />} />
               <Route exact path="/:slug" element={<CollectionContent />} />
               <Route path="/franchise" element={<Franchise />} />
