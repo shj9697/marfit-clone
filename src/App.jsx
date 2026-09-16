@@ -1,7 +1,7 @@
 import "./App.css";
 import Home from "./pages/Home";
 import Navbar from "./component/Navbar";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Footer from "./component/Footer";
 import Franchise from "./pages/Franchise";
 import Products from "./pages/Products";
@@ -23,6 +23,11 @@ import CartPage from "./pages/cartPage";
 import AddressDetails from "./component/AddressDetails";
 import { AuthProvider } from "./context/AuthProvider";
 import { CartProvider } from "./context/CartProvider";
+import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
+import Orders from "./pages/Orders";
+import Wishlist from "./pages/Wishlist";
+import Address from "./pages/Address";
 
 function App() {
   return (
@@ -33,6 +38,16 @@ function App() {
             <Navbar />
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/Dashboard" element={<Dashboard />}>
+                <Route index element={<Navigate to="Profile" replace />} />
+                <Route path="Profile" element={<Profile />} />
+                <Route path="Orders" element={<Orders />} />
+                <Route path="Wishlist" element={<Wishlist />} />
+                <Route path="Address" element={<Address />} />
+              </Route>
+              <Route path="/profile" element={<Navigate to="/Dashboard/Profile" replace />} />
+              <Route path="/orders" element={<Navigate to="/Dashboard/Orders" replace />} />
+              <Route path="/wishlist" element={<Navigate to="/Dashboard/Wishlist" replace />} />
               <Route path="/products/:id" element={<Products />} />
               <Route exact path="/:slug" element={<CollectionContent />} />
               <Route path="/franchise" element={<Franchise />} />
