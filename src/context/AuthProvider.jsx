@@ -19,7 +19,6 @@ export function AuthProvider({ children }) {
                 setLoading(true);
                 setError(null);
                 const data = await meAPI();
-                console.log(data)
                 if (!cancelled) setUser(data);
             } catch (err) {
                 if (!cancelled) setError(err.message);

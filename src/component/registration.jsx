@@ -20,14 +20,8 @@ const Registration = ({ isOpen, closeModal }) => {
         reset();
     }
 
-    const onError = (errors) => {
-        toast.error(
-            errors.username?.message ||
-            errors.mailid?.message ||
-            errors.password?.message ||
-            errors.email?.message ||
-            "Not a valid email"
-        );
+    const onError = () => {
+        toast.error("Not a valid email");
     };
 
     const handleInputChange = (e) => {

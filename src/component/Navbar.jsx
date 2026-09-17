@@ -1,4 +1,4 @@
-import { User, ShoppingCart, ChevronDown } from "lucide-react";
+import { User, ShoppingCart } from "lucide-react";
 import CategoryDropdown from "./CategoryDropdown";
 import SearchBar from "./SearchBar";
 import { useNavigate } from "react-router-dom";

@@ -5,12 +5,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, A11y } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import { MapPin } from "lucide-react";
+import { Heart, MapPin } from "lucide-react";
 import { useCart } from "../context/CartProvider";
 import ProductCard from "../component/ProductCard";
 import { getProductDetailsAPI, getRelatedProductsAPI } from "../api/productapi";
 import { getPincodeAPI } from "../api/home";
-
 
 function ProductDetailsPage() {
     const navigate = useNavigate();
@@ -77,6 +76,10 @@ function ProductDetailsPage() {
         setActiveImage(index);
     };
 
+    const changeColor = () => {
+
+    }
+
     if (loading) {
         return <p>Loading......</p>
     }
@@ -115,7 +118,12 @@ function ProductDetailsPage() {
                 </div>
                 <div className="w-[70%] px-3 py-10 mx-15 overflow-y-scroll no-scrollbar">
                     <div>
-                        <h1 className="text-4xl leading-10">{productDetails.title}</h1>
+                        <div className="flex items-center justify-between">
+                            <h1 className="text-4xl leading-10">{productDetails.title}</h1>
+                            <div className="bg-white cursor-pointer">
+                                <Heart size={24} strokeWidth={3} onClick={() => { changeColor }} />
+                            </div>
+                        </div>
                         <div className="flex items-center gap-2 my-2">
                             <p className="text-4xl">₹{productDetails.price} </p>
                             <p className="line-through text-gray-600 text-2xl">₹{productDetails.oldPrice}</p>

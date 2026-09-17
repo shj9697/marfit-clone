@@ -5,26 +5,17 @@ import toast from "react-hot-toast";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
-const AddressPage = ({ handleBack }) => {
+const AddressPage = ({ handleBack, handleSave }) => {
 
     const [phone, setPhone] = useState("");
-    const { register, handleSubmit, reset } = useForm({ mode: "onSubmit" });
+    const { register, handleSubmit } = useForm({ mode: "onSubmit" });
 
-
-    const onSubmit = () => {
-        console.log("h")
+    const onSubmit = (data) => {
+        handleSave({ ...data, phone });
     }
 
-
-    const onError = (errors) => {
-        toast.error(
-            errors.name?.message ||
-            errors.country?.message ||
-            errors.address?.message ||
-            errors.city?.message ||
-            errors.pincode?.message ||
-            "Not a valid email"
-        );
+    const onError = () => {
+        toast.error("Please Fill All The Details");
     };
 
     return (
@@ -42,6 +33,7 @@ const AddressPage = ({ handleBack }) => {
                         <input type="text"
                             placeholder="Address"
                             className="outline-0 border border-gray-400 bg-white p-2 rounded"
+                            {...register("address", { required: "Please Fill All The Details" })}
                         />
                     </div>
                     <div className="flex mt-3 justify-between gap-2">
@@ -71,8 +63,8 @@ const AddressPage = ({ handleBack }) => {
                         className="my-3"
                     />
                     <div className="flex gap-3 ">
-                        <button className="bg-orange-600 text-white px-10 py-2 cursor-pointer rounded" onClick={handleBack}><ArrowLeft size={20} strokeWidth={3} /></button>
-                        <button className="bg-orange-600 text-white px-10 py-2 cursor-pointer rounded">Add</button>
+                        <button type="button" className="text-orange-600 bg-white border border-orange-600 px-10 py-2 cursor-pointer rounded" onClick={handleBack}>Cancel</button>
+                        <button type="submit" className="bg-orange-600 text-white px-10 py-2 cursor-pointer rounded" >Add</button>
                     </div>
                 </form>
             </div>
