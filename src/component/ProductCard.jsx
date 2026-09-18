@@ -1,23 +1,30 @@
 import { Heart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthProvider';
 
 const ProductCard = ({ item }) => {
 
     const navigate = useNavigate();
+    const { toggleWishList, isInWishList } = useAuth();
+    const wishListed = isInWishList(item.id);
 
     const handleViewProductDetails = (item) => {
         navigate(`/categories/${item.categoryRef.slug}/${item.subcategoryRef.slug}/${item.id}`)
-    }
-
-    const changeColor = () => {
-
     }
 
     return (
         <div className="shadow-xl cursor-pointer p-2 mx-1 my-1 w-64 h-88" >
             <div className='flex justify-between'>
                 <img src={item.img} alt="" className="h-45 object-contain rounded-md w-full" />
-                <Heart size={24} strokeWidth={2} onClick={() => { changeColor }} />
+                <Heart
+                    size={24}
+                    strokeWidth={2}
+                    className={wishListed ? "fill-red-500 text-red-500 cursor-pointer" : "fill-white text-gray-600 cursor-pointer"}
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        toggleWishList(item);
+                    }}
+                />
 
             </div>
             <div onClick={() => handleViewProductDetails(item)}>

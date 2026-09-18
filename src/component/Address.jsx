@@ -1,5 +1,5 @@
 import { Plus, Trash } from "lucide-react";
-import AddressPage from "../component/AddressPage";
+import AddressPage from "./AddressPage";
 import { useEffect, useState } from "react";
 
 function Address() {

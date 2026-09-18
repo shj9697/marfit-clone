@@ -7,6 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Heart, MapPin } from "lucide-react";
 import { useCart } from "../context/CartProvider";
+import { useAuth } from "../context/AuthProvider";
 import ProductCard from "../component/ProductCard";
 import { getProductDetailsAPI, getRelatedProductsAPI } from "../api/productapi";
 import { getPincodeAPI } from "../api/home";
@@ -26,6 +27,7 @@ function ProductDetailsPage() {
     const [productDetails, setProductDetails] = useState(null);
     const [activeImage, setActiveImage] = useState(0);
     const { addToCart } = useCart();
+    const { toggleWishList, isInWishList } = useAuth();
 
     useEffect(() => {
         let cancelled = false;
@@ -76,16 +78,20 @@ function ProductDetailsPage() {
         setActiveImage(index);
     };
 
-    const changeColor = () => {
-
-    }
-
     if (loading) {
         return <p>Loading......</p>
     }
     if (error) {
         return <p>Error : {error}</p>
     };
+
+    const itemDetails = {
+        title: productDetails.title,
+        price: productDetails.price,
+        oldPrice: productDetails.oldPrice,
+        discount: productDetails.discount,
+        img: productDetails.images?.[0]?.url,
+    }
 
     return (
         <section>
@@ -121,7 +127,12 @@ function ProductDetailsPage() {
                         <div className="flex items-center justify-between">
                             <h1 className="text-4xl leading-10">{productDetails.title}</h1>
                             <div className="bg-white cursor-pointer">
-                                <Heart size={24} strokeWidth={3} onClick={() => { changeColor }} />
+                                <Heart
+                                    size={24}
+                                    strokeWidth={3}
+                                    className={isInWishList(productId) ? "fill-red-500 text-red-500 cursor-pointer" : "fill-white text-gray-600 cursor-pointer"}
+                                    onClick={() => toggleWishList(itemDetails)}
+                                />
                             </div>
                         </div>
                         <div className="flex items-center gap-2 my-2">

@@ -23,11 +23,11 @@ import CartPage from "./pages/cartPage";
 import AddressDetails from "./component/AddressDetails";
 import { AuthProvider } from "./context/AuthProvider";
 import { CartProvider } from "./context/CartProvider";
-import Dashboard from "./pages/Dashboard";
-import Profile from "./pages/Profile";
-import Orders from "./pages/Orders";
-import Wishlist from "./pages/Wishlist";
-import Address from "./pages/Address";
+import Dashboard from "./component/Dashboard";
+import Profile from "./component/Profile";
+import Orders from "./component/Orders";
+import Wishlist from "./component/Wishlist";
+import Address from "./component/Address";
 
 function App() {
   return (
