@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CartSummary from "./cartSummary";
 import Payment from "./payment";
 import AddressDetails from "./AddressDetails";
 
 const CartDetails = () => {
     const [step, setStep] = useState(0);
+    const [addresses, setAddresses] = useState(() => {
+        const saved = localStorage.getItem("checkoutAddresses");
+        return saved ? JSON.parse(saved) : [];
+    });
+
+    useEffect(() => {
+        localStorage.setItem("checkoutAddresses", JSON.stringify(addresses));
+    }, [addresses]);
+
 
     const handleStep = (value) => {
         if (value === 0) {
@@ -54,7 +63,15 @@ const CartDetails = () => {
                 </div>
                 <div className="w-full p-4">
                     {step === 0 && <CartSummary handleChooseAddress={handleChooseAddress} />}
-                    {step === 1 && <AddressDetails handleChoosePayment={handleChoosePayment} />}
+                    {step === 1 && (
+                        <AddressDetails
+                            handleChoosePayment={handleChoosePayment}
+                            addresses={addresses}
+                            setAddresses={setAddresses}
+                            selectedAddressId={selectedAddressId}
+                            setSelectedAddressId={setSelectedAddressId}
+                        />
+                    )}
                     {step === 2 && <Payment />}
                 </div>
             </div>

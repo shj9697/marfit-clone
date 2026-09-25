@@ -12,7 +12,7 @@ import ProductCard from "../component/ProductCard";
 import { getProductDetailsAPI, getRelatedProductsAPI } from "../api/productapi";
 import { getPincodeAPI } from "../api/home";
 
-function ProductDetailsPage() {
+function ProductDetailsPage({ item }) {
     const navigate = useNavigate();
     const { parentId, subId, productId } = useParams();
     const similarSwiperRef = useRef(null);
@@ -27,7 +27,9 @@ function ProductDetailsPage() {
     const [productDetails, setProductDetails] = useState(null);
     const [activeImage, setActiveImage] = useState(0);
     const { addToCart } = useCart();
-    const { toggleWishList, isInWishList } = useAuth();
+    const { toggleWishList, isInWishList, user } = useAuth();
+    const wishListed = isInWishList(item);
+    const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
         let cancelled = false;
@@ -51,7 +53,6 @@ function ProductDetailsPage() {
         load();
         return () => { cancelled = true; };
     }, [productId]);
-
 
     const pincodeVerify = async () => {
         const { data } = await getPincodeAPI(pincode);
@@ -93,6 +94,12 @@ function ProductDetailsPage() {
         img: productDetails.images?.[0]?.url,
     }
 
+    const handleQuantityChange = async (e) => {
+        const selectedQuantity = Number(e.target.value);
+        setQuantity(selectedQuantity);
+        await addToCart(productId, selectedQuantity);
+    };
+
     return (
         <section>
             <Breadcrumb
@@ -127,12 +134,17 @@ function ProductDetailsPage() {
                         <div className="flex items-center justify-between">
                             <h1 className="text-4xl leading-10">{productDetails.title}</h1>
                             <div className="bg-white cursor-pointer">
-                                <Heart
-                                    size={24}
-                                    strokeWidth={3}
-                                    className={isInWishList(productId) ? "fill-red-500 text-red-500 cursor-pointer" : "fill-white text-gray-600 cursor-pointer"}
-                                    onClick={() => toggleWishList(itemDetails)}
-                                />
+                                {user ?
+                                    <Heart
+                                        size={24}
+                                        strokeWidth={2}
+                                        className={wishListed ? "fill-red-500 text-red-500 cursor-pointer" : "fill-white text-gray-600 cursor-pointer"}
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            toggleWishList(itemDetails);
+                                        }}
+                                    />
+                                    : null}
                             </div>
                         </div>
                         <div className="flex items-center gap-2 my-2">
@@ -142,10 +154,11 @@ function ProductDetailsPage() {
                         </div>
                     </div>
                     <div className="flex  w-[50%]">
-                        <div className="flex flex-col  w-[20%]" >
+                        <div className="flex flex-col w-[20%]" >
                             <h1 className="text-lg font-semibold">Quantity</h1>
                             <div>
-                                <select className="w-full h-full text-center cursor-pointer border-2 rounded-md border-gray-500">
+                                <select value={quantity} onChange={handleQuantityChange} className="w-full h-full text-center cursor-pointer border-2 rounded-md border-gray-500">
+                                    <option value="" disabled>Qty</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -157,26 +170,6 @@ function ProductDetailsPage() {
                                     <option value="9">9</option>
                                     <option value="10">10</option>
                                 </select>
-                            </div>
-                        </div>
-                        <div className="flex flex-col ml-4">
-                            <h1 className="text-lg font-semibold">Color</h1>
-                            <div className="flex">
-                                <div className="m-1">
-                                    <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063GRN%2F1?alt=media&token=737e828b-36e3-498f-b185-412ee163adc9" alt="" className="w-16 h-16 border-2 border-gray-500 rounded cursor-pointer" />
-                                </div>
-                                <div className="m-1">
-                                    <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063DESBRN%20%2F1?alt=media&token=cc73770b-18dd-4510-b8ae-e32c7c6018d3" alt="" className="w-16 h-16 border-2 border-gray-500 rounded cursor-pointer" />
-                                </div>
-                                <div className="m-1">
-                                    <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLK%2F1?alt=media&token=31d02f51-a5ca-4bb9-a96d-2d92d65291a7" alt="" className="w-16 h-16 border-2 border-gray-500 rounded cursor-pointer" />
-                                </div>
-                                <div className="m-1">
-                                    <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BRN%2F1?alt=media&token=df599520-fd14-49a9-bcbb-c7e9b627d4a2" alt="" className="w-16 h-16 border-2 border-gray-500 rounded cursor-pointer" />
-                                </div>
-                                <div className="m-1">
-                                    <img src="https://firebasestorage.googleapis.com/v0/b/marfit-ea7ba.appspot.com/o/supplier%2Fmarfit%2FMB2155063BLU%2F1?alt=media&token=73dd0f5c-4e2d-4fdc-a081-32e9e0db9223" alt="" className="w-16 h-16 border-2 border-gray-500 rounded cursor-pointer" />
-                                </div>
                             </div>
                         </div>
                     </div>

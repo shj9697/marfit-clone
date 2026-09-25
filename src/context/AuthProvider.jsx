@@ -8,7 +8,6 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
     const navigate = useNavigate();
-
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -21,14 +20,17 @@ export function AuthProvider({ children }) {
         localStorage.setItem("wishlist", JSON.stringify(wishList));
     }, [wishList]);
 
-
     const toggleWishList = (item) => {
+        if (!user) {
+            toast.error("Please login");
+            return;
+        }
         const exists = wishList.find((wishItem) => wishItem.id === item.id);
         setWishList(exists ? wishList.filter((wishItem) => wishItem.id !== item.id) : [...wishList, item]);
-        toast.success(exists ? "Removed from Wishlist" : "Added to Wishlist")
-    }
+        toast.success(exists ? "Removed from Wishlist" : "Added to Wishlist");
+    };
 
-    const isInWishList = (id) => wishList.find((wishItem) => wishItem.id === id);
+    const isInWishList = (id) => !!user && wishList.find((wishItem) => wishItem.id === id);
 
     useEffect(() => {
         let cancelled = false;
@@ -55,6 +57,7 @@ export function AuthProvider({ children }) {
         tokenStore.clear();
         setUser(null);
         navigate("/");
+        setWishList([]);
     };
 
     return (

@@ -19,7 +19,6 @@ const AddressPage = ({ handleBack, handleSave }) => {
 
     return (
         <div className="flex flex-col bg-white">
-
             <div className="flex mt-2">
                 <form onSubmit={handleSubmit(onSubmit, onError)}>
                     <div className="flex flex-col gap-3">

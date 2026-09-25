@@ -29,10 +29,14 @@ export function CartProvider({ children }) {
     return () => { cancelled = true; };
   }, [user]);
 
-  const addToCart = async (productId) => {
+  const addToCart = async (productId, quantity = 1) => {
+    if (!user) {
+      toast.error("Please login");
+      return false;
+    }
     setLoading(true);
     try {
-      const response = await addToCartAPI(productId, 1);
+      const response = await addToCartAPI(productId, quantity);
       if (response.status) {
         setCart(response.data);
         toast.success("Item added to Cart");

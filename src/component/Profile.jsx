@@ -5,7 +5,6 @@ import { useAuth } from "../context/AuthProvider";
 function Profile() {
 
     const { user } = useAuth();
-
     const [mode, setMode] = useState("list");
     const [dob, setDob] = useState(() => localStorage.getItem("dob") || "");
     const [gender, setGender] = useState(() => localStorage.getItem("gender") || "");

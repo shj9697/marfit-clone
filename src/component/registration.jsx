@@ -58,7 +58,6 @@ const Registration = ({ isOpen, closeModal }) => {
                     formData.email,
                     formData.password
                 );
-                console.log(loginData);
                 if (!loginData?.status) {
                     toast.error("Login failed");
                 }
