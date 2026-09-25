@@ -3,7 +3,7 @@ import SliderItem from "./sliderItem";
 
 
 
-function Accessories({ list = [] }) {
+const Accessories = ({ list = [] }) => {
     const navigate = useNavigate();
 
     function handleViewProduct() {
