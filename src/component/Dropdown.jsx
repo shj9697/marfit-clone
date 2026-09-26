@@ -7,7 +7,7 @@ function Dropdown({ title = "", list = [], slug = "", path = "" }) {
         <div className="relative group h-full">
             <div className="flex items-center gap-1 cursor-pointer hover:text-orange-600 h-full">
                 <Link to={path || `/categories/${slug}`}>
-                    <span className="font-medium">{title}</span>
+                    <span className="font-semibold text-[15px]">{title}</span>
                 </Link>
                 <ChevronDown
                     size={16}

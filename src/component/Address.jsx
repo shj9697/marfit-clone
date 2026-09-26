@@ -14,7 +14,6 @@ function Address() {
         localStorage.setItem("addresses", JSON.stringify(addresses));
     }, [addresses]);
 
-
     const switchMode = (nextMode) => {
         setMode(nextMode);
     }

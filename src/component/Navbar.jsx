@@ -30,45 +30,44 @@ const Navbar = () => {
   }
 
   return (
-    <>
-      <div className="w-full bg-black m-0 p-3 text-white text-[12px] text-center tracking-wide h-12">
-        Use Code SALE26 for extra 10% Off
-      </div>
-      <div className="w-full flex items-center h-15 sticky top-0 z-50 bg-white shadow-[0_2px_4px_0_#c9ccd1]">
-        <button onClick={handleClick} className="flex w-1/3 px-18 py-1 cursor-pointer">
+    <div className="w-full top-0 z-50 sticky">
+      <div className="w-full flex items-center justify-between h-15 px-8 shadow-[0_2px_4px_0_#c9ccd1] bg-white">
+        <button onClick={handleClick} className="flex w-1/3 items-center gap-1 py-1 cursor-pointer">
           <img src={brandIcon} className="h-9" />
           <img src={brandLogo} className="h-9" />
         </button>
         <SearchBar />
-        <div className="flex w-1/3 px-18 py-1 items-center justify-center gap-4 cursor-pointer h-full">
+        <div className="flex items-center justify-end gap-4 h-full w-1/3">
           {user ?
             <ProfileDropdown />
             :
-            <button className="px-8 py-0 rounded-full outline-none border-gray-300 cursor-pointer text-orange-600 font-semibold flex items-center justify-center gap-3.5"
+            <button className="py-0 rounded-full outline-none border-gray-300 cursor-pointer text-orange-600  flex items-center justify-center text-[14px] w-fit"
               onClick={() => setIsOpen(true)}
             >
-              <User />
-              Login /Signup
+              <User className="h-5 fill-orange-500" />
+              LOGIN /SIGN UP
             </button>
           }
           <button
-            className="relative px-4 py-0 rounded-full outline-none border-0 cursor-pointer flex items-center gap-2"
+            className="relative py-0 rounded-full outline-none border-0 cursor-pointer flex items-center text-[14px] gap-1 w-fit"
             onClick={handleViewCart}
           >
-            <ShoppingCart />
+            <ShoppingCart className="h-5 w-5 fill-black" />
             {cart.totalItems > 0 && (
               <span className="absolute -top-2 left-0  w-7 h-6 flex items-center justify-center bg-orange-500 text-white text-[10px] leading-none rounded-full">
                 {cart.totalItems > 10 ? "10+" : cart.totalItems}
               </span>
             )}
-            Cart
+            CART
           </button>
         </div>
       </div>
-      <CategoryDropdown />
+      <div className="hidden md:block">
+        <CategoryDropdown />
+      </div>
       {/* Login/Signup Model */}
       <Registration isOpen={isOpen} closeModal={() => setIsOpen(false)} />
-    </>
+    </div>
   );
 };
 

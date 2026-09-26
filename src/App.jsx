@@ -36,7 +36,7 @@ function App() {
         <AuthProvider>
           <CartProvider>
             <Navbar />
-            <Routes>
+            {/* <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/dashboard" element={<Dashboard />}>
                 <Route path="profile" element={<Profile />} />
@@ -60,7 +60,7 @@ function App() {
               <Route path="/AddressDetails" element={<AddressDetails />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-            <Footer />
+            <Footer /> */}
           </CartProvider>
         </AuthProvider>
       </BrowserRouter>

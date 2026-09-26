@@ -68,8 +68,6 @@ const CartDetails = () => {
                             handleChoosePayment={handleChoosePayment}
                             addresses={addresses}
                             setAddresses={setAddresses}
-                            selectedAddressId={selectedAddressId}
-                            setSelectedAddressId={setSelectedAddressId}
                         />
                     )}
                     {step === 2 && <Payment />}

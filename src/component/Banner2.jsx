@@ -6,7 +6,7 @@ function Banner2({ imgUrl, path }) {
 
     return (
         <Link to={path} >
-            <div className="py-10 relative  mx-26 bg-white">
+            <div className="py-10 relative  mx-4 bg-white">
                 <img src={imgUrl} />
             </div>
         </Link>

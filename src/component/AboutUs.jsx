@@ -5,7 +5,7 @@ function AboutUs({ leftContent = null, rightContent = null }) {
   if (!leftContent && !rightContent) return null;
 
   return (
-    <div className="flex mx-26 h-130">
+    <div className="flex mx-4 h-130">
       <div className="w-1/3">
         <Link to={leftContent.linkUrl}>
           <img

@@ -7,7 +7,7 @@ const SliderItem = ({ title, handleViewAll, list }) => {
     const swiperRef = useRef(null);
 
     return (
-        <div className="mx-26 my-4 p-3 rounded-md bg-white">
+        <div className="mx-4 my-2 p-3 rounded-md bg-white">
             <div className="flex items-center justify-between">
                 <div className="flex flex-col">
                     <h1 className="text-2xl font-normal">{title}</h1>

@@ -36,13 +36,13 @@ function ProfileDropdown() {
 
     return (
         <div className="relative group h-full">
-            <div className="flex items-center gap-1 cursor-pointer hover:text-orange-600 h-full">
+            <button className="flex items-center gap-1 cursor-pointer hover:text-orange-600 h-full w-fit">
                 <span className="font-medium">{user?.name || "U"}</span>
                 <ChevronDown
                     size={16}
                     className="group-hover:rotate-180 transition-all duration-300"
                 />
-            </div>
+            </button>
             {/* Child menus */}
             <div className="absolute left-[50%] translate-x-[-55%] top-10 mt-2 hidden w-48 bg-white shadow-lg group-hover:block z-50 border border-gray-200">
                 <ul className="relative py-2 after:content-[''] after:absolute after:bg-white after:w-2 after:h-2 after:rotate-45 after:top-[-5px] after:left-[50%] after:border after:border-gray-200 after:border-r-0 after:border-b-0">

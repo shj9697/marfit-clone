@@ -35,21 +35,20 @@ function SearchBar() {
     };
 
     return (
-        <div className="relative flex items-center justify-between gap-2 w-1/3 px-4 py-1 border border-gray-300 rounded-full">
+        <div className="relative flex items-center justify-between w-1/3 px-4 py-1 border border-gray-400 rounded-full">
             <div className="relative w-full">
-                <div>
-                    <input type="text" placeholder="What are you Looking for?" value={query} onChange={handleChange} className="w-full outline-none border-0 placeholder-black-700" />
-                </div>
+                <input type="text" placeholder="What are you looking for?" value={query} onChange={handleChange} className="outline-none border-0 placeholder-black px-5 py-0.5 w-full" />
             </div>
             <Search className="text-black-700" size={20} />
             {results.length > 0 && query.length > 2 && (
-                <div className="absolute top-full left-0 w-full bg-white shadow-lg z-50 p-6 rounded-md text-lg font-normal">
+                <div className="absolute top-full left-0 w-full bg-white shadow-lg z-46 p-6 rounded-b-md text-lg font-normal">
                     {results.map((result) => (
-                        <div key={result} className="search-result-item">{result}</div>
+                        <div key={result} className="search-result-item leading-12 overflow-y-scroll h-10">{result}</div>
                     ))}
                 </div>
             )}
         </div>
     );
 }
+
 export default SearchBar; 
