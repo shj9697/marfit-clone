@@ -1,7 +1,7 @@
 import { Search } from "lucide-react";
 import { useState } from "react";
 
-function SearchBar() {
+function SearchBar({ isMobile }) {
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
 
@@ -35,9 +35,9 @@ function SearchBar() {
     };
 
     return (
-        <div className="relative flex items-center justify-between w-1/3 px-4 py-1 border border-gray-400 rounded-full">
+        <div className={`relative items-center justify-between px-4 py-1 border border-gray-400 rounded-full ${isMobile ? "flex w-full" : "hidden md:flex w-1/3"}`}>
             <div className="relative w-full">
-                <input type="text" placeholder="What are you looking for?" value={query} onChange={handleChange} className="outline-none border-0 placeholder-black px-5 py-0.5 w-full" />
+                <input type="text" placeholder="What are you looking for?" value={query} onChange={handleChange} autoFocus={isMobile} className="outline-none border-0 placeholder-black px-5 py-0.5 w-full" />
             </div>
             <Search className="text-black-700" size={20} />
             {results.length > 0 && query.length > 2 && (

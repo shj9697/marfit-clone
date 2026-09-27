@@ -33,11 +33,11 @@ function CategoryDropdown() {
 	}
 	if (error) {
 		return <p>Error : {error}</p>
-	}
+	};
 
 	return (
-		<div className="w-full flex h-10 items-center justify-center bg-white shadow-[0_3px_6px_0_#dee0e2]">
-			<div className="w-full max-w-6xl flex px-4 items-center justify-between h-full text-base font-bold">
+		<div className="w-full flex lg:h-10 items-center md:justify-center bg-white shadow-[0_3px_6px_0_#dee0e2] px-3 lg:px-8 min-w-dvw overflow-x-auto">
+			<div className="w-full hidden lg:flex  max-w-6xl px-4 items-center justify-between h-full text-base font-bold">
 				<Link
 					to="/new-arrival"
 					className="text-[15px] text-orange-500 font-semibold whitespace-nowrap"
@@ -74,6 +74,25 @@ function CategoryDropdown() {
 					className="text-[15px] font-semibold"
 					onClick={() => navigate("/franchise")}>
 					Franchise Contact
+				</Link>
+			</div>
+			<div className="flex lg:hidden w-full items-center gap-1 py-2 bg-white">
+				<Link to={`/new-arrival`}>
+					<div className="h-27 w-20">
+						<img src={`https://marfit-ea7ba.web.app/static/media/new.23972988.png`} className="h-full w-full object-contain" />
+					</div>
+				</Link>
+				{categories.map((category, _) => (
+					<Link key={category.id} to={`/categories/${category.slug}`}>
+						<div className="h-27 w-20">
+							<img src={category.imageUrl} className="h-full w-full object-contain" />
+						</div>
+					</Link>
+				))}
+				<Link to={`/sale`}>
+					<div className="h-27 w-20">
+						<img src={`https://marfit-ea7ba.web.app/static/media/sale.814e30f3.png`} className="h-full w-full object-contain" />
+					</div>
 				</Link>
 			</div>
 		</div>
