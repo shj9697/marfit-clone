@@ -31,7 +31,7 @@ import Address from "./component/Address";
 
 function App() {
   return (
-    <div className="w-full min-h-screen flex flex-col bg-[#eef0f3]">
+    <div className="w-full bg-[#eef0f3]">
       <BrowserRouter>
         <AuthProvider>
           <CartProvider>
@@ -59,8 +59,8 @@ function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/AddressDetails" element={<AddressDetails />} />
               <Route path="*" element={<NotFound />} />
-            </Routes>
-            <Footer /> */}
+            </Routes> */}
+            <Footer />
           </CartProvider>
         </AuthProvider>
       </BrowserRouter>
