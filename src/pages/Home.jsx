@@ -42,7 +42,7 @@ function Home() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col gap-2 px-3">
       <HeroSection banner={homePageContent?.banners?.hero} />
       <DealOfTheDayCards list={homePageContent?.collections?.find(item => item.slug === 'deal-of-the-day')?.products} />
       <Banner imgUrl={homePageContent?.banners?.["mid-1"]?.imageUrl} path={homePageContent?.banners?.["mid-1"]?.linkUrl} />

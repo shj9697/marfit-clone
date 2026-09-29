@@ -8,14 +8,14 @@ export default function HeroSection({ banner = [] }) {
 	const swiperRef1 = useRef(null);
 
 	return (
-		<div className="py-10 relative  mx-4 bg-white">
+		<div className="pt-2 relative lg:w-full">
 			{banner.length ?
 				banner.length === 1
 					?
 					<img
 						src={banner[0].imageUrl}
 						alt="slider"
-						className="h-[400px] object-contain"
+						className="object-contain w-full "
 					/>
 					:
 					<>
@@ -31,7 +31,7 @@ export default function HeroSection({ banner = [] }) {
 									<img
 										src={image.imageUrl}
 										alt="slider"
-										className="w-full h-[400px] object-contain"
+										className="w-full object-contain"
 									/>
 								</SwiperSlide>
 							))

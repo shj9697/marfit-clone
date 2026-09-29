@@ -7,10 +7,10 @@ const SliderItem = ({ title, handleViewAll, list }) => {
     const swiperRef = useRef(null);
 
     return (
-        <div className="mx-4 my-2 p-3 rounded-md bg-white">
+        <div className="p-3 rounded-md bg-white w-full">
             <div className="flex items-center justify-between">
                 <div className="flex flex-col">
-                    <h1 className="text-2xl font-normal">{title}</h1>
+                    <h1 className="font-normal md:text-[14px] sm:text-[14px]">{title}</h1>
                     <div className="flex items-center gap-2 my-1">
                         <span className="w-15 h-px bg-black"></span>
                         <span className="w-px h-4 bg-black rotate-42"></span>
@@ -20,7 +20,7 @@ const SliderItem = ({ title, handleViewAll, list }) => {
                 </div>
                 {handleViewAll && (
                     <button
-                        className="text-white text-sm bg-orange-600 px-6 py-2 rounded-md cursor-pointer"
+                        className="text-white text-sm bg-[#fb641b] px-6 py-2 rounded cursor-pointer"
                         onClick={handleViewAll}
                     >
                         View All
@@ -35,9 +35,23 @@ const SliderItem = ({ title, handleViewAll, list }) => {
                     spaceBetween={20}
                     slidesPerView={6}
                     className="py-4"
+                    breakpoints={{
+                        320: {
+                            slidesPerView: 2,
+                        },
+                        768: {
+                            slidesPerView: 4,
+                        },
+                        1024: {
+                            slidesPerView: 5,
+                        },
+                        1440: {
+                            slidesPerView: 6
+                        }
+                    }}
                 >
                     {list.map((item, _) => (
-                        <SwiperSlide key={item.id} className="w-64! h-88!">
+                        <SwiperSlide key={item.id} className="w-full">
                             <ProductCard item={item} />
                         </SwiperSlide>
                     ))}

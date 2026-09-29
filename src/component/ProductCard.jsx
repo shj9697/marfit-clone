@@ -13,7 +13,14 @@ const ProductCard = ({ item }) => {
     }
 
     return (
-        <div className="shadow-xl cursor-pointer p-2 mx-1 my-1 w-64 h-88" >
+        <div
+            className="cursor-pointer p-2 my-1 min-h-80"
+            style={{
+                borderTop: "1px solid rgba(0,0,0,.03)",
+                borderLeft: "1px solid rgba(0,0,0,.1)",
+                boxShadow: "1px 2px 3px rgba(0,0,0,.2)"
+            }}
+        >
             <div className='flex justify-between'>
                 <img src={item.img} alt="" className="h-45 object-contain rounded-md w-full" />
                 {user ?
@@ -30,7 +37,7 @@ const ProductCard = ({ item }) => {
 
             </div>
             <div onClick={() => handleViewProductDetails(item)}>
-                <p className="text-sm mb-2 text-left">{item.title}</p>
+                <p className="text-sm mb-2 text-left line-clamp-2">{item.title}</p>
                 <p className="text-sm">Rs. {item.price}</p>
                 <div className="flex items-center gap-2"  >
                     <p className="text-sm line-through text-gray-500">Rs. {item.oldPrice} </p>
