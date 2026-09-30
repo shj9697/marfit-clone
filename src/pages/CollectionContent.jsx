@@ -35,18 +35,16 @@ const CollectionContent = () => {
     };
 
     return (
-        <div className="px-4 py-15 rounded-md bg-white">
-            <div className="mx-10">
-                <h1 className="text-3xl font-normal">{data?.title || ""}</h1>
-                <div className="crossline flex items-center gap-2 ">
-                    <span className="w-20 h-1 bg-black"></span>
-                    <span className="w-1 h-6 bg-black rotate-40"></span>
-                    <span className="w-1 h-6 bg-black rotate-40"></span>
-                    <span className="w-20 h-1 bg-black"></span>
-                </div>
+        <div className="p-8 bg-white">
+            <h1 className="text-2xl">{data?.title || ""}</h1>
+            <div className="crossline flex items-center gap-2 ">
+                <span className="w-20 h-0.5 bg-black"></span>
+                <span className="w-0.5 h-6 bg-black rotate-40"></span>
+                <span className="w-0.5 h-6 bg-black rotate-40"></span>
+                <span className="w-20 h-0.5 bg-black"></span>
             </div>
 
-            <div className="relative w-full flex flex-wrap justify-start items-center my-6 mx-10">
+            <div className="w-full grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mt-4">
                 {(data?.products || []).map((item, _) => (
                     <ProductCard item={item} key={item.id} />
                 ))}

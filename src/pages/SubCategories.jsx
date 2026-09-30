@@ -91,7 +91,7 @@ function SubCategories() {
 	}
 
 	return (
-		<div className="w-full bg-white">
+		<div className="w-full bg-white px-8">
 			<Breadcrumb
 				paths={[
 					{ title: categorySlug, link: `/categories/${categorySlug}` },
@@ -102,8 +102,8 @@ function SubCategories() {
 				]}
 			/>
 
-			<div className="bg-white my-5 py-10 px-35">
-				<div className="w-full flex gap-15">
+			<div className="bg-white py-5">
+				<div className="w-full flex gap-10">
 					<Filter
 						handleSortBy={handleSortBy}
 						handleCategoryBy={handleCategoryBy}
@@ -117,8 +117,8 @@ function SubCategories() {
 						stock={stock}
 						handleStock={handleStock}
 					/>
-					<div className="flex flex-col items-center w-[80%] gap-4 pb-4">
-						<div className="w-full grid grid-cols-3 gap-4">
+					<div className="flex flex-col w-[80%] pb-4">
+						<div className="w-2/3 grid grid-cols-3 gap-4 lg:grid-cols-2 xl:grid-cols-3">
 							{(data?.productListData?.products || []).map(item => (
 								<ProductCard item={item} key={item.id} />
 							))}

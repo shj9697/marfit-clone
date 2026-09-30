@@ -38,7 +38,7 @@ function App() {
             <Navbar />
             <Routes>
               <Route path="/" element={<Home />} />
-              {/* <Route path="/dashboard" element={<Dashboard />}>
+              <Route path="/dashboard" element={<Dashboard />}>
                 <Route path="profile" element={<Profile />} />
                 <Route path="orders" element={<Orders />} />
                 <Route path="wishlist" element={<Wishlist />} />
@@ -58,7 +58,7 @@ function App() {
               <Route path="/ShippingPolicy" element={<ShippingPolicy />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/AddressDetails" element={<AddressDetails />} />
-              <Route path="*" element={<NotFound />} /> */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
           </CartProvider>

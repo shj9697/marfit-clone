@@ -40,7 +40,7 @@ const Filter = ({ sortBy, category, subCategory, handleSortBy, handleCategoryBy,
     };
 
     return (
-        <div className="flex flex-col w-70">
+        <div className="flex flex-col w-70 text-gray-500 text-[14px] accent-[#fb641b]">
             <div className="flex">
                 <div className="flex w-full">
                     <ListFilter strokeWidth={1.75} className="h-5 w-5 my-1 mx-3" />

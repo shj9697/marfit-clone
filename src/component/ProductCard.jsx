@@ -34,7 +34,6 @@ const ProductCard = ({ item }) => {
                         }}
                     />
                     : null}
-
             </div>
             <div onClick={() => handleViewProductDetails(item)}>
                 <p className="text-sm mb-2 text-left line-clamp-2">{item.title}</p>

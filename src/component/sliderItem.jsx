@@ -10,12 +10,12 @@ const SliderItem = ({ title, handleViewAll, list }) => {
         <div className="p-3 rounded-md bg-white w-full">
             <div className="flex items-center justify-between">
                 <div className="flex flex-col">
-                    <h1 className="font-normal md:text-[14px] sm:text-[14px]">{title}</h1>
+                    <h1 className="text-base md:text-xl">{title}</h1>
                     <div className="flex items-center gap-2 my-1">
-                        <span className="w-15 h-px bg-black"></span>
-                        <span className="w-px h-4 bg-black rotate-42"></span>
-                        <span className="w-px h-4 bg-black rotate-42"></span>
-                        <span className="w-15 h-px bg-black"></span>
+                        <span className="w-15 h-0.5 bg-black"></span>
+                        <span className="w-0.5 h-4 bg-black rotate-42"></span>
+                        <span className="w-0.5 h-4 bg-black rotate-42"></span>
+                        <span className="w-15 h-0.5 bg-black"></span>
                     </div>
                 </div>
                 {handleViewAll && (
