@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 function Footer() {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col mt-16   ">
+    <div className="flex flex-col mt-16">
       <div className="bg-black rounded-none lg:rounded-tl-[45px] w-full lg:w-[95%] lg:ml-auto p-12 flex flex-col">
         <div className="flex flex-col md:flex-row md:gap-8">
           <div className="w-full md:w-[60%] min-w-0">

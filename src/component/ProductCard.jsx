@@ -14,7 +14,7 @@ const ProductCard = ({ item }) => {
 
     return (
         <div
-            className="cursor-pointer p-2 my-1 min-h-80"
+            className="cursor-pointer p-2 min-h-80"
             style={{
                 borderTop: "1px solid rgba(0,0,0,.03)",
                 borderLeft: "1px solid rgba(0,0,0,.1)",
@@ -27,7 +27,7 @@ const ProductCard = ({ item }) => {
                     <Heart
                         size={24}
                         strokeWidth={2}
-                        className={wishListed ? "fill-red-500 text-red-500 cursor-pointer" : "fill-white text-gray-600 cursor-pointer"}
+                        className={wishListed ? "shrink-0 fill-red-500 text-red-500 cursor-pointer" : "shrink-0 fill-white text-gray-600 cursor-pointer"}
                         onClick={(event) => {
                             event.stopPropagation();
                             toggleWishList(item);

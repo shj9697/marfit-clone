@@ -91,7 +91,7 @@ function SubCategories() {
 	}
 
 	return (
-		<div className="w-full bg-white px-8">
+		<div className="w-full bg-white px-4 md:px-8">
 			<Breadcrumb
 				paths={[
 					{ title: categorySlug, link: `/categories/${categorySlug}` },
@@ -102,32 +102,30 @@ function SubCategories() {
 				]}
 			/>
 
-			<div className="bg-white py-5">
-				<div className="w-full flex gap-10">
-					<Filter
-						handleSortBy={handleSortBy}
-						handleCategoryBy={handleCategoryBy}
-						handleSubCategoryBy={handleSubCategoryBy}
-						handleReset={handleReset}
-						sortBy={sortBy}
-						category={category}
-						subCategory={subCategory}
-						embossable={embossable}
-						handleIsEmbossableBy={handleIsEmbossableBy}
-						stock={stock}
-						handleStock={handleStock}
-					/>
-					<div className="flex flex-col w-[80%] pb-4">
-						<div className="w-2/3 grid grid-cols-3 gap-4 lg:grid-cols-2 xl:grid-cols-3">
-							{(data?.productListData?.products || []).map(item => (
-								<ProductCard item={item} key={item.id} />
-							))}
-						</div>
-						<div className="flex justify-center items-center px-2 gap-2">
-							<button disabled={currentPage <= 1} className="bg-orange-600 text-white px-6 py-2 cursor-pointer disabled:bg-white" onClick={handlePrevPage}> Prev</button>
-							<h1>Page {currentPage} of {data?.productListData?.totalPages || 1}</h1>
-							<button disabled={currentPage >= data?.productListData?.totalPages} className="bg-orange-600 text-white px-6 py-2 cursor-pointer disabled:bg-white" onClick={handleNextPage}>Next</button>
-						</div>
+			<div className="bg-white py-5 w-full flex gap-10">
+				<Filter
+					handleSortBy={handleSortBy}
+					handleCategoryBy={handleCategoryBy}
+					handleSubCategoryBy={handleSubCategoryBy}
+					handleReset={handleReset}
+					sortBy={sortBy}
+					category={category}
+					subCategory={subCategory}
+					embossable={embossable}
+					handleIsEmbossableBy={handleIsEmbossableBy}
+					stock={stock}
+					handleStock={handleStock}
+				/>
+				<div className="flex flex-col w-[calc(100%-320px)] pb-4 gap-6">
+					<div className="w-full grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4">
+						{(data?.productListData?.products || []).map(item => (
+							<ProductCard item={item} key={item.id} />
+						))}
+					</div>
+					<div className="flex justify-center items-center px-2 gap-2">
+						<button disabled={currentPage <= 1} className="bg-orange-600 text-white px-6 py-2 cursor-pointer disabled:bg-white" onClick={handlePrevPage}> Prev</button>
+						<h1>Page {currentPage} of {data?.productListData?.totalPages || 1}</h1>
+						<button disabled={currentPage >= data?.productListData?.totalPages} className="bg-orange-600 text-white px-6 py-2 cursor-pointer disabled:bg-white" onClick={handleNextPage}>Next</button>
 					</div>
 				</div>
 			</div>
