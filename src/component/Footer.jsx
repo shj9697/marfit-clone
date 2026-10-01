@@ -32,7 +32,7 @@ function Footer() {
               </div>
               <div>
                 <h1 className="md:text-[14px] text-white text-[17px] font-normal whitespace-nowrap">POLICY & RULES</h1>
-                <div className="md:leading-5 md:mt-2 lg:leading-8 text-gray-500 leading-9">
+                <div className="md:leading-5 md:mt-2 lg:leading-8 flex flex-col text-gray-500 leading-9">
                   <Link className="md:text-[14px] cursor-pointer text-[15px] whitespace-nowrap" onClick={() => navigate("/TermsAndCondition")} > Terms & Conditions</Link>
                   <Link className="md:text-[14px] cursor-pointer text-[15px]" onClick={() => navigate("/ShippingPolicy")}> Shipping Policy</Link>
                 </div>

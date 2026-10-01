@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, A11y } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Heart, MapPin } from "lucide-react";
+import { Heart, MapPin, ShoppingCart } from "lucide-react";
 import { useCart } from "../context/CartProvider";
 import { useAuth } from "../context/AuthProvider";
 import ProductCard from "../component/ProductCard";
@@ -39,6 +39,7 @@ function ProductDetailsPage({ item }) {
                 setError(null);
                 const data = await getRelatedProductsAPI(productId);
                 const productDetails = await getProductDetailsAPI(productId);
+                console.log(productDetails)
                 if (!cancelled) {
                     setSimilar(data.similar);
                     setData(data.youMayAlsoLike);
@@ -104,35 +105,38 @@ function ProductDetailsPage({ item }) {
         <section>
             <Breadcrumb
                 paths={[
-                    { title: parentId, link: `/categories/${parentId}` },
-                    { title: subId, link: `/categories/${parentId}/${subId}` },
+                    { title: productDetails?.categoryRef?.name ?? parentId, link: `/categories/${parentId}` },
+                    { title: productDetails?.subcategoryRef?.name ?? subId, link: `/categories/${parentId}/${subId}` },
+                    { title: productDetails?.slug ?? productId, link: `/categories/${parentId}/${subId}/${productId}` },
                 ]}
             />
-            <div className="flex w-full h-160 bg-white px-35">
-                <div className="flex flex-col w-[30%] pt-3  ">
-                    <div className="flex h-[450px]">
-                        <div className="flex flex-col w-[20%] h-full gap-2">
+            <div className="flex flex-col justify-between w-full px-8 bg-white lg:flex-row lg:h-135">
+                <div className="flex flex-col w-full lg:w-[45%] pt-3 relative">
+                    <div className="flex flex-col-reverse lg:flex-row">
+                        <div className="flex flex-row lg:flex-col justify-center-safe lg:justify-start gap-2 overflow-x-auto">
                             {(productDetails?.images || []).map((img, index) => {
                                 return (
-                                    <div key={img.id} className={`w-16 h-16 p-2 rounded-lg border-2 ${activeImage === index ? "border-orange-500" : "border-transparent"}`}>
+                                    <div key={img.id} className={`w-16 h-16 shrink-0 p-2 rounded-lg border-2 ${activeImage === index ? "border-orange-500" : "border-transparent"}`}>
                                         <img src={img.url} alt={img.alt} className="w-full h-full cursor-pointer object-contain" onClick={() => handleImages(index)} />
                                     </div>
                                 )
                             })}
                         </div>
-                        <div className="w-[80%] h-full">
-                            <img src={(productDetails?.images || [])?.[activeImage]?.url || ""} alt={(productDetails?.images || [])?.[activeImage]?.alt || "product-image"} className="w-full h-full cursor-pointer object-contain" />
+                        <div className="w-full my-4 lg:flex-1 lg:m-10">
+                            <div className="h-90">
+                                <img src={(productDetails?.images || [])?.[activeImage]?.url || ""} alt={(productDetails?.images || [])?.[activeImage]?.alt || "product-image"} className="w-full h-full cursor-pointer object-cover" />
+                            </div>
+                            <div className="hidden lg:flex justify-center gap-5 mt-5">
+                                <button className="px-9 py-2 bg-white cursor-pointer border-2 border-orange-600 whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => addToCart(productId)}>ADD TO CART</button>
+                                <button className="px-9 py-2 bg-orange-600 text-white cursor-pointer whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleBuyNow(productId)}>BUY NOW</button>
+                            </div>
                         </div>
                     </div>
-                    <div className="flex ">
-                        <button className="px-9 py-2 bg-transparent mr-5 cursor-pointer border-2 border-orange-600 whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => addToCart(productId)}>ADD TO CART</button>
-                        <button className="px-9 py-2 bg-orange-600 text-white cursor-pointer whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleBuyNow(productId)}>BUY NOW</button>
-                    </div>
                 </div>
-                <div className="w-[70%] px-3 py-10 mx-15 overflow-y-scroll no-scrollbar">
+                <div className="w-full lg:flex-1 py-10 overflow-x-hidden lg:overflow-y-scroll no-scrollbar">
                     <div>
                         <div className="flex items-center justify-between">
-                            <h1 className="text-4xl leading-10">{productDetails.title}</h1>
+                            <h1 className="text-[18px] lg:text-4xl lg:leading-10">{productDetails.title}</h1>
                             <div className="bg-white cursor-pointer">
                                 {user ?
                                     <Heart
@@ -148,13 +152,13 @@ function ProductDetailsPage({ item }) {
                             </div>
                         </div>
                         <div className="flex items-center gap-2 my-2">
-                            <p className="text-4xl">₹{productDetails.price} </p>
-                            <p className="line-through text-gray-600 text-2xl">₹{productDetails.oldPrice}</p>
-                            <p className="text-orange-600 font-medium text-md">{productDetails.discount}</p>
+                            <p className="text-[18px] lg:text-4xl">₹{productDetails.price} </p>
+                            <p className="text-[18px] line-through text-gray-600 lg:text-2xl">₹{productDetails.oldPrice}</p>
+                            <p className="text-[18px] text-orange-600 font-medium lg:text-md">{productDetails.discount}</p>
                         </div>
                     </div>
                     <div className="flex  w-[50%]">
-                        <div className="flex flex-col w-[20%]" >
+                        <div className="flex flex-col sm:w-" >
                             <h1 className="text-lg font-semibold">Quantity</h1>
                             <div>
                                 <select value={quantity} onChange={handleQuantityChange} className="w-full h-full text-center cursor-pointer border-2 rounded-md border-gray-500">
@@ -175,58 +179,78 @@ function ProductDetailsPage({ item }) {
                     </div>
                     <button className="mt-15 text-orange-600 font-semibold cursor-pointer" onClick={corporateContact} >For bulk - Click here</button>
                     <div className="flex items-center gap-4 mt-5">
-                        <h2 className="text-[18px] font-medium text-gray-500">Delivery </h2>
-                        <div className="flex items-center gap-2 border-b-2 border-orange-500 p-2">
-                            <MapPin className="text-orange-500" />
-                            <input onChange={e => setPincode(e.target.value)} type="text" value={pincode} className="w-[100px] outline-none" />
-                            <button className="text-orange-500 font-medium cursor-pointer" onClick={pincodeVerify}>Check</button>
+                        <h2 className="text-[18px] font-medium text-gray-500 shrink-0">Delivery </h2>
+                        <div className="flex items-center gap-2 border-b-2 border-orange-500 p-2 min-w-0">
+                            <MapPin className="text-orange-500 shrink-0" />
+                            <input onChange={e => setPincode(e.target.value)} type="text" value={pincode} className="w-[100px] outline-none min-w-0" />
+                            <button className="text-orange-500 font-medium cursor-pointer shrink-0" onClick={pincodeVerify}>Check</button>
                         </div>
                     </div>
                     <p className={`${messageType === 'error' ? 'text-orange-500' : 'text-green-500'} font-medium ml-21`}>{message}</p>
                     <div className="py-4 h-20 ">
                         <div className="w-full h-0.5 bg-gray-500 mb-4"></div>
-                        <p className="text-2xl ml-5">Product Details</p>
+                        <p className="text-[18px] lg:text-2xl ml-5">Product Details</p>
                         <div className="w-full h-0.5 bg-gray-500 mt-4"></div>
                     </div>
-                    <p className="mt-2">BUY 100% Original Leather Products From MARFIT. Leather will long last and will never peel off like an artificial Leather. Customer satisfaction guaranteed. PRODUCT DETAIL : Removable, adjustable nylon long shoulder strap | Metal Hardware : durable enough for daily use Zip-top closure pure genuine leather CFC zipper | Handle type : Fixed solid full grain leather double handle , carried in 3 ways Handbags , Shoulder bag & Satchels . TO PROCESS AND CLAIM WARRANTY : Customer needs to send the product to the MARFIT, Kolkata. The Product will be rectified and send back to the Customer. This warranty shall be void if the product is damaged due to misuse, abuse, physical mishandling or natural causes such as flood, fire, earthquake or other perils.</p>
-                    <div className="flex w-150 mx-2 ">
-                        <div className="w-[30%]  p-5 leading-12 text-gray-600 font-semibold">
-                            <h1>Height</h1>
-                            <h1>Width</h1>
-                            <h1>Thickness</h1>
-                            <h1>Model Name</h1>
-                            <h1>Closure</h1>
-                            <h1>Sales Package</h1>
-                            <h1>Leather Type</h1>
-                            <h1>Weight</h1>
-                            <h1>Compartments</h1>
-                            <h1>Covered in Warranty</h1>
-                            <h1>Domestic Warranty</h1>
+                    <p className="max-sm:text-[12px] text-[16px] my-4">
+                        BUY 100% Original Leather Products From MARFIT. Leather will long last and will never peel off like an artificial Leather. Customer satisfaction guaranteed. PRODUCT DETAIL : Removable, adjustable nylon long shoulder strap | Metal Hardware : durable enough for daily use Zip-top closure pure genuine leather CFC zipper | Handle type : Fixed solid full grain leather double handle , carried in 3 ways Handbags , Shoulder bag & Satchels . TO PROCESS AND CLAIM WARRANTY : Customer needs to send the product to the MARFIT, Kolkata. The Product will be rectified and send back to the Customer. This warranty shall be void if the product is damaged due to misuse, abuse, physical mishandling or natural causes such as flood, fire, earthquake or other perils.
+                    </p>
+                    <div className="sm:leading-6 max-sm:text-[14px] md:leading-10">
+                        <div className="flex items-start gap-4">
+                            <h1 className="text-[#878787] shrink-0 w-1/2">Height</h1>
+                            <p className="flex-1">32 cm</p>
                         </div>
-                        <div className="w-[70%]  p-5 leading-12">
-                            <p>32 cm</p>
-                            <p>45 cm</p>
-                            <p>7 cm</p>
-                            <p>Genuine Leather Laptop Messenger Bag</p>
-                            <p>Zipper</p>
-                            <p>1 piece Laptop Messenger Bag</p>
-                            <p>Top Grain</p>
-                            <p>700 g</p>
-                            <p>1 main compartments with with inner slip pockets</p>
-                            <p>Warranty Covers Only Manufacturing Defects</p>
-                            <p>1 Year</p>
+                        <div className="flex items-start gap-4">
+                            <h1 className="text-[#878787] shrink-0 w-1/2">Width</h1>
+                            <p className="flex-1">45 cm</p>
+                        </div>
+                        <div className="flex items-start gap-4">
+                            <h1 className="text-[#878787] shrink-0 w-1/2">Thickness</h1>
+                            <p className="flex-1">7 cm</p>
+                        </div>
+                        <div className="flex items-start gap-4">
+                            <h1 className="text-[#878787] shrink-0 w-1/2">Model Name</h1>
+                            <p className="flex-1">Genuine Leather Laptop Messenger Bag</p>
+                        </div>
+                        <div className="flex items-start gap-4">
+                            <h1 className="text-[#878787] shrink-0 w-1/2">Closure</h1>
+                            <p className="flex-1">Zipper</p>
+                        </div>
+                        <div className="flex items-start gap-4">
+                            <h1 className="text-[#878787] shrink-0 w-1/2">Sales Package</h1>
+                            <p className="flex-1">1 piece Laptop Messenger Bag</p>
+                        </div>
+                        <div className="flex items-start gap-4">
+                            <h1 className="text-[#878787] shrink-0 w-1/2">Leather Type</h1>
+                            <p className="flex-1">Top Grain</p>
+                        </div>
+                        <div className="flex items-start gap-4">
+                            <h1 className="text-[#878787] shrink-0 w-1/2">Weight</h1>
+                            <p className="flex-1">700 g</p>
+                        </div>
+                        <div className="flex items-start gap-4">
+                            <h1 className="text-[#878787] shrink-0 w-1/2">Compartments</h1>
+                            <p className="flex-1">1 main compartments with with inner slip pockets</p>
+                        </div>
+                        <div className="flex items-start gap-4">
+                            <h1 className="text-[#878787] shrink-0 w-1/2">Covered in Warranty</h1>
+                            <p className="flex-1">Warranty Covers Only Manufacturing Defects</p>
+                        </div>
+                        <div className="flex items-start gap-4">
+                            <h1 className="text-[#878787] shrink-0 w-1/2">Domestic Warranty</h1>
+                            <p className="flex-1">1 Year</p>
                         </div>
                     </div>
-                    <div className="py-4 h-20 ">
+                    <div className="py-4 h-20">
                         <div className="w-full h-0.5 bg-gray-500 mb-4"></div>
-                        <p className="text-2xl font-semibold ml-5">Ratings & Review</p>
-                        <p className="text-center my-10 ">No ratings or reviews</p>
+                        <p className="text-2xl font-semibold ml-5 max-sm:text-[12px]">Ratings & Review</p>
+                        <p className="text-center my-10 max-sm:text-[12px]">No ratings or reviews</p>
                     </div>
                 </div>
             </div>
-            <div className="mx-26 my-4 p-3 rounded-md bg-white ">
-                <div className="flex items-center justify-between">
-                    <div className="flex flex-col">
+            <div className="m-4 rounded-md bg-white ">
+                <div className="flex">
+                    <div className="flex flex-col p-3">
                         <h1 className="text-2xl font-normal">Similar Products</h1>
                         <div className="flex items-center gap-2 my-1">
                             <span className="w-15 h-px bg-black"></span>
@@ -242,7 +266,21 @@ function ProductDetailsPage({ item }) {
                         onSwiper={(swiper) => (similarSwiperRef.current = swiper)}
                         spaceBetween={20}
                         slidesPerView={6}
-                        className="my-4"
+                        className="py-4"
+                        breakpoints={{
+                            320: {
+                                slidesPerView: 2,
+                            },
+                            768: {
+                                slidesPerView: 4,
+                            },
+                            1024: {
+                                slidesPerView: 5,
+                            },
+                            1440: {
+                                slidesPerView: 6
+                            }
+                        }}
                     >
                         {similar.map((item) => (
                             <SwiperSlide key={item.id} className="w-60! h-84!">
@@ -268,7 +306,7 @@ function ProductDetailsPage({ item }) {
                     </button>
                 </div>
             </div>
-            <div className="mx-26 my-4 p-3 rounded-md bg-white ">
+            <div className="m-4 p-3 rounded-md bg-white ">
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col">
                         <h1 className="text-2xl font-normal">You may also like</h1>
@@ -286,7 +324,21 @@ function ProductDetailsPage({ item }) {
                         onSwiper={(swiper) => (alsoLikeSwiperRef.current = swiper)}
                         spaceBetween={20}
                         slidesPerView={6}
-                        className="my-4"
+                        className="py-4"
+                        breakpoints={{
+                            320: {
+                                slidesPerView: 2,
+                            },
+                            768: {
+                                slidesPerView: 4,
+                            },
+                            1024: {
+                                slidesPerView: 5,
+                            },
+                            1440: {
+                                slidesPerView: 6
+                            }
+                        }}
                     >
                         {data.map((item) => (
                             <SwiperSlide key={item.id} className="w-60! h-84!">
@@ -311,6 +363,10 @@ function ProductDetailsPage({ item }) {
                         </svg>
                     </button>
                 </div>
+            </div>
+            <div className="lg:hidden sticky bottom-0 z-1 flex justify-center gap-5 md:px-10 p-3 bg-white">
+                <button className="flex-1 py-2 bg-white cursor-pointer border-2 border-orange-600 whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => addToCart(productId)}>ADD TO CART</button>
+                <button className="flex-1 py-2 bg-orange-600 text-white cursor-pointer whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleBuyNow(productId)}>BUY NOW</button>
             </div>
         </section >
     );

@@ -101,8 +101,7 @@ function SubCategories() {
 					},
 				]}
 			/>
-
-			<div className="bg-white py-5 w-full flex gap-10">
+			<div className="bg-white py-5 w-full flex flex-col gap-6 md:flex-row md:gap-10">
 				<Filter
 					handleSortBy={handleSortBy}
 					handleCategoryBy={handleCategoryBy}
@@ -116,7 +115,7 @@ function SubCategories() {
 					stock={stock}
 					handleStock={handleStock}
 				/>
-				<div className="flex flex-col w-[calc(100%-320px)] pb-4 gap-6">
+				<div className="flex flex-col flex-1 min-w-0 pb-4 gap-6">
 					<div className="w-full grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4">
 						{(data?.productListData?.products || []).map(item => (
 							<ProductCard item={item} key={item.id} />

@@ -36,8 +36,8 @@ function CategoryDropdown() {
 	};
 
 	return (
-		<div className="w-full flex lg:h-10 items-center md:justify-center bg-white shadow-[0_3px_6px_0_#dee0e2] px-3 lg:px-8 min-w-dvw max-lg:overflow-x-auto">
-			<div className="w-full hidden lg:flex  max-w-6xl px-4 items-center justify-between h-full text-base font-bold">
+		<div className="w-full flex  lg:h-10 items-center md:justify-center bg-white shadow-[0_3px_6px_0_#dee0e2] px-3 lg:px-8 min-w-dvw max-lg:overflow-x-auto">
+			<div className="w-full hidden  lg:flex  max-w-6xl px-4 items-center justify-between h-full text-base font-bold">
 				<Link
 					to="/new-arrival"
 					className="text-[15px] text-orange-500 font-semibold whitespace-nowrap"

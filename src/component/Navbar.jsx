@@ -75,9 +75,9 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="w-full top-0 z-50 sticky">
-      <div className="relative w-full flex items-center justify-between h-15 px-3 md:px-8 shadow-[0_2px_4px_0_#c9ccd1] bg-white">
-        <div className={`md:hidden absolute inset-y-0 right-0 z-10 bg-white transition-[width,visibility] duration-500 ease-out ${isSearchOpen ? "w-full visible" : "w-0 invisible"}`}>
+    <>
+      <div className="sticky top-0 z-50 w-full flex items-center justify-between h-15 px-3 md:px-8 shadow-[0_2px_4px_0_#c9ccd1] bg-white">
+        <div className={`md:hidden absolute inset-y-0 right-0 z-10 overflow-hidden bg-white transition-[width,visibility] duration-500 ease-out ${isSearchOpen ? "w-full visible" : "w-0 invisible"}`}>
           <div className="flex items-center gap-3 h-full px-8">
             <SearchBar isMobile isOpen={isSearchOpen} />
             <button
@@ -136,7 +136,9 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      <CategoryDropdown />
+      <div className="lg:sticky lg:top-15 lg:z-40">
+        <CategoryDropdown />
+      </div>
       <SideBarModal isOpen={MenuOpen} onClose={() => setMenuOpen(false)}>
         <nav className="flex flex-col text-[18px] font-semibold">
           <Link
@@ -228,7 +230,7 @@ const Navbar = () => {
       </SideBarModal>
       {/* Login/Signup Model */}
       <Registration isOpen={isOpen} closeModal={() => setIsOpen(false)} />
-    </div>
+    </>
   );
 };
 export default Navbar;
