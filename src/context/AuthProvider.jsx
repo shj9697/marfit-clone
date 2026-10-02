@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { meAPI } from "../api/authentication";
 import { tokenStore } from "../api/tokenStore";
 import { useNavigate } from "react-router-dom";
@@ -53,12 +53,29 @@ export function AuthProvider({ children }) {
         return () => { cancelled = true; };
     }, []);
 
-    const logout = () => {
+    const logout = useCallback(() => {
         tokenStore.clear();
         setUser(null);
         navigate("/");
         setWishList([]);
-    };
+    }, [navigate]);
+
+    // The access cookie expires on its own, so log out once it's gone instead of keeping a stale user in memory
+    useEffect(() => {
+        if (!user) return;
+        const checkSession = () => {
+            if (!tokenStore.getAccess()) {
+                toast.error("Session expired, please login again");
+                logout();
+            }
+        };
+        const timer = setInterval(checkSession, 30 * 1000);
+        window.addEventListener("focus", checkSession);
+        return () => {
+            clearInterval(timer);
+            window.removeEventListener("focus", checkSession);
+        };
+    }, [user, logout]);
 
     return (
         <AuthContext.Provider value={{ user, setUser, loading, logout, authError: error, wishList, toggleWishList, isInWishList }}>

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Dropdown from "./Dropdown";
 import { useEffect, useState } from "react";
 import { getProductCategoriesAPI } from "../api/productCategoriesApi";
@@ -8,6 +8,7 @@ function CategoryDropdown() {
 	const [categories, setCategories] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const location = useLocation();
 
 	useEffect(() => {
 		let cancelled = false;
@@ -76,24 +77,30 @@ function CategoryDropdown() {
 					Franchise Contact
 				</Link>
 			</div>
-			<div className="flex lg:hidden w-full items-center gap-1 py-2 bg-white">
-				<Link to={`/new-arrival`}>
-					<div className="h-27 w-20">
-						<img src={`https://marfit-ea7ba.web.app/static/media/new.23972988.png`} className="h-full w-full object-contain" />
-					</div>
-				</Link>
-				{categories.map((category, _) => (
-					<Link key={category.id} to={`/categories/${category.slug}`}>
-						<div className="h-27 w-20">
-							<img src={category.imageUrl} className="h-full w-full object-contain" />
+			<div>
+				{location.pathname === "/" &&
+					<div className="block lg:hidden">
+						<div className="flex lg:hidden w-full items-center gap-1 py-2 bg-white">
+							<Link to={`/new-arrival`}>
+								<div className="h-27 w-20">
+									<img src={`https://marfit-ea7ba.web.app/static/media/new.23972988.png`} className="h-full w-full object-contain" />
+								</div>
+							</Link>
+							{categories.map((category, _) => (
+								<Link key={category.id} to={`/categories/${category.slug}`}>
+									<div className="h-27 w-20">
+										<img src={category.imageUrl} className="h-full w-full object-contain" />
+									</div>
+								</Link>
+							))}
+							<Link to={`/sale`}>
+								<div className="h-27 w-20">
+									<img src={`https://marfit-ea7ba.web.app/static/media/sale.814e30f3.png`} className="h-full w-full object-contain" />
+								</div>
+							</Link>
 						</div>
-					</Link>
-				))}
-				<Link to={`/sale`}>
-					<div className="h-27 w-20">
-						<img src={`https://marfit-ea7ba.web.app/static/media/sale.814e30f3.png`} className="h-full w-full object-contain" />
 					</div>
-				</Link>
+				}
 			</div>
 		</div>
 	);

@@ -9,7 +9,6 @@ const CartDetails = () => {
         const saved = localStorage.getItem("checkoutAddresses");
         return saved ? JSON.parse(saved) : [];
     });
-
     useEffect(() => {
         localStorage.setItem("checkoutAddresses", JSON.stringify(addresses));
     }, [addresses]);
@@ -47,14 +46,14 @@ const CartDetails = () => {
                     >
                         CART
                     </p>
-                    <span className={step >= 1 ? "text-green-600" : "text-gray-500"} >-----</span>
+                    <span className={`whitespace-nowrap shrink-0 ${step >= 1 ? "text-green-600" : "text-gray-500"}`}>-----</span>
                     <p
                         onClick={() => handleStep(1)}
                         className={`cursor-pointer ${step >= 1 ? "text-green-600" : "text-gray-500"}`}
                     >
                         ADDRESS
                     </p>
-                    <span className={step >= 2 ? "text-green-600" : "text-gray-500"}>-----</span>
+                    <span className={`whitespace-nowrap shrink-0 ${step >= 1 ? "text-green-600" : "text-gray-500"}`}>-----</span>
                     <p
                         className={`cursor-pointer ${step >= 2 ? "text-green-600" : "text-gray-500"}`}
                     >

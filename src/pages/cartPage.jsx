@@ -23,16 +23,16 @@ const CartPage = () => {
     };
 
     return (
-        <div className="w-full px-20">
+        <div className="w-full lg:px-2">
             {items.length === 0 ?
-                <div className="flex items-center justify-center flex-col p-5 w-full h-96 my-36 ">
-                    <h1 className="text-4xl leading-12 text-gray-900">Your cart is empty</h1>
-                    <p className="text-base leading-12 text-gray-700">Add items in your cart and come back later to process checkout.</p>
-                    <button className="bg-[#FB6B25] text-white p-4 rounded-md cursor-pointer" onClick={() => Homepage()}>Continue to shopping</button>
+                <div className="flex items-center justify-center gap-3 flex-col p-5 w-full h-96 my-36">
+                    <h1 className="text-4xl sm:text-[14px] text-gray-900 whitespace-nowrap">Your cart is empty</h1>
+                    <p className="text-center text-base text-gray-700">Add items in your cart and come back later to process checkout.</p>
+                    <button className="bg-[#FB6B25] text-white p-4 rounded-md cursor-pointer whitespace-nowrap" onClick={() => Homepage()}>Continue to shopping</button>
                 </div>
                 :
-                <div className='flex items-start w-full gap-6 px-6 py-10'>
-                    <div className='w-2/3 flex flex-col gap-4'>
+                <div className='flex flex-col lg:flex-row items-start w-full gap-6 lg:px-6 py-10'>
+                    <div className='w-full lg:w-2/3 flex flex-col gap-4'>
                         <div className="">
                             <div className="flex items-center gap-3">
                                 <h1 className='text-2xl'>Your Cart</h1>
@@ -46,7 +46,7 @@ const CartPage = () => {
                             <CartItem key={item.productId} item={item} />
                         ))}
                     </div>
-                    <div className='w-1/3'>
+                    <div className='w-full lg:w-1/3'>
                         <CartDetails totalAmount={summary.totalAmount} />
                     </div>
                 </div>

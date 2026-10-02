@@ -21,13 +21,13 @@ const ProductCard = ({ item }) => {
                 boxShadow: "1px 2px 3px rgba(0,0,0,.2)"
             }}
         >
-            <div className='flex justify-between'>
-                <img src={item.img} alt="" className="h-45 object-contain rounded-md w-full" />
+            <div className='relative flex justify-between'>
+                <img src={item.img} alt="" className="h-45  min-w-0 object-contain rounded-md w-full" />
                 {user ?
                     <Heart
                         size={24}
                         strokeWidth={2}
-                        className={wishListed ? "shrink-0 fill-red-500 text-red-500 cursor-pointer" : "shrink-0 fill-white text-gray-600 cursor-pointer"}
+                        className={wishListed ? "absolute top-1 right-1 lg:static shrink-0 fill-red-500 text-red-500 cursor-pointer" : "absolute top-1 right-1 lg:static shrink-0 fill-white text-gray-600 cursor-pointer"}
                         onClick={(event) => {
                             event.stopPropagation();
                             toggleWishList(item);

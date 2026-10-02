@@ -172,7 +172,6 @@ const Navbar = () => {
           </Link>
           {categories.map((category, _) => {
             const isThisCategoryOpen = expandedCategoryId === category.id;
-            console.log(isThisCategoryOpen)
             return (
               <div key={category.id} className="border-b border-gray-200">
                 <div className={`flex items-center justify-between p-5 ${isThisCategoryOpen && "pb-0"}`}>

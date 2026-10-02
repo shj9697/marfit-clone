@@ -242,7 +242,7 @@ function ProductDetailsPage({ item }) {
                         </div>
                     </div>
                     <div className="py-4 h-20">
-                        <div className="w-full h-0.5 bg-gray-500 mb-4"></div>
+                        <div className="w-full h-0.5 bg-gray-300 mb-4"></div>
                         <p className="text-2xl font-semibold ml-5 max-sm:text-[12px]">Ratings & Review</p>
                         <p className="text-center my-10 max-sm:text-[12px]">No ratings or reviews</p>
                     </div>

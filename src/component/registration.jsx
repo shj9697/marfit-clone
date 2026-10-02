@@ -149,7 +149,7 @@ const Registration = ({ isOpen, closeModal }) => {
                             </button>
                         </form>
 
-                        <div className="flex flex-col items-center gap-10 mt-4">
+                        <div className="flex flex-col items-center gap-5 lg:gap-10 mt-4">
                             <div className="flex items-center gap-2">
                                 <span className="w-32 h-px bg-gray-500" />
                                 <span className="text-gray-500">OR</span>
@@ -167,7 +167,7 @@ const Registration = ({ isOpen, closeModal }) => {
                 ) : (
                     <>
                         <form onSubmit={handleSubmit(onSubmit, onError)}>
-                            <div className={step === "password" ? "flex justify-center items-center mt-15 opacity-70" : "flex justify-center items-center mt-15"}>
+                            <div className={step === "password" ? "flex justify-center items-center mt-8 lg:mt-15 opacity-70" : "flex justify-center items-center mt-8 lg:mt-15"}>
                                 <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600">
                                     {isPhoneInput &&
                                         <div className="flex flex-row items-center gap-2 mr-2 w-fit">
@@ -207,12 +207,12 @@ const Registration = ({ isOpen, closeModal }) => {
                                     />
                                 </div>}
 
-                            <button type="submit" className="bg-orange-500 text-white p-3 mt-10 text-center w-full cursor-pointer rounded-[10px]" >
+                            <button type="submit" className="bg-orange-500 text-white p-3 mt-6 lg:mt-10 text-center w-full cursor-pointer rounded-[10px]" >
                                 {step === "password" ? "LOGIN" : "NEXT"}
                             </button>
                         </form>
 
-                        <div className="flex flex-col items-center gap-10 mt-10">
+                        <div className="flex flex-col items-center gap-5 mt-6 lg:gap-10 lg:mt-10">
                             <div className="flex items-center gap-2">
                                 <span className="w-32 h-px bg-gray-500" />
                                 <span className="text-gray-500">OR</span>

@@ -7,6 +7,12 @@ function errorMessage(body) {
     return body?.error?.message ?? 'Something went wrong. Please try again.';
 };
 
+// A 401 means the server no longer accepts the token; clearing it lets AuthProvider log the user out
+function failure(res, body) {
+    if (res.status === 401) tokenStore.clear();
+    return { status: false, message: errorMessage(body) };
+};
+
 export async function getCartAPI() {
     const token = tokenStore.getAccess();
     const res = await fetch(`${apiUrl}/api/cart`, {
@@ -25,7 +31,7 @@ export async function getCartAPI() {
             }
         };
     }
-    return { status: false, message: errorMessage(convertedData) };
+    return failure(res, convertedData);
 };
 
 export async function addToCartAPI(productId, quantity) {
@@ -49,7 +55,7 @@ export async function addToCartAPI(productId, quantity) {
             }
         };
     };
-    return { status: false, message: errorMessage(convertedData) };
+    return failure(res, convertedData);
 };
 
 export async function updateCartItemAPI(productId, quantity) {
@@ -74,7 +80,7 @@ export async function updateCartItemAPI(productId, quantity) {
             }
         };
     };
-    return { status: false, message: errorMessage(convertedData) };
+    return failure(res, convertedData);
 };
 
 export async function productDeleteFromCartAPI(productId) {
@@ -97,5 +103,5 @@ export async function productDeleteFromCartAPI(productId) {
             }
         };
     };
-    return { status: false, message: errorMessage(convertedData) };
+    return failure(res, convertedData);
 };

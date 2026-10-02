@@ -5,20 +5,31 @@ import { useAuth } from "./AuthProvider";
 
 const CartContext = createContext(null);
 
+const EMPTY_CART = { items: [], totalItems: 0, totalAmount: 0 };
+
 export function CartProvider({ children }) {
   const { user } = useAuth();
-  const [cart, setCart] = useState({ items: [], totalItems: 0, totalAmount: 0 });
+  const [cart, setCart] = useState(EMPTY_CART);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!user) {
+      setCart(EMPTY_CART);
+      setError(null);
+      setLoading(false);
+      return;
+    }
     let cancelled = false;
     async function load() {
       try {
         setLoading(true);
         setError(null);
         const cartData = await getCartAPI();
-        if (!cancelled) setCart(cartData.data);
+        if (!cancelled) {
+          if (cartData.status) setCart(cartData.data);
+          else setError(cartData.message);
+        }
       } catch (err) {
         if (!cancelled) setError(err.message);
       } finally {
@@ -43,7 +54,6 @@ export function CartProvider({ children }) {
       }
     } catch (err) {
       setError(err.message);
-      console.log(err);
       toast.error('There was an error');
     } finally {
       setLoading(false);

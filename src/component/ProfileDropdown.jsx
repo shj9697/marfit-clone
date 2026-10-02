@@ -37,7 +37,8 @@ function ProfileDropdown() {
     return (
         <div className="relative group h-full">
             <button className="flex items-center gap-1 cursor-pointer hover:text-orange-600 h-full w-fit">
-                <span className="font-medium whitespace-nowrap">{user?.name || "U"}</span>
+                <UserRound className="size-5 lg:hidden" />
+                <span className="hidden lg:inline font-medium whitespace-nowrap">{user?.name || "U"}</span>
                 <ChevronDown
                     size={16}
                     className="group-hover:rotate-180 transition-all duration-300"
