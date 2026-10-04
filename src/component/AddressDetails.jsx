@@ -1,4 +1,4 @@
-import { House, Trash } from "lucide-react";
+import { House, PencilIcon, Trash } from "lucide-react";
 import ModalBox from "./ModalBox";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -6,11 +6,9 @@ import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { GetState, GetCity } from "react-country-state-city";
 
-const AddressDetails = ({
-    handleChoosePayment,
-    addresses,
-    setAddresses }) => {
+const AddressDetails = ({ handleChoosePayment }) => {
 
+    const [addresses, setAddresses] = useState(() => JSON.parse(localStorage.getItem("checkoutAddresses")) ?? []);
     const [isOpen, setIsOpen] = useState(false);
     const [phone, setPhone] = useState("");
     const [dialCode, setDialCode] = useState("91");
@@ -20,51 +18,65 @@ const AddressDetails = ({
     const [stateId, setStateId] = useState("");
     const [cityId, setCityId] = useState("");
     const [selectedAddressId, setSelectedAddressId] = useState("");
+    const [editId, setEditId] = useState(null);
 
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors },
-    } = useForm({ mode: "onTouched" });
+    const countryId = 101;
+    const emptyAddressForm = { name: "", address: "", pincode: "", email: "" };
+
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({ mode: "onTouched" });
+
+    // save addresses to local storage whenever they change
+    useEffect(() => {
+        localStorage.setItem("checkoutAddresses", JSON.stringify(addresses));
+    }, [addresses]);
+
+    useEffect(() => {
+        GetState(countryId).then(setStateList);
+    }, []);
+
+    useEffect(() => {
+        if (stateId) GetCity(countryId, Number(stateId)).then(setCityList);
+        else setCityList([]);
+    }, [stateId]);
 
     const onSubmit = (data) => {
         if (!phone || !stateId || !cityId) {
-            setMissingFields(true);
-            return;
+            return setMissingFields(true);
         }
+        const state = stateList.find(item => item.id === Number(stateId))?.name;
+        const city = cityList.find(item => item.id === Number(cityId))?.name;
+        const newAddress = {
+            ...data,
+            id: editId || crypto.randomUUID(),
+            phone,
+            mobile: phone.slice(dialCode.length),
+            stateId,
+            cityId,
+            state,
+            city
+        };
+        setAddresses(prev =>
+            editId
+                ? prev.map(address =>
+                    address.id === editId ? newAddress : address
+                )
+                : [...prev, newAddress]
+        );
 
-        const stateName = stateList.find((state) => state.id === Number(stateId))?.name ?? "";
-        const cityName = cityList.find((city) => city.id === Number(cityId))?.name ?? "";
-        const mobile = phone.startsWith(dialCode) ? phone.slice(dialCode.length) : phone;
-
-        const newAddress = { id: crypto.randomUUID(), ...data, phone, mobile, state: stateName, city: cityName };
-        setAddresses((prev) => [...prev, newAddress]);
         setSelectedAddressId(newAddress.id);
-        reset();
-        setPhone("");
-        setStateId("");
-        setCityId("");
-        setMissingFields(false);
         setIsOpen(false);
     };
 
-    const countryId = 101;
-
-    useEffect(() => {
-        if (countryId)
-            GetState(parseInt(countryId)).then((result) => {
-                setStateList(result);
-            });
-    }, [countryId]);
-
-    useEffect(() => {
-        if (stateId)
-            GetCity(parseInt(countryId), parseInt(stateId)).then((result) => {
-                setCityList(result);
-            });
-        else setCityList([]);
-    }, [stateId]);
+    // address is passed when editing, left empty when adding a new one
+    const openModal = (address) => {
+        reset(address ?? emptyAddressForm);
+        setPhone(address?.phone ?? "");
+        setStateId(address?.stateId ?? "");
+        setCityId(address?.cityId ?? "");
+        setEditId(address?.id ?? null);
+        setMissingFields(false);
+        setIsOpen(true);
+    };
 
     const handleStateChange = (e) => {
         setStateId(e.target.value);
@@ -78,23 +90,20 @@ const AddressDetails = ({
     return (
         <div className="w-full">
             <div className="bg-white rounded">
-                <div className="flex items-center text-[15px] text-orange-600 gap-2">
+                <div className="flex items-center text-[15px] text-[#fb6b25] gap-2">
                     <House className="text-green-700" />
                     <p>Address Details</p>
                 </div>
                 {addresses.map((address) => (
-                    <div className="flex items-center justify-between">
-                        <label
-                            key={address.id}
-                            className={`flex items-start gap-2 bg-gray-100 rounded p-2 my-2 text-[13px] cursor-pointer`}
-                        >
+                    <div key={address.id} className="flex items-center justify-between gap-2 w-full bg-gray-100 rounded p-2 my-2 text-[13px] cursor-pointer">
+                        <label className="flex items-start gap-2 bg-gray-100 rounded p-2 my-2 text-[13px] cursor-pointer">
                             <input
                                 type="radio"
                                 name="selectedAddress"
                                 value={address.id}
                                 checked={selectedAddressId === address.id}
                                 onChange={() => setSelectedAddressId(address.id)}
-                                className="mt-1 accent-orange-500"
+                                className="mt-1 appearance-none size-4 shrink-0 rounded-full bg-white border checked:bg-[#fb6b25] outline-none cursor-pointer"
                             />
                             <div>
                                 <p className="font-medium">{address.name}</p>
@@ -102,35 +111,36 @@ const AddressDetails = ({
                                 <p className="text-gray-600">{address.city} - {address.pincode}, {address.state}</p>
                                 <p className="text-gray-600">Mobile : {address.mobile}</p>
                             </div>
-                            <Trash
-                                onClick={(event) => {
-                                    event.preventDefault();
-                                    handleDelete(address.id);
-                                }}
-                            />
                         </label>
-                    </div>
 
+                        <div className="flex items-center gap-3">
+                            <PencilIcon size={15}
+                                onClick={() => openModal(address)}
+                                className="cursor-pointer text-orange-600"
+                            />
+                            <Trash onClick={() => handleDelete(address.id)} />
+                        </div>
+                    </div>
                 ))}
                 <button
-                    className="w-full border border-amber-600 text-[15px] text-orange-500 rounded p-2 cursor-pointer"
-                    onClick={() => setIsOpen(true)}
+                    className="w-full border border-amber-600 text-[15px] text-[#fb6b25] rounded p-2 cursor-pointer"
+                    onClick={() => openModal()}
                 >
                     ADD ADDRESS
                 </button>
-                <div className="text-center p-2 bg-orange-500 my-2 rounded">
+                <div className="text-center p-2 bg-[#fb6b25] my-2 rounded">
                     <button className="text-white cursor-pointer" onClick={handleChoosePayment}>PROCEED TO PAYMENT</button>
                 </div>
             </div>
 
-            <ModalBox isOpen={isOpen} onClose={() => setIsOpen(false)} title="Add New Address">
+            <ModalBox isOpen={isOpen} onClose={() => setIsOpen(false)} title={editId ? "Edit Address" : "Add New Address"}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <fieldset className="flex flex-col gap-3">
                         <label htmlFor="">Contact Details</label>
                         <input
                             type="text"
                             placeholder="Name"
-                            className="border border-gray-400 outline-0 p-2 rounded text-[12px]"
+                            className="border border-gray-400 outline-0 p-2 rounded text-[12px] "
                             {...register("name", { required: "Name is required" })}
                         />
                         {errors.name && <p className="text-red-500 text-[11px]">{errors.name.message}</p>}
@@ -151,7 +161,6 @@ const AddressDetails = ({
                             className="border border-gray-400 outline-0 p-2 rounded text-[12px]"
                             {...register("address", { required: "Address is required" })}
                         />
-
                         {errors.address && <p className="text-red-500 text-[11px]">{errors.address.message}</p>}
                         <input
                             type="text"
@@ -167,7 +176,6 @@ const AddressDetails = ({
                                 },
                             })}
                         />
-
                         {errors.pincode && <p className="text-red-500 text-[11px]">{errors.pincode.message}</p>}
                         <select
                             value={stateId}
@@ -211,7 +219,7 @@ const AddressDetails = ({
                     {missingFields && (
                         <p className="text-red-500 text-[11px] mt-2">Mobile number, state and city are required</p>
                     )}
-                    <button type="submit" className="bg-orange-500 text-white p-3 mt-3 text-center w-full cursor-pointer" >ADD ADDRESS</button>
+                    <button type="submit" className="bg-[#fb6b25] text-white p-3 mt-3 text-center w-full cursor-pointer" >{editId ? "SAVE ADDRESS" : "ADD ADDRESS"}</button>
                 </form>
             </ModalBox>
         </div>

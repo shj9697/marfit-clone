@@ -1,18 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CartSummary from "./cartSummary";
 import Payment from "./payment";
 import AddressDetails from "./AddressDetails";
 
 const CartDetails = () => {
     const [step, setStep] = useState(0);
-    const [addresses, setAddresses] = useState(() => {
-        const saved = localStorage.getItem("checkoutAddresses");
-        return saved ? JSON.parse(saved) : [];
-    });
-    useEffect(() => {
-        localStorage.setItem("checkoutAddresses", JSON.stringify(addresses));
-    }, [addresses]);
-
 
     const handleStep = (value) => {
         if (value === 0) {
@@ -36,7 +28,7 @@ const CartDetails = () => {
                 <input type="text"
                     className="bg-white rounded text-[13px] p-2 border border-gray-400 flex-1"
                     placeholder="Enter Coupon Code" />
-                <button className="border border-amber-600 text-[15px] text-orange-500 rounded px-5 cursor-pointer">APPLY</button>
+                <button className="border border-[#fb6b25] text-[15px] text-[#fb6b25] rounded px-5 cursor-pointer">APPLY</button>
             </div>
             <div className="flex flex-col justify-center items-center bg-white mt-5 gap-4 w-full">
                 <div className="flex items-center justify-center gap-6 text-gray-500 text-[12px] -tracking-tighter border-b border-gray-300 px-6 py-4 w-full">
@@ -62,13 +54,7 @@ const CartDetails = () => {
                 </div>
                 <div className="w-full p-4">
                     {step === 0 && <CartSummary handleChooseAddress={handleChooseAddress} />}
-                    {step === 1 && (
-                        <AddressDetails
-                            handleChoosePayment={handleChoosePayment}
-                            addresses={addresses}
-                            setAddresses={setAddresses}
-                        />
-                    )}
+                    {step === 1 && <AddressDetails handleChoosePayment={handleChoosePayment} />}
                     {step === 2 && <Payment />}
                 </div>
             </div>

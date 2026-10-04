@@ -45,9 +45,9 @@ function Profile() {
                 <>
                     <div className="mt-6">
                         {profileDetails.map((item) => (
-                            <div key={item.id} className="flex text-[17px] text-gray-800 leading-10">
-                                <p className="w-[250px]">{item.label}</p>
-                                <p>{item.value || "-"}</p>
+                            <div key={item.id} className="flex text-[15px] md:text-[17px] text-gray-800 leading-10">
+                                <p className="w-[120px] md:w-[250px] shrink-0">{item.label}</p>
+                                <p className="min-w-0 wrap-break-word">{item.value || "-"}</p>
                             </div>
                         ))}
                     </div>
@@ -62,15 +62,15 @@ function Profile() {
                 <>
                     <div className="mt-6">
                         {profileDetails.filter((item) => !item.editable).map((item) => (
-                            <div key={item.id} className="flex text-[17px] text-gray-800 leading-10">
-                                <p className="w-[250px]">{item.label}</p>
-                                <p>{item.value || ""}</p>
+                            <div key={item.id} className="flex text-[15px] md:text-[17px] text-gray-800 leading-10">
+                                <p className="w-[120px] md:w-[250px] shrink-0">{item.label}</p>
+                                <p className="min-w-0 wrap-break-word">{item.value || ""}</p>
                             </div>
                         ))}
                     </div>
                     <div>
                         <div className="w-full flex items-center gap-3 leading-10">
-                            <div className="w-[26%]">
+                            <div className=" shrink-0">
                                 <h1>Gender</h1>
                             </div>
                             <div className="flex items-center gap-3">
@@ -93,7 +93,7 @@ function Profile() {
                             </div>
                         </div>
                         <div className="flex items-center gap-3 leading-10">
-                            <label htmlFor="dob" className="w-[250px] text-[17px] text-gray-800">
+                            <label htmlFor="dob" className="w-[120px] md:w-[250px] shrink-0 text-[15px] md:text-[17px] text-gray-800">
                                 Date of Birth
                             </label>
                             <input
@@ -101,7 +101,7 @@ function Profile() {
                                 type="date"
                                 value={dob}
                                 onChange={(e) => setDob(e.target.value)}
-                                className="border-0 border-b-2 border-b-gray-400 outline-0 py-2 text-[17px] text-gray-800"
+                                className="min-w-0 border-0 border-b-2 border-b-gray-400 outline-0 py-2 text-[15px] md:text-[17px] text-gray-800"
                             />
                         </div>
                     </div>

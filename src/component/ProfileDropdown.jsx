@@ -1,4 +1,5 @@
 import { ChevronDown, Heart, Lock, LogOut, UserRound } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
 
@@ -6,12 +7,13 @@ import { useAuth } from "../context/AuthProvider";
 function ProfileDropdown() {
 
     const { user, logout } = useAuth();
+    const [isOpen, setIsOpen] = useState(false);
 
     const profileMenus = [
         {
             id: "profile",
             name: "Profile",
-            path: '/dashboard/profile',
+            path: '/dashboard',
             icon: <UserRound className="size-4" />
         },
         {
@@ -36,23 +38,32 @@ function ProfileDropdown() {
 
     return (
         <div className="relative group h-full">
-            <button className="flex items-center gap-1 cursor-pointer hover:text-orange-600 h-full w-fit">
+            {isOpen && (
+                <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
+            )}
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="flex items-center gap-1 cursor-pointer hover:text-orange-600 h-full w-fit"
+            >
                 <UserRound className="size-5 lg:hidden" />
                 <span className="hidden lg:inline font-medium whitespace-nowrap">{user?.name || "U"}</span>
                 <ChevronDown
                     size={16}
-                    className="group-hover:rotate-180 transition-all duration-300"
+                    className={`lg:group-hover:rotate-180 transition-all duration-300 ${isOpen ? "rotate-180" : ""}`}
                 />
             </button>
-            {/* Child menus */}
-            <div className="absolute left-[50%] translate-x-[-55%] top-full pt-6 hidden group-hover:block z-50">
+            {/* child menus */}
+            <div className={`absolute -right-3 lg:right-auto lg:left-[50%] lg:translate-x-[-55%] top-full pt-6 lg:group-hover:block z-50 ${isOpen ? "block" : "hidden"}`}>
                 <div className="w-48 bg-white shadow-lg border border-gray-200">
-                    <ul className="relative py-2 after:content-[''] after:absolute after:bg-white after:w-2 after:h-2 after:rotate-45 after:top-[-5px] after:left-[50%] after:border after:border-gray-200 after:border-r-0 after:border-b-0">
-                        {profileMenus?.map((item, _) => (
+                    <ul className="relative py-2 after:content-[''] after:absolute after:bg-white after:w-2 after:h-2 after:rotate-45 after:top-[-5px] after:right-7 lg:after:right-auto lg:after:left-[50%] after:border after:border-gray-200 after:border-r-0 after:border-b-0">
+                        {profileMenus?.map((item) => (
                             <li key={item.id}>
                                 {item?.onClick ?
                                     <button
-                                        onClick={item?.onClick}
+                                        onClick={() => {
+                                            setIsOpen(false);
+                                            item.onClick();
+                                        }}
                                         className="px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-orange-600 flex items-center gap-2 w-full cursor-pointer"
                                     >
                                         {item?.icon || ""}
@@ -61,6 +72,7 @@ function ProfileDropdown() {
                                     :
                                     <Link
                                         to={item?.path || "/"}
+                                        onClick={() => setIsOpen(false)}
                                         className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                                     >
                                         <div className="flex items-center gap-2 text-orange-600">

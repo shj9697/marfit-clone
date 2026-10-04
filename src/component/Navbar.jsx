@@ -19,7 +19,7 @@ export const brandLogo =
 const Navbar = () => {
   const navigate = useNavigate();
   const { cart } = useCart();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [MenuOpen, setMenuOpen] = useState(false);
@@ -74,6 +74,21 @@ const Navbar = () => {
     },
   ];
 
+  const accountLinks = [
+    {
+      label: "Profile",
+      path: "/dashboard/profile"
+    },
+    {
+      label: "My Orders",
+      path: "/dashboard/orders"
+    },
+    {
+      label: "Wishlist",
+      path: "/dashboard/wishlist"
+    },
+  ];
+
   return (
     <>
       <div className="sticky top-0 z-50 w-full flex items-center justify-between h-15 px-3 md:px-8 shadow-[0_2px_4px_0_#c9ccd1] bg-white">
@@ -96,8 +111,8 @@ const Navbar = () => {
             <Menu />
           </button>
           <button onClick={handleClick} className="flex items-center gap-1 py-1 cursor-pointer">
-            <img src={brandIcon} className="h-9 object-contain" />
-            <img src={brandLogo} className="h-9 object-contain" />
+            <img src={brandIcon} className="h-7 min-[360px]:h-9 object-contain" />
+            <img src={brandLogo} className="h-7 min-[360px]:h-9 object-contain" />
           </button>
         </div>
         <SearchBar />
@@ -154,15 +169,20 @@ const Navbar = () => {
                 setMenuOpen(false);
                 setIsOpen(true);
               }}>
-              <p
-                className="flex items-center gap-2 text-orange-600 font-normal text-left"
-              >
-                Login
-              </p>
+              <p className="flex items-center gap-2 text-orange-600 font-normal text-left">Login</p>
               <MoveUpRight size={16} className="text-orange-600" />
             </button>
-
           )}
+          {user && accountLinks.map(link => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className="p-5 border-b border-gray-200 font-normal text-[16px] hover:text-orange-600"
+              onClick={() => setMenuOpen(false)}
+            >
+              {link.label}
+            </Link>
+          ))}
           <Link
             to="/"
             className="p-5 border-b border-gray-200 font-normal text-[16px] hover:text-orange-600"
@@ -170,7 +190,7 @@ const Navbar = () => {
           >
             Home
           </Link>
-          {categories.map((category, _) => {
+          {categories.map((category) => {
             const isThisCategoryOpen = expandedCategoryId === category.id;
             return (
               <div key={category.id} className="border-b border-gray-200">
@@ -225,6 +245,17 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
+          {user && (
+            <button
+              className="p-5 border-b border-gray-200 font-normal text-[16px] text-left hover:text-orange-600 cursor-pointer"
+              onClick={() => {
+                setMenuOpen(false);
+                logout();
+              }}
+            >
+              Logout
+            </button>
+          )}
         </nav>
       </SideBarModal>
       {/* Login/Signup Model */}
