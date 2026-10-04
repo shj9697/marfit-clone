@@ -2,7 +2,7 @@ import { ListFilter } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getProductCategoriesAPI, getProductCategoriesBySlugAPI } from '../api/productCategoriesApi';
 
-const Filter = ({ sortBy, category, subCategory, handleSortBy, handleCategoryBy, handleSubCategoryBy, handleReset, handleIsEmbossableBy, handleStock, embossable, stock }) => {
+const Filter = ({ isOpen, onClose, sortBy, category, subCategory, handleSortBy, handleCategoryBy, handleSubCategoryBy, handleReset, handleIsEmbossableBy, handleStock, embossable, stock }) => {
 
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -32,7 +32,7 @@ const Filter = ({ sortBy, category, subCategory, handleSortBy, handleCategoryBy,
         return () => { cancelled = true; };
     }, [category, subCategory]);
 
-    if (loading) {
+    if (loading && !data) {
         return <p>Loading......</p>
     }
     if (error) {
@@ -40,7 +40,7 @@ const Filter = ({ sortBy, category, subCategory, handleSortBy, handleCategoryBy,
     };
 
     return (
-        <div className="hidden md:flex w-full shrink-0 md:w-50 lg:w-70 flex-col text-gray-500 text-[14px] accent-[#fb641b]">
+        <div className={`${isOpen ? "fixed inset-0 z-50 flex overflow-y-auto bg-white p-4" : "hidden"} md:static md:flex md:p-0 md:overflow-visible w-full shrink-0 md:w-50 lg:w-70 flex-col text-gray-500 text-[14px] accent-[#fb641b]`}>
             <div className="flex">
                 <div className="flex w-full">
                     <ListFilter strokeWidth={1.75} className="h-5 w-5 my-1 mx-3" />
@@ -54,7 +54,7 @@ const Filter = ({ sortBy, category, subCategory, handleSortBy, handleCategoryBy,
                 </button>
             </div>
 
-            <div className="border border-gray-200 rounded-md p-4 my-2">
+            <div className="hidden md:block border border-gray-200 rounded-md p-4 my-2">
                 <h1>SORT BY</h1>
                 <div className="flex">
                     <input
@@ -148,6 +148,11 @@ const Filter = ({ sortBy, category, subCategory, handleSortBy, handleCategoryBy,
                     />
                     <span>In Stock</span>
                 </div>
+            </div>
+
+            <div className="md:hidden sticky bottom-0 mt-auto flex gap-3 bg-white pt-3">
+                <button onClick={handleReset} className="flex-1 py-3 border border-gray-300 rounded cursor-pointer">CLEAR ALL</button>
+                <button onClick={onClose} className="flex-1 py-3 bg-[#fb641b] text-white rounded cursor-pointer">APPLY</button>
             </div>
         </div>
     )

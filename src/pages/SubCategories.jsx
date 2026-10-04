@@ -5,6 +5,7 @@ import ProductCard from "../component/ProductCard";
 import Filter from "../component/Filter";
 import { getProductCategoriesBySlugAPI, getProductCategoriesBySubSlugAPI } from "../api/productCategoriesApi";
 import { getProductsAPI } from "../api/productapi";
+import { ArrowUpDown, SlidersHorizontal } from "lucide-react";
 
 function SubCategories() {
 	const { categorySlug, subCategorySlug } = useParams();
@@ -14,6 +15,8 @@ function SubCategories() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [stock, setStock] = useState(true);
 	const [embossable, setEmbossable] = useState(false);
+	const [isFilterOpen, setIsFilterOpen] = useState(false);
+	const [isSortOpen, setIsSortOpen] = useState(false);
 
 	useEffect(() => {
 		if (categorySlug) {
@@ -36,7 +39,7 @@ function SubCategories() {
 				setError(null);
 				const params = {
 					page: currentPage,
-					limit: 6,
+					limit: 8,
 					category: category,
 					subCategory: subCategory,
 					sort: sortBy,
@@ -63,7 +66,7 @@ function SubCategories() {
 		return () => { cancelled = true; };
 	}, [category, subCategory, currentPage, sortBy, embossable, stock]);
 
-	if (loading) {
+	if (loading && !data.productListData) {
 		return <p>Loading......</p>
 	}
 	if (error) {
@@ -91,7 +94,7 @@ function SubCategories() {
 	}
 
 	return (
-		<div className="w-full bg-white px-4 md:px-8">
+		<div className="w-full bg-white px-4 pb-16 md:px-8 md:pb-0">
 			<Breadcrumb
 				paths={[
 					{ title: categorySlug, link: `/categories/${categorySlug}` },
@@ -103,6 +106,8 @@ function SubCategories() {
 			/>
 			<div className="bg-white py-5 w-full flex flex-col gap-6 md:flex-row md:gap-10">
 				<Filter
+					isOpen={isFilterOpen}
+					onClose={() => setIsFilterOpen(false)}
 					handleSortBy={handleSortBy}
 					handleCategoryBy={handleCategoryBy}
 					handleSubCategoryBy={handleSubCategoryBy}
@@ -128,6 +133,34 @@ function SubCategories() {
 					</div>
 				</div>
 			</div>
+			<div className="md:hidden fixed bottom-0 inset-x-0 z-40 flex bg-white border-t border-gray-200">
+				<button onClick={() => setIsSortOpen(true)} className="flex-1 flex items-center justify-center gap-2 py-3 border-r border-gray-200 cursor-pointer">
+					<ArrowUpDown size={18} /> SORT
+				</button>
+				<button onClick={() => setIsFilterOpen(true)} className="flex-1 flex items-center justify-center gap-2 py-3 cursor-pointer">
+					<SlidersHorizontal size={18} /> FILTER
+				</button>
+			</div>
+			{isSortOpen && (
+				<div onClick={() => setIsSortOpen(false)} className="md:hidden fixed inset-0 z-50 flex items-end bg-black/40">
+					<div onClick={(event) => event.stopPropagation()} className="w-full bg-white rounded-t-xl p-4">
+						<p className="text-xs text-gray-500 pb-3 border-b border-gray-200">SORT BY</p>
+						{[
+							{ value: "relevance", label: "Relevance" },
+							{ value: "price-low-to-high", label: "Price: Low to High" },
+							{ value: "price-high-to-low", label: "Price: High to Low" },
+						].map(option => (
+							<button
+								key={option.value}
+								onClick={() => { setSortBy(option.value); setIsSortOpen(false); }}
+								className={`block w-full text-left py-3 cursor-pointer ${sortBy === option.value ? "text-[#fb641b] font-semibold" : "text-gray-700"}`}
+							>
+								{option.label}
+							</button>
+						))}
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }
