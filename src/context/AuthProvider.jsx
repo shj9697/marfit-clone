@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { meAPI } from "../api/authentication";
+import { addToWishlistAPI, getWishlistAPI, meAPI, removeFromWishlistAPI } from "../api/authentication";
 import { tokenStore } from "../api/tokenStore";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -11,23 +11,45 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [wishList, setWishList] = useState(() => {
-        const saved = localStorage.getItem("wishlist");
-        return saved ? JSON.parse(saved) : [];
-    });
+    const [wishList, setWishList] = useState([]);
 
     useEffect(() => {
-        localStorage.setItem("wishlist", JSON.stringify(wishList));
-    }, [wishList]);
+        if (!user) {
+            setWishList([]);
+            return;
+        }
+        let cancelled = false;
+        async function load() {
+            try {
+                const response = await getWishlistAPI();
+                if (!cancelled) setWishList(response.data.productData);
+            } catch (err) {
+                if (!cancelled) toast.error(err.message);
+            } finally {
+                if (!cancelled) setLoading(false);
+            }
+        };
+        load();
+        return () => { cancelled = true; };
+    }, [user]);
 
-    const toggleWishList = (item) => {
+    const toggleWishList = async (item) => {
         if (!user) {
             toast.error("Please login");
             return;
         }
-        const exists = wishList.find((wishItem) => wishItem.id === item.id);
-        setWishList(exists ? wishList.filter((wishItem) => wishItem.id !== item.id) : [...wishList, item]);
-        toast.success(exists ? "Removed from Wishlist" : "Added to Wishlist");
+        const exists = wishList.find((wishListItem) => wishListItem.id === item.id);
+        try {
+            const response = exists ? await removeFromWishlistAPI(item.id) : await addToWishlistAPI(item.id);
+            if (!response.status) {
+                toast.error(response.message);
+                return;
+            }
+            setWishList(response.data.productData);
+            toast.success(exists ? "Removed from Wishlist" : "Added to Wishlist");
+        } catch (err) {
+            toast.error(err.message);
+        }
     };
 
     const isInWishList = (id) => !!user && wishList.find((wishItem) => wishItem.id === id);
@@ -60,16 +82,16 @@ export function AuthProvider({ children }) {
         setWishList([]);
     }, [navigate]);
 
-    // The access cookie expires on its own, so log out once it's gone instead of keeping a stale user in memory
+
     useEffect(() => {
         if (!user) return;
         const checkSession = () => {
             if (!tokenStore.getAccess()) {
-                toast.error("Session expired, please login again");
+                toast.error("Session expired");
                 logout();
             }
         };
-        const timer = setInterval(checkSession, 30 * 1000);
+        const timer = setInterval(checkSession, 15 * 1000);
         window.addEventListener("focus", checkSession);
         return () => {
             clearInterval(timer);

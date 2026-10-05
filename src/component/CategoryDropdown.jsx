@@ -41,7 +41,7 @@ function CategoryDropdown() {
 			<div className="w-full hidden  lg:flex  max-w-6xl px-4 items-center justify-between h-full text-base font-bold">
 				<Link
 					to="/new-arrival"
-					className="text-[15px] text-orange-500 font-semibold whitespace-nowrap"
+					className="text-[15px] text-[#fb641b] font-semibold whitespace-nowrap"
 					onClick={() => navigate("/new-arrival")}
 				>
 					New Arrivals
@@ -56,7 +56,7 @@ function CategoryDropdown() {
 				))}
 				<Link
 					to="/sale"
-					className="text-[15px] text-orange-600 font-semibold"
+					className="text-[15px] text-[#fb641b] font-semibold"
 					onClick={() => navigate("/sale")}
 				>
 					Sale

@@ -92,7 +92,7 @@ const Registration = ({ isOpen, closeModal }) => {
                 (
                     <>
                         <form onSubmit={handleSubmit(onSubmit, onError)}>
-                            <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600 mt-4">
+                            <div className="w-full flex items-center border-0 border-b-2 border-b-[#fb641b] mt-4">
                                 <input
                                     type="text"
                                     placeholder="Enter Username"
@@ -101,7 +101,7 @@ const Registration = ({ isOpen, closeModal }) => {
                                 />
                             </div>
 
-                            <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600 mt-4">
+                            <div className="w-full flex items-center border-0 border-b-2 border-b-[#fb641b] mt-4">
                                 <input
                                     type="text"
                                     placeholder="Referral Code (Optional)"
@@ -110,7 +110,7 @@ const Registration = ({ isOpen, closeModal }) => {
                                 />
                             </div>
 
-                            <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600 mt-4">
+                            <div className="w-full flex items-center border-0 border-b-2 border-b-[#fb641b] mt-4">
                                 <input
                                     type="text"
                                     placeholder="Enter Mail Id"
@@ -124,7 +124,7 @@ const Registration = ({ isOpen, closeModal }) => {
                                 />
                             </div>
 
-                            <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600 mt-4">
+                            <div className="w-full flex items-center border-0 border-b-2 border-b-[#fb641b] mt-4">
                                 <input
                                     type="password"
                                     placeholder="Enter Password"
@@ -141,10 +141,10 @@ const Registration = ({ isOpen, closeModal }) => {
 
                             <div className="w-full flex items-center border-0 gap-2 mt-4">
                                 <input type="checkbox" />
-                                <p className="text-[12px]">I agree to the <span className="text-orange-500 text-[12px]">TERMS & CONDITION.</span></p>
+                                <p className="text-[12px]">I agree to the <span className="text-[#fb641b] text-[12px]">TERMS & CONDITION.</span></p>
                             </div>
 
-                            <button type="submit" className="bg-orange-500 text-white p-3 mt-4 text-center w-full cursor-pointer rounded-[10px]">
+                            <button type="submit" className="bg-[#fb641b] text-white p-3 mt-4 text-center w-full cursor-pointer rounded-[10px]">
                                 REGISTER
                             </button>
                         </form>
@@ -158,7 +158,7 @@ const Registration = ({ isOpen, closeModal }) => {
                             <button
                                 type="button"
                                 onClick={() => switchMode("login")}
-                                className="text-orange-500 text-[13px] cursor-pointer"
+                                className="text-[#fb641b] text-[13px] cursor-pointer"
                             >
                                 Existing User? Login
                             </button>
@@ -168,11 +168,11 @@ const Registration = ({ isOpen, closeModal }) => {
                     <>
                         <form onSubmit={handleSubmit(onSubmit, onError)}>
                             <div className={step === "password" ? "flex justify-center items-center mt-8 lg:mt-15 opacity-70" : "flex justify-center items-center mt-8 lg:mt-15"}>
-                                <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600">
+                                <div className="w-full flex items-center border-0 border-b-2 border-b-[#fb641b]">
                                     {isPhoneInput &&
                                         <div className="flex flex-row items-center gap-2 mr-2 w-fit">
                                             <p className="">+91</p>
-                                            <div className="w-0.5 rounded-md h-4 bg-amber-600" />
+                                            <div className="w-0.5 rounded-md h-4 bg-[#fb641b]" />
                                         </div>}
                                     <input
                                         type="text"
@@ -192,7 +192,7 @@ const Registration = ({ isOpen, closeModal }) => {
                             </div>
 
                             {step === "password" &&
-                                <div className="w-full flex items-center border-0 border-b-2 border-b-amber-600 mt-8">
+                                <div className="w-full flex items-center border-0 border-b-2 border-b-[#fb641b] mt-8">
                                     <input
                                         type="password"
                                         placeholder="Enter Password"
@@ -207,7 +207,7 @@ const Registration = ({ isOpen, closeModal }) => {
                                     />
                                 </div>}
 
-                            <button type="submit" className="bg-orange-500 text-white p-3 mt-6 lg:mt-10 text-center w-full cursor-pointer rounded-[10px]" >
+                            <button type="submit" className="bg-[#fb641b] text-white p-3 mt-6 lg:mt-10 text-center w-full cursor-pointer rounded-[10px]" >
                                 {step === "password" ? "LOGIN" : "NEXT"}
                             </button>
                         </form>
@@ -222,7 +222,7 @@ const Registration = ({ isOpen, closeModal }) => {
                             <button
                                 type="button"
                                 onClick={() => switchMode("register")}
-                                className="text-orange-500 text-[13px] cursor-pointer"
+                                className="text-[#fb641b] text-[13px] cursor-pointer"
                             >
                                 New to Marfit ? Create an account
                             </button>

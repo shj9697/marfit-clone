@@ -122,8 +122,8 @@ const AddressPage = ({ handleBack, handleSave }) => {
                         />
                     </div>
                     <div className="flex gap-3 ">
-                        <button type="button" className="text-orange-600 bg-white border border-orange-600 px-10 py-2 cursor-pointer rounded" onClick={handleBack}>Cancel</button>
-                        <button type="submit" className="bg-orange-600 text-white px-10 py-2 cursor-pointer rounded" >Add</button>
+                        <button type="button" className="text-[#fb641b] bg-white border border-[#fb641b] px-10 py-2 cursor-pointer rounded" onClick={handleBack}>Cancel</button>
+                        <button type="submit" className="bg-[#fb641b] text-white px-10 py-2 cursor-pointer rounded" >Add</button>
                     </div>
                 </form>
             </div >

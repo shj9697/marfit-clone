@@ -9,7 +9,7 @@ const jar = Cookies.withAttributes({
     secure: location.protocol === 'https:'
 });
 
-const ACCESS_TTL = 15 / (24 * 60);  // 15 minutes, expressed in days
+const ACCESS_TTL = 30 / (24 * 60);  // 30 minutes, expressed in days
 const REFRESH_TTL = 7;              // 7 days
 
 export const tokenStore = {

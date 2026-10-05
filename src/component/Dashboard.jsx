@@ -35,7 +35,7 @@ function Dashboard() {
     const outlet = useOutlet();
 
     return (
-        <div className="mx-auto flex flex-col lg:flex-row lg:gap-6 py-6 lg:py-10 w-full">
+        <div className="mx-auto flex flex-col lg:flex-row gap-6 w-full p-2 md:p-8">
             <div className={`w-full lg:w-[258px] shrink-0 flex-col gap-6 ${outlet ? "hidden lg:flex" : "flex"}`}>
                 <div>
                     <div className="h-40 bg-gray-200"></div>
@@ -45,15 +45,15 @@ function Dashboard() {
                     </div>
                 </div>
                 <aside className="bg-white shadow-[0_1px_4px_0_#d7dade] lg:py-8">
-                    <ul className="flex flex-col justify-start overflow-x-auto lg:block">
+                    <ul className="flex flex-col justify-start lg:block">
                         {dashboardMenus.map((item) => (
                             <li key={item.id} className="flex-1 lg:flex-none">
                                 <NavLink
                                     to={item.path}
                                     className={({ isActive }) =>
-                                        `flex items-center justify-start h-[52px] lg:h-[68px] px-3 lg:px-8 text-[15px] lg:text-[17px] whitespace-nowrap border-b-4 lg:border-b-0 lg:border-r-[6px] ${isActive
-                                            ? "bg-[#e9ecef] border-orange-600 text-gray-900 font-semibold"
-                                            : "border-transparent text-gray-700 hover:bg-gray-50 gap-2"
+                                        `flex items-center justify-start h-[52px] lg:h-[68px] px-3 lg:px-8 text-[15px] lg:text-[17px] whitespace-nowrap border-b-4 lg:border-b-0 lg:border-r-[6px] gap-2 ${isActive
+                                            ? "bg-[#e9ecef] border-[#fb641b] text-gray-900 font-semibold"
+                                            : "border-transparent text-gray-700 hover:bg-gray-50"
                                         }`
                                     }
                                 >
@@ -67,7 +67,7 @@ function Dashboard() {
             </div>
             <section className="flex-1 min-w-0 bg-white shadow-[0_1px_4px_0_#d7dade] min-h-[590px] p-4 md:p-8">
                 {outlet && (
-                    <Link to="/dashboard" className="lg:hidden flex items-center gap-2 mb-4 text-gray-700 hover:text-orange-600">
+                    <Link to="/dashboard" className="lg:hidden flex items-center gap-2 mb-4 text-gray-700 hover:text-[#fb641b]">
                         <ArrowLeft size={20} />
                         Back
                     </Link>

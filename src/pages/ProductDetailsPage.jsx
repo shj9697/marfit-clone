@@ -5,14 +5,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, A11y } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Heart, MapPin, ShoppingCart } from "lucide-react";
+import { Heart, MapPin } from "lucide-react";
 import { useCart } from "../context/CartProvider";
 import { useAuth } from "../context/AuthProvider";
 import ProductCard from "../component/ProductCard";
 import { getProductDetailsAPI, getRelatedProductsAPI } from "../api/productapi";
 import { getPincodeAPI } from "../api/home";
 
-function ProductDetailsPage({ item }) {
+function ProductDetailsPage() {
     const navigate = useNavigate();
     const { parentId, subId, productId } = useParams();
     const similarSwiperRef = useRef(null);
@@ -28,7 +28,7 @@ function ProductDetailsPage({ item }) {
     const [activeImage, setActiveImage] = useState(0);
     const { addToCart } = useCart();
     const { toggleWishList, isInWishList, user } = useAuth();
-    const wishListed = isInWishList(item);
+    const wishListed = isInWishList(productId);
     const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
@@ -39,7 +39,6 @@ function ProductDetailsPage({ item }) {
                 setError(null);
                 const data = await getRelatedProductsAPI(productId);
                 const productDetails = await getProductDetailsAPI(productId);
-                console.log(productDetails)
                 if (!cancelled) {
                     setSimilar(data.similar);
                     setData(data.youMayAlsoLike);
@@ -88,6 +87,7 @@ function ProductDetailsPage({ item }) {
     };
 
     const itemDetails = {
+        id: productDetails.id,
         title: productDetails.title,
         price: productDetails.price,
         oldPrice: productDetails.oldPrice,
@@ -116,7 +116,7 @@ function ProductDetailsPage({ item }) {
                         <div className="flex flex-row lg:flex-col justify-center-safe lg:justify-start gap-2 overflow-x-auto">
                             {(productDetails?.images || []).map((img, index) => {
                                 return (
-                                    <div key={img.id} className={`w-16 h-16 shrink-0 p-2 rounded-lg border-2 ${activeImage === index ? "border-orange-500" : "border-transparent"}`}>
+                                    <div key={img.id} className={`w-16 h-16 shrink-0 p-2 rounded-lg border-2 ${activeImage === index ? "border-[#fb641b]" : "border-transparent"}`}>
                                         <img src={img.url} alt={img.alt} className="w-full h-full cursor-pointer object-contain" onClick={() => handleImages(index)} />
                                     </div>
                                 )
@@ -127,8 +127,8 @@ function ProductDetailsPage({ item }) {
                                 <img src={(productDetails?.images || [])?.[activeImage]?.url || ""} alt={(productDetails?.images || [])?.[activeImage]?.alt || "product-image"} className="w-full h-full cursor-pointer object-cover" />
                             </div>
                             <div className="hidden lg:flex justify-center gap-5 mt-5">
-                                <button className="px-9 py-2 bg-white cursor-pointer border-2 border-orange-600 whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => addToCart(productId)}>ADD TO CART</button>
-                                <button className="px-9 py-2 bg-orange-600 text-white cursor-pointer whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleBuyNow(productId)}>BUY NOW</button>
+                                <button className="px-9 py-2 bg-white cursor-pointer border-2 border-[#fb641b] whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => addToCart(productId)}>ADD TO CART</button>
+                                <button className="px-9 py-2 bg-[#fb641b] text-white cursor-pointer whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleBuyNow(productId)}>BUY NOW</button>
                             </div>
                         </div>
                     </div>
@@ -154,7 +154,7 @@ function ProductDetailsPage({ item }) {
                         <div className="flex items-center gap-2 my-2">
                             <p className="text-[18px] lg:text-4xl">₹{productDetails.price} </p>
                             <p className="text-[18px] line-through text-gray-600 lg:text-2xl">₹{productDetails.oldPrice}</p>
-                            <p className="text-[18px] text-orange-600 font-medium lg:text-md">{productDetails.discount}</p>
+                            <p className="text-[18px] text-[#fb641b] font-medium lg:text-md">{productDetails.discount}</p>
                         </div>
                     </div>
                     <div className="flex  w-[50%]">
@@ -177,16 +177,16 @@ function ProductDetailsPage({ item }) {
                             </div>
                         </div>
                     </div>
-                    <button className="mt-15 text-orange-600 font-semibold cursor-pointer" onClick={corporateContact} >For bulk - Click here</button>
+                    <button className="mt-15 text-[#fb641b] font-semibold cursor-pointer" onClick={corporateContact} >For bulk - Click here</button>
                     <div className="flex items-center gap-4 mt-5">
                         <h2 className="text-[18px] font-medium text-gray-500 shrink-0">Delivery </h2>
-                        <div className="flex items-center gap-2 border-b-2 border-orange-500 p-2 min-w-0">
-                            <MapPin className="text-orange-500 shrink-0" />
+                        <div className="flex items-center gap-2 border-b-2 border-[#fb641b] p-2 min-w-0">
+                            <MapPin className="text-[#fb641b] shrink-0" />
                             <input onChange={e => setPincode(e.target.value)} type="text" value={pincode} className="w-[100px] outline-none min-w-0" />
-                            <button className="text-orange-500 font-medium cursor-pointer shrink-0" onClick={pincodeVerify}>Check</button>
+                            <button className="text-[#fb641b] font-medium cursor-pointer shrink-0" onClick={pincodeVerify}>Check</button>
                         </div>
                     </div>
-                    <p className={`${messageType === 'error' ? 'text-orange-500' : 'text-green-500'} font-medium ml-21`}>{message}</p>
+                    <p className={`${messageType === 'error' ? 'text-[#fb641b]' : 'text-green-500'} font-medium ml-21`}>{message}</p>
                     <div className="py-4 h-20 ">
                         <div className="w-full h-0.5 bg-gray-500 mb-4"></div>
                         <p className="text-[18px] lg:text-2xl ml-5">Product Details</p>
@@ -365,8 +365,8 @@ function ProductDetailsPage({ item }) {
                 </div>
             </div>
             <div className="lg:hidden sticky bottom-0 z-1 flex justify-center gap-5 md:px-10 p-3 bg-white">
-                <button className="flex-1 py-2 bg-white cursor-pointer border-2 border-orange-600 whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => addToCart(productId)}>ADD TO CART</button>
-                <button className="flex-1 py-2 bg-orange-600 text-white cursor-pointer whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleBuyNow(productId)}>BUY NOW</button>
+                <button className="flex-1 py-2 bg-white cursor-pointer border-2 border-[#fb641b] whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => addToCart(productId)}>ADD TO CART</button>
+                <button className="flex-1 py-2 bg-[#fb641b] text-white cursor-pointer whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => handleBuyNow(productId)}>BUY NOW</button>
             </div>
         </section >
     );

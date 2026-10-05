@@ -41,15 +41,21 @@ function ProfileDropdown() {
             {isOpen && (
                 <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
             )}
+            <Link
+                to="/dashboard"
+                className="flex lg:hidden items-center cursor-pointer hover:text-[#fb641b] h-full w-fit"
+            >
+                <UserRound className="size-5" />
+            </Link>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center gap-1 cursor-pointer hover:text-orange-600 h-full w-fit"
+                className="hidden lg:flex items-center gap-1 cursor-pointer hover:text-[#fb641b] h-full w-fit"
             >
                 <UserRound className="size-5 lg:hidden" />
                 <span className="hidden lg:inline font-medium whitespace-nowrap">{user?.name || "U"}</span>
                 <ChevronDown
                     size={16}
-                    className={`lg:group-hover:rotate-180 transition-all duration-300 ${isOpen ? "rotate-180" : ""}`}
+                    className={`hidden lg:block lg:group-hover:rotate-180 transition-all duration-300 ${isOpen ? "rotate-180" : ""}`}
                 />
             </button>
             {/* child menus */}
@@ -64,7 +70,7 @@ function ProfileDropdown() {
                                             setIsOpen(false);
                                             item.onClick();
                                         }}
-                                        className="px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-orange-600 flex items-center gap-2 w-full cursor-pointer"
+                                        className="px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-[#fb641b] flex items-center gap-2 w-full cursor-pointer"
                                     >
                                         {item?.icon || ""}
                                         {item?.name || ""}
@@ -75,7 +81,7 @@ function ProfileDropdown() {
                                         onClick={() => setIsOpen(false)}
                                         className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                                     >
-                                        <div className="flex items-center gap-2 text-orange-600">
+                                        <div className="flex items-center gap-2 text-[#fb641b]">
                                             {item?.icon || ""}
                                             {item?.name || ""}
                                         </div>

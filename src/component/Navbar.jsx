@@ -129,10 +129,10 @@ const Navbar = () => {
             {user ?
               <ProfileDropdown />
               :
-              <button className=" flex items-center justify-center text-[14px] w-fit py-0 rounded-full outline-none border-gray-300 cursor-pointer text-orange-600"
+              <button className="flex items-center justify-center text-[14px] w-fit py-0 rounded-full outline-none border-gray-300 cursor-pointer text-[#fb641b]"
                 onClick={() => setIsOpen(true)}
               >
-                <User className="h-5 fill-orange-500" />
+                <User className="h-5 fill-[#fb641b]" />
                 <span className="hidden md:block whitespace-nowrap">LOGIN /SIGN UP</span>
               </button>
             }
@@ -142,7 +142,7 @@ const Navbar = () => {
             >
               <ShoppingCart className="h-5 w-5 fill-black" />
               {cart.totalItems > 0 && (
-                <span className="absolute -top-2 left-0  w-7 h-6 flex items-center justify-center bg-orange-500 text-white text-[10px] leading-none rounded-full">
+                <span className="absolute -top-3 w-4 h-4 -left-2 lg:-top-4 lg:-left-4  lg:w-6 lg:h-6 flex items-center justify-center bg-[#fb641b] text-white text-[10px] leading-none rounded-full">
                   {cart.totalItems > 10 ? "10+" : cart.totalItems}
                 </span>
               )}
@@ -169,15 +169,15 @@ const Navbar = () => {
                 setMenuOpen(false);
                 setIsOpen(true);
               }}>
-              <p className="flex items-center gap-2 text-orange-600 font-normal text-left">Login</p>
-              <MoveUpRight size={16} className="text-orange-600" />
+              <p className="flex items-center gap-2 text-[#fb641b] font-normal text-left">Login</p>
+              <MoveUpRight size={16} className="text-[#fb641b]" />
             </button>
           )}
           {user && accountLinks.map(link => (
             <Link
               key={link.path}
               to={link.path}
-              className="p-5 border-b border-gray-200 font-normal text-[16px] hover:text-orange-600"
+              className="p-5 border-b border-gray-200 font-normal text-[16px] hover:text-[#fb641b]"
               onClick={() => setMenuOpen(false)}
             >
               {link.label}
@@ -185,7 +185,7 @@ const Navbar = () => {
           ))}
           <Link
             to="/"
-            className="p-5 border-b border-gray-200 font-normal text-[16px] hover:text-orange-600"
+            className="p-5 border-b border-gray-200 font-normal text-[16px] hover:text-[#fb641b]"
             onClick={() => setMenuOpen(false)}
           >
             Home
@@ -197,7 +197,7 @@ const Navbar = () => {
                 <div className={`flex items-center justify-between p-5 ${isThisCategoryOpen && "pb-0"}`}>
                   <Link
                     to={`/categories/${category.slug}`}
-                    className="flex-1 font-normal text-[16px] hover:text-orange-600"
+                    className="flex-1 font-normal text-[16px] hover:text-[#fb641b]"
                     onClick={() => setMenuOpen(false)}
                   >
                     {category.name}
@@ -220,7 +220,7 @@ const Navbar = () => {
                         <li key={child.id}>
                           <Link
                             to={`/categories/${category.slug}/${child.slug}`}
-                            className="flex items-center gap-2 px-5 py-3 text-[16px] font-normal text-gray-700 hover:text-orange-600"
+                            className="flex items-center gap-2 px-5 py-3 text-[16px] font-normal text-gray-700 hover:text-[#fb641b]"
                             onClick={() => setMenuOpen(false)}
                           >
                             {child.imageUrl && (
@@ -239,7 +239,7 @@ const Navbar = () => {
             <Link
               key={link.path}
               to={link.path}
-              className="p-5 border-b border-gray-200 font-normal text-[16px] hover:text-orange-600"
+              className="p-5 border-b border-gray-200 font-normal text-[16px] hover:text-[#fb641b]"
               onClick={() => setMenuOpen(false)}
             >
               {link.label}
@@ -247,7 +247,7 @@ const Navbar = () => {
           ))}
           {user && (
             <button
-              className="p-5 border-b border-gray-200 font-normal text-[16px] text-left hover:text-orange-600 cursor-pointer"
+              className="p-5 border-b border-gray-200 font-normal text-[16px] text-left hover:text-[#fb641b] cursor-pointer"
               onClick={() => {
                 setMenuOpen(false);
                 logout();

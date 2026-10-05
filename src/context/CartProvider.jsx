@@ -5,17 +5,15 @@ import { useAuth } from "./AuthProvider";
 
 const CartContext = createContext(null);
 
-const EMPTY_CART = { items: [], totalItems: 0, totalAmount: 0 };
-
 export function CartProvider({ children }) {
   const { user } = useAuth();
-  const [cart, setCart] = useState(EMPTY_CART);
+  const [cart, setCart] = useState({ items: [], totalItems: 0, totalAmount: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!user) {
-      setCart(EMPTY_CART);
+      setCart({ items: [], totalItems: 0, totalAmount: 0 });
       setError(null);
       setLoading(false);
       return;

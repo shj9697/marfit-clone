@@ -57,3 +57,77 @@ export async function meAPI() {
     const convertedData = await res.json();
     return convertedData.data;
 }
+
+export async function getWishlistAPI() {
+    const token = tokenStore.getAccess();
+    const res = await fetch(`${apiUrl}/api/wishlist`, {
+        headers: {
+            "Authorization": `Bearer ` + token
+        }
+    });
+    const convertedData = await res.json();
+    if (res.ok) {
+        return {
+            status: true,
+            data: {
+                productData: convertedData.data,
+                total: convertedData.total
+            }
+        };
+    };
+    return {
+        status: false,
+        message: convertedData.error?.message
+    };
+};
+
+export async function addToWishlistAPI(productId) {
+    const token = tokenStore.getAccess();
+    const res = await fetch(`${apiUrl}/api/wishlist`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ` + token
+        },
+        body: JSON.stringify({ productId })
+    });
+    const convertedData = await res.json();
+    if (res.ok) {
+        return {
+            status: true,
+            data: {
+                productData: convertedData.data,
+                total: convertedData.total
+            }
+        };
+    };
+    return {
+        status: false,
+        message: convertedData.error?.message
+    };
+};
+
+export async function removeFromWishlistAPI(productId) {
+    const token = tokenStore.getAccess();
+    const res = await fetch(`${apiUrl}/api/wishlist/${productId}`, {
+        method: 'DELETE',
+        headers: {
+            "Authorization": `Bearer ` + token
+        }
+    });
+    const convertedData = await res.json();
+    if (res.ok) {
+        return {
+            status: true,
+            data: {
+                productData: convertedData.data,
+                total: convertedData.total
+            }
+        };
+    };
+    return {
+        status: false,
+        message: convertedData.error?.message
+    };
+};
+

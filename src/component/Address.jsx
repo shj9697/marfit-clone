@@ -45,7 +45,7 @@ function Address() {
 
     return (
         <div className="w-full flex flex-col gap-4">
-            <h2 className="text-2xl text-orange-600">Your Address List</h2>
+            <h2 className="text-2xl text-[#fb641b]">Your Address List</h2>
             <div className="w-20 h-0.5 bg-gray-300" />
             {mode === "form" ?
                 <AddressPage
@@ -64,11 +64,11 @@ function Address() {
                             <div className="flex items-center gap-3">
                                 <PencilIcon size={15}
                                     onClick={() => handleEdit(index)}
-                                    className="cursor-pointer text-orange-600"
+                                    className="cursor-pointer text-[#fb641b]"
                                 />
                                 <Trash size={15}
                                     onClick={() => handleDelete(index)}
-                                    className="cursor-pointer text-orange-600"
+                                    className="cursor-pointer text-[#fb641b]"
                                 />
                             </div>
                         </div>

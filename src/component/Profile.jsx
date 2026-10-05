@@ -38,7 +38,7 @@ function Profile() {
 
     return (
         <div>
-            <h2 className="text-2xl text-orange-600">Profile Details</h2>
+            <h2 className="text-2xl text-[#fb641b]">Profile Details</h2>
             <div className="w-20 h-0.5 bg-gray-300 mt-3" />
 
             {mode === "list" ? (
@@ -53,7 +53,7 @@ function Profile() {
                     </div>
                     <button
                         onClick={() => setMode("edit")}
-                        className="mt-8 bg-orange-600 hover:bg-orange-700 text-white text-[17px] px-10 py-2 rounded-sm cursor-pointer"
+                        className="mt-8 bg-[#fb641b] hover:bg-[#fb641b] text-white text-[17px] px-10 py-2 rounded-sm cursor-pointer"
                     >
                         Edit
                     </button>
@@ -108,7 +108,7 @@ function Profile() {
                     <div className="flex gap-2">
                         <button
                             onClick={() => setMode("list")}
-                            className="mt-8 bg-white  text-orange-600 border border-orange-600 text-[17px] px-10 py-2 rounded-sm cursor-pointer"
+                            className="mt-8 bg-white  text-[#fb641b] border border-[#fb641b] text-[17px] px-10 py-2 rounded-sm cursor-pointer"
                         >
                             Cancel
                         </button>
@@ -118,7 +118,7 @@ function Profile() {
                                 localStorage.setItem("dob", dob);
                                 setMode("list");
                             }}
-                            className="mt-8 bg-orange-600 hover:bg-orange-700 text-white text-[17px] px-10 py-2 rounded-sm cursor-pointer"
+                            className="mt-8 bg-[#fb641b] hover:bg-[#fb641b] text-white text-[17px] px-10 py-2 rounded-sm cursor-pointer"
                         >
                             Save
                         </button>

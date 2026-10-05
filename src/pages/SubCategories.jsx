@@ -127,9 +127,9 @@ function SubCategories() {
 						))}
 					</div>
 					<div className="flex justify-center items-center px-2 gap-2">
-						<button disabled={currentPage <= 1} className="bg-orange-600 text-white px-6 py-2 cursor-pointer disabled:bg-white" onClick={handlePrevPage}> Prev</button>
+						<button disabled={currentPage <= 1} className="bg-[#fb641b] text-white px-6 py-2 cursor-pointer disabled:bg-white" onClick={handlePrevPage}> Prev</button>
 						<h1>Page {currentPage} of {data?.productListData?.totalPages || 1}</h1>
-						<button disabled={currentPage >= data?.productListData?.totalPages} className="bg-orange-600 text-white px-6 py-2 cursor-pointer disabled:bg-white" onClick={handleNextPage}>Next</button>
+						<button disabled={currentPage >= data?.productListData?.totalPages} className="bg-[#fb641b] text-white px-6 py-2 cursor-pointer disabled:bg-white" onClick={handleNextPage}>Next</button>
 					</div>
 				</div>
 			</div>

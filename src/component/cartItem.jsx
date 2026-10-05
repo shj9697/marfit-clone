@@ -43,8 +43,8 @@ const CartItem = ({ item }) => {
                             <p className="text-sm">7 Days Replacement Policy available</p>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2 border-2 border-amber-600  rounded mt-3 text-sm p-1">
-                        <Truck className="size-5 text-orange-600" />
+                    <div className="flex items-center gap-2 border-2 border-[#fb641b]  rounded mt-3 text-sm p-1">
+                        <Truck className="size-5 text-[#fb641b]" />
                         <p className="text-sm">Delivery Charge : Free</p>
                     </div>
                 </div>

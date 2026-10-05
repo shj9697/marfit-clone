@@ -96,7 +96,7 @@ const ContactForm = () => {
 
                 <button
                     type="submit"
-                    className="p-2 w-40 mx-auto rounded-sm bg-orange-600 text-white"
+                    className="p-2 w-40 mx-auto rounded-sm bg-[#fb641b] text-white"
                 >
                     Send
                 </button>

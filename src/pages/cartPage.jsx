@@ -36,10 +36,10 @@ const CartPage = () => {
                         <div className="">
                             <div className="flex items-center gap-3">
                                 <h1 className='text-2xl'>Your Cart</h1>
-                                <p className="bg-orange-500 text-white p-1 rounded-xl text-[14px]">{summary.totalItems} items</p>
+                                <p className="bg-[#fb641b] text-white p-1 rounded-xl text-[14px]">{summary.totalItems} items</p>
                             </div>
                             <div className="flex items-center gap-2 my-1">
-                                <span className="w-15 h-1 bg-orange-500"></span>
+                                <span className="w-15 h-1 bg-[#fb641b]"></span>
                             </div>
                         </div>
                         {items.map((item) => (

@@ -116,14 +116,14 @@ const AddressDetails = ({ handleChoosePayment }) => {
                         <div className="flex items-center gap-3">
                             <PencilIcon size={15}
                                 onClick={() => openModal(address)}
-                                className="cursor-pointer text-orange-600"
+                                className="cursor-pointer text-[#fb641b]"
                             />
-                            <Trash onClick={() => handleDelete(address.id)} />
+                            <Trash size={15} onClick={() => handleDelete(address.id)} />
                         </div>
                     </div>
                 ))}
                 <button
-                    className="w-full border border-amber-600 text-[15px] text-[#fb6b25] rounded p-2 cursor-pointer"
+                    className="w-full border border-[#fb641b] text-[15px] text-[#fb6b25] rounded p-2 cursor-pointer"
                     onClick={() => openModal()}
                 >
                     ADD ADDRESS
