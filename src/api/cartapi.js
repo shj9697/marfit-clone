@@ -1,25 +1,16 @@
-import { tokenStore } from "./tokenStore";
-
-const apiUrl = import.meta.env.VITE_API_URL || "";
+import { authFetch } from "./authFetch";
 
 
 function errorMessage(body) {
     return body?.error?.message ?? 'Something went wrong. Please try again.';
 };
 
-// A 401 means the server no longer accepts the token; clearing it lets AuthProvider log the user out
-function failure(res, body) {
-    if (res.status === 401) tokenStore.clear();
+function failure(body) {
     return { status: false, message: errorMessage(body) };
 };
 
 export async function getCartAPI() {
-    const token = tokenStore.getAccess();
-    const res = await fetch(`${apiUrl}/api/cart`, {
-        headers: {
-            "Authorization": token ? `Bearer ` + token : ""
-        }
-    });
+    const res = await authFetch("/api/cart");
     const convertedData = await res.json();
     if (res.ok && convertedData) {
         return {
@@ -31,16 +22,14 @@ export async function getCartAPI() {
             }
         };
     }
-    return failure(res, convertedData);
+    return failure(convertedData);
 };
 
 export async function addToCartAPI(productId, quantity) {
-    const token = tokenStore.getAccess();
-    const res = await fetch(`${apiUrl}/api/cart/items`, {
+    const res = await authFetch(`/api/cart/items`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            "Authorization": token ? `Bearer ` + token : ""
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({ productId, quantity }),
     });
@@ -55,16 +44,14 @@ export async function addToCartAPI(productId, quantity) {
             }
         };
     };
-    return failure(res, convertedData);
+    return failure(convertedData);
 };
 
 export async function updateCartItemAPI(productId, quantity) {
-    const token = tokenStore.getAccess();
-    const res = await fetch(`${apiUrl}/api/cart/items`, {
+    const res = await authFetch(`/api/cart/items`, {
         method: 'PATCH',
         headers: {
-            'Content-Type': 'application/json',
-            "Authorization": token ? `Bearer ` + token : ""
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({ productId, quantity }),
     });
@@ -80,16 +67,12 @@ export async function updateCartItemAPI(productId, quantity) {
             }
         };
     };
-    return failure(res, convertedData);
+    return failure(convertedData);
 };
 
 export async function productDeleteFromCartAPI(productId) {
-    const token = tokenStore.getAccess();
-    const res = await fetch(`${apiUrl}/api/cart/items/${encodeURIComponent(productId)}`, {
+    const res = await authFetch(`/api/cart/items/${encodeURIComponent(productId)}`, {
         method: 'DELETE',
-        headers: {
-            "Authorization": token ? `Bearer ` + token : ""
-        }
     });
     const convertedData = await res.json();
 
@@ -103,5 +86,5 @@ export async function productDeleteFromCartAPI(productId) {
             }
         };
     };
-    return failure(res, convertedData);
+    return failure(convertedData);
 };

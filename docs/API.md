@@ -138,14 +138,15 @@ as an `x-session-id` response header and accepted back as a request header, for
 clients that cannot use cookies. The cart hangs off it.
 
 **Signed-in users** send a JWT, either as `Authorization: Bearer <token>` or the
-`marfit_token` httpOnly cookie set at login.
+`marfit_access` httpOnly cookie set at login.
 
-The JWT is the **access token** and is short-lived (`JWT_EXPIRES_IN`, 30 minutes
+The JWT is the **access token** and is short-lived (`ACCESS_TOKEN_TTL_MINUTES`, 30
 by default). Sign-in also returns a **refresh token**, valid for
-`REFRESH_TOKEN_TTL_DAYS` (7 by default). When the access token expires, trade the
-refresh token for a new pair at
+`REFRESH_TOKEN_TTL_MINUTES` (10080, i.e. 7 days, by default). When the access token expires, trade the
+refresh token for a new access token at
 [`POST /api/auth/refresh`](#post-apiauthrefresh) instead of sending the user back
-to the login page.
+to the login page. The refresh token is never replaced, so the sign-in ends when
+it expires.
 
 In the examples below, `$TOKEN` is the access token returned by
 [login](#post-apiauthlogin), sent as `Authorization: Bearer $TOKEN`.
@@ -195,7 +196,7 @@ curl -X POST http://localhost:4000/api/auth/register \
 
 `token` is the access token; `refreshToken` renews it (see
 [below](#post-apiauthrefresh)). Both are also set as httpOnly cookies —
-`marfit_token`, and `marfit_refresh_token` scoped to `/api/auth`.
+`marfit_access`, and `marfit_refresh` scoped to `/api/auth`.
 
 `password` must be at least 8 characters. A duplicate email returns **409**.
 
@@ -258,7 +259,8 @@ Register, login and Google all return the same `{ user, token, refreshToken }`.
 
 ### `POST /api/auth/refresh`
 
-Trades a refresh token for a **new access token and a new refresh token**.
+Trades a refresh token for a **new access token**. The refresh token itself is
+not replaced.
 
 ```bash
 curl -X POST http://localhost:4000/api/auth/refresh \
@@ -267,35 +269,33 @@ curl -X POST http://localhost:4000/api/auth/refresh \
 ```
 
 ```jsonc
-// 200 — a new pair; the token you sent is now spent
+// 200 — a new access token; keep using the same refresh token
 {
   "data": {
     "user": { "id": "cmuvbl6sn00006bdl8swhyt8f", "email": "asha@example.com", "name": "Asha Roy", … },
-    "token": "eyJhbGciOiJIUzI1NiIs…",
-    "refreshToken": "nr-YPD8Rn3dMKpg3O1lbu9s…"
+    "token": "eyJhbGciOiJIUzI1NiIs…"
   }
 }
 ```
 
 ```jsonc
-// 401 — missing, unknown, expired, revoked or replayed
+// 401 — missing, unknown, expired or revoked
 { "error": { "message": "Your session has expired, please sign in again", "code": "UNAUTHORIZED" } }
 ```
 
-The body is optional — without it, the `marfit_refresh_token` cookie is used:
+The body is optional — without it, the `marfit_refresh` cookie is used:
 
 ```bash
 curl -X POST http://localhost:4000/api/auth/refresh -b jar -c jar
 ```
 
-Refresh tokens **rotate**: the one you send is spent, so always store the pair
-that comes back. Replaying a spent token is treated as theft — every token from
-that sign-in is revoked and the user has to sign in again. The one exception is
-a 30-second grace window, so two tabs that refresh at the same moment with the
-same token both succeed.
+The refresh token keeps the expiry it was issued with, so refreshing never
+extends the sign-in: `REFRESH_TOKEN_TTL_MINUTES` after login the user has to sign
+in again. An access token issued here is capped to expire no later than the
+refresh token.
 
-Any failure — missing, unknown, expired, revoked or replayed — is a **401** with
-the same message. On a 401, clear the stored tokens and send the user to sign in.
+Any failure — missing, unknown, expired or revoked — is a **401** with the same
+message. On a 401, clear the stored tokens and send the user to sign in.
 
 A typical client wrapper:
 
@@ -312,15 +312,15 @@ async function authFetch(url, options = {}) {
   if (!refreshed.ok) { tokenStore.clear(); return res; }   // signed out
 
   const { data } = await refreshed.json();
-  tokenStore.save(data.token, data.refreshToken);
+  tokenStore.saveAccess(data.token);                       // the refresh token is unchanged
   return fetch(url, withBearer(options, data.token));      // retry once
 }
 ```
 
 ### `POST /api/auth/logout`
 
-Body `{ refreshToken? }` (or the cookie). Revokes the refresh token, and every
-token rotated from the same sign-in, then clears both cookies. An access token
+Body `{ refreshToken? }` (or the cookie). Revokes the refresh token, then clears
+both cookies. An access token
 already handed out keeps working until it expires, which is why it is kept short.
 
 ```bash

@@ -1,6 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { addToWishlistAPI, getWishlistAPI, meAPI, removeFromWishlistAPI } from "../api/authentication";
-import { tokenStore } from "../api/tokenStore";
+import { addToWishlistAPI, getWishlistAPI, logoutAPI, meAPI, removeFromWishlistAPI } from "../api/authentication";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
@@ -68,15 +67,18 @@ export function AuthProvider({ children }) {
                 if (!cancelled) setLoading(false);
             }
         };
-        const access_token = tokenStore.getAccess();
-        if (access_token) {
-            load();
-        }
+        // The tokens are httpOnly cookies the page can't read, so ask the server who is signed in
+        load();
         return () => { cancelled = true; };
     }, []);
 
-    const logout = useCallback(() => {
-        tokenStore.clear();
+    const logout = useCallback(async () => {
+        try {
+            const response = await logoutAPI();
+            if (!response.status) toast.error(response.message);
+        } catch (err) {
+            toast.error(err.message);
+        }
         setUser(null);
         navigate("/");
         setWishList([]);
@@ -85,13 +87,19 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         if (!user) return;
-        const checkSession = () => {
-            if (!tokenStore.getAccess()) {
-                toast.error("Session expired");
-                logout();
+        // Asking the server also refreshes an expired access token; once the refresh
+        // token has expired that fails too, and the user is logged out
+        const checkSession = async () => {
+            try {
+                if (!(await meAPI())) {
+                    toast.error("Session expired");
+                    logout();
+                }
+            } catch {
+                // A network or server error isn't a sign-out; the next check retries
             }
         };
-        const timer = setInterval(checkSession, 15 * 1000);
+        const timer = setInterval(checkSession, 60 * 1000);
         window.addEventListener("focus", checkSession);
         return () => {
             clearInterval(timer);

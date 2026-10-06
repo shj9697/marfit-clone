@@ -1,4 +1,4 @@
-import { tokenStore } from "./tokenStore";
+import { authFetch } from "./authFetch";
 
 const apiUrl = import.meta.env.VITE_API_URL || "";
 
@@ -25,46 +25,68 @@ export async function getAuthenticationAPI(email, password, name) {
 
 export async function loginAPI(email, password) {
     const res = await fetch(`${apiUrl}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        // Lets the browser keep the token cookies the server sets
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
         body: JSON.stringify({ email, password })
     });
     const convertedData = await res.json();
-    if (!res.ok)
+    if (!res.ok) {
         return {
             status: false,
             message: convertedData.error?.message
         };
-
-    const { token, user } = convertedData.data;
-    tokenStore.save(token, null);
+    }
 
     return {
         status: true,
-        data: user
+        data: convertedData.data.user
     };
-};
+}
 
+// The tokens are httpOnly cookies, so JavaScript can't delete them; the server clears them
+export async function logoutAPI() {
+    const res = await fetch(`${apiUrl}/api/auth/logout`, {
+        method: "POST",
+        credentials: "include"
+    });
+    if (res.ok) return { status: true };
+    const convertedData = await res.json();
+    return {
+        status: false,
+        message: convertedData.error?.message
+    };
+}
+
+
+// authentication.js
+
+// loginAPI()
+//      ↓
+// login backend
+
+// refreshTokenAPI()
+//      ↓
+// refresh backend
+
+// meAPI()
+//      ↓
+// current-user backend
 
 export async function meAPI() {
-    const token = tokenStore.getAccess();
-    const res = await fetch(`${apiUrl}/api/auth/me`, {
-        headers: {
-            "Authorization": `Bearer ` + token
-        }
-    });
-    if (!res.ok) return null;
+    const res = await authFetch("/api/auth/me");
+    // 401 means nobody is signed in; anything else is a failure, not a sign-out
+    if (res.status === 401) return null;
+    if (!res.ok) throw new Error("Could not load your account. Please try again.");
     const convertedData = await res.json();
     return convertedData.data;
 }
 
 export async function getWishlistAPI() {
-    const token = tokenStore.getAccess();
-    const res = await fetch(`${apiUrl}/api/wishlist`, {
-        headers: {
-            "Authorization": `Bearer ` + token
-        }
-    });
+    const res = await authFetch("/api/wishlist");
     const convertedData = await res.json();
     if (res.ok) {
         return {
@@ -82,12 +104,10 @@ export async function getWishlistAPI() {
 };
 
 export async function addToWishlistAPI(productId) {
-    const token = tokenStore.getAccess();
-    const res = await fetch(`${apiUrl}/api/wishlist`, {
+    const res = await authFetch("/api/wishlist", {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            "Authorization": `Bearer ` + token
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({ productId })
     });
@@ -108,12 +128,8 @@ export async function addToWishlistAPI(productId) {
 };
 
 export async function removeFromWishlistAPI(productId) {
-    const token = tokenStore.getAccess();
-    const res = await fetch(`${apiUrl}/api/wishlist/${productId}`, {
-        method: 'DELETE',
-        headers: {
-            "Authorization": `Bearer ` + token
-        }
+    const res = await authFetch(`/api/wishlist/${productId}`, {
+        method: 'DELETE'
     });
     const convertedData = await res.json();
     if (res.ok) {
