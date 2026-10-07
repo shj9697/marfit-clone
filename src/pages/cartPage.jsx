@@ -1,11 +1,15 @@
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { useCart } from "../context/CartProvider";
 import CartItem from "../component/cartItem";
 import CartDetails from "../component/cartDetails";
+import { useAuth } from "../context/AuthProvider";
 
 
 const CartPage = () => {
     const { cart } = useCart();
+    const { user, loading } = useAuth();
     const navigate = useNavigate();
     const { state } = useLocation();
     const buyNowId = state?.buyNowId;
@@ -18,9 +22,18 @@ const CartPage = () => {
         }
         : { totalItems: cart.totalItems, totalAmount: cart.totalAmount };
 
+    useEffect(() => {
+        if (!loading && !user) {
+            toast.error("Please log in to access your cart");
+            navigate("/");
+        }
+    }, [loading, user, navigate]);
+
     const Homepage = () => {
         navigate('/')
     };
+
+    if (loading || !user) return null;
 
     return (
         <div className="w-full lg:px-2">
@@ -33,7 +46,7 @@ const CartPage = () => {
                 :
                 <div className='flex flex-col lg:flex-row items-start w-full gap-6 lg:px-6 py-10'>
                     <div className='w-full lg:w-2/3 flex flex-col gap-4'>
-                        <div className="">
+                        <div>
                             <div className="flex items-center gap-3">
                                 <h1 className='text-2xl'>Your Cart</h1>
                                 <p className="bg-[#fb641b] text-white p-1 rounded-xl text-[14px]">{summary.totalItems} items</p>

@@ -2,13 +2,18 @@ import { House, PencilIcon, Trash } from "lucide-react";
 import ModalBox from "./ModalBox";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import { GetState, GetCity } from "react-country-state-city";
+import { addAddressAPI, deleteAddressAPI, getAddressesAPI, updateAddressAPI } from "../api/addressApi";
 
 const AddressDetails = ({ handleChoosePayment }) => {
 
-    const [addresses, setAddresses] = useState(() => JSON.parse(localStorage.getItem("checkoutAddresses")) ?? []);
+    const [addresses, setAddresses] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [saving, setSaving] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [phone, setPhone] = useState("");
     const [dialCode, setDialCode] = useState("91");
@@ -21,14 +26,34 @@ const AddressDetails = ({ handleChoosePayment }) => {
     const [editId, setEditId] = useState(null);
 
     const countryId = 101;
-    const emptyAddressForm = { name: "", address: "", pincode: "", email: "" };
+    const emptyAddressForm = { customerName: "", addressLine1: "", pincode: "", email: "" };
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm({ mode: "onTouched" });
 
-    // save addresses to local storage whenever they change
     useEffect(() => {
-        localStorage.setItem("checkoutAddresses", JSON.stringify(addresses));
-    }, [addresses]);
+        let cancelled = false;
+        async function load() {
+            try {
+                setLoading(true);
+                setError(null);
+                const addressData = await getAddressesAPI();
+                if (!cancelled) {
+                    if (addressData.status) {
+                        setAddresses(addressData.data);
+                        // Preselect the default so a returning customer can go straight to payment
+                        setSelectedAddressId(addressData.data.find((address) => address.isDefault)?.id ?? "");
+                    }
+                    else setError(addressData.message);
+                }
+            } catch (err) {
+                if (!cancelled) setError(err.message);
+            } finally {
+                if (!cancelled) setLoading(false);
+            }
+        }
+        load();
+        return () => { cancelled = true; };
+    }, []);
 
     useEffect(() => {
         GetState(countryId).then(setStateList);
@@ -39,40 +64,59 @@ const AddressDetails = ({ handleChoosePayment }) => {
         else setCityList([]);
     }, [stateId]);
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         if (!phone || !stateId || !cityId) {
             return setMissingFields(true);
         }
-        const state = stateList.find(item => item.id === Number(stateId))?.name;
-        const city = cityList.find(item => item.id === Number(cityId))?.name;
-        const newAddress = {
-            ...data,
-            id: editId || crypto.randomUUID(),
-            phone,
-            mobile: phone.slice(dialCode.length),
-            stateId,
-            cityId,
-            state,
-            city
+        // Field names match the checkout body, so the saved address can be ordered by its id
+        const addressDetails = {
+            customerName: data.customerName,
+            phone: phone.slice(dialCode.length),
+            email: data.email,
+            addressLine1: data.addressLine1,
+            city: cityList.find(item => item.id === Number(cityId))?.name,
+            state: stateList.find(item => item.id === Number(stateId))?.name,
+            pincode: data.pincode
         };
-        setAddresses(prev =>
-            editId
-                ? prev.map(address =>
-                    address.id === editId ? newAddress : address
-                )
-                : [...prev, newAddress]
-        );
-
-        setSelectedAddressId(newAddress.id);
-        setIsOpen(false);
+        setSaving(true);
+        try {
+            const response = editId
+                ? await updateAddressAPI(editId, addressDetails)
+                : await addAddressAPI(addressDetails);
+            if (!response.status) return toast.error(response.message);
+            setAddresses(prev =>
+                editId
+                    ? prev.map(address =>
+                        address.id === editId ? response.data : address
+                    )
+                    : [...prev, response.data]
+            );
+            setSelectedAddressId(response.data.id);
+            setIsOpen(false);
+        } catch (err) {
+            toast.error(err.message);
+        } finally {
+            setSaving(false);
+        }
     };
 
     // address is passed when editing, left empty when adding a new one
     const openModal = (address) => {
-        reset(address ?? emptyAddressForm);
-        setPhone(address?.phone ?? "");
-        setStateId(address?.stateId ?? "");
-        setCityId(address?.cityId ?? "");
+        reset(address
+            ? { customerName: address.customerName, addressLine1: address.addressLine1, pincode: address.pincode, email: address.email ?? "" }
+            : emptyAddressForm);
+        setPhone(address ? `91${address.phone}` : "");
+        setDialCode("91");
+        // The server stores state and city by name, but the dropdowns select by id
+        const editStateId = stateList.find(state => state.name === address?.state)?.id;
+        setStateId(editStateId ? String(editStateId) : "");
+        setCityId("");
+        if (editStateId) {
+            GetCity(countryId, editStateId).then(cities => {
+                const editCityId = cities.find(city => city.name === address.city)?.id;
+                setCityId(editCityId ? String(editCityId) : "");
+            });
+        }
         setEditId(address?.id ?? null);
         setMissingFields(false);
         setIsOpen(true);
@@ -83,8 +127,28 @@ const AddressDetails = ({ handleChoosePayment }) => {
         setCityId("");
     };
 
-    const handleDelete = (id) => {
-        setAddresses((prev) => prev.filter((address) => address.id !== id));
+    const handleDelete = async (id) => {
+        try {
+            const response = await deleteAddressAPI(id);
+            if (!response.status) return toast.error(response.message);
+            setAddresses(response.data);
+            if (selectedAddressId === id) setSelectedAddressId("");
+        } catch (err) {
+            toast.error(err.message);
+        }
+    };
+
+    const handleProceed = () => {
+        if (!selectedAddressId) return toast.error("Please select an address");
+        // Not passed when this page is opened on its own route
+        handleChoosePayment?.(selectedAddressId);
+    };
+
+    if (loading) {
+        return <p>Loading......</p>
+    }
+    if (error) {
+        return <p>Error : {error}</p>
     };
 
     return (
@@ -106,10 +170,10 @@ const AddressDetails = ({ handleChoosePayment }) => {
                                 className="mt-1 appearance-none size-4 shrink-0 rounded-full bg-white border checked:bg-[#fb6b25] outline-none cursor-pointer"
                             />
                             <div>
-                                <p className="font-medium">{address.name}</p>
-                                <p className="text-gray-600">{address.address}</p>
+                                <p className="font-medium">{address.customerName}</p>
+                                <p className="text-gray-600">{address.addressLine1}</p>
                                 <p className="text-gray-600">{address.city} - {address.pincode}, {address.state}</p>
-                                <p className="text-gray-600">Mobile : {address.mobile}</p>
+                                <p className="text-gray-600">Mobile : {address.phone}</p>
                             </div>
                         </label>
 
@@ -129,7 +193,7 @@ const AddressDetails = ({ handleChoosePayment }) => {
                     ADD ADDRESS
                 </button>
                 <div className="text-center p-2 bg-[#fb6b25] my-2 rounded">
-                    <button className="text-white cursor-pointer" onClick={handleChoosePayment}>PROCEED TO PAYMENT</button>
+                    <button className="text-white cursor-pointer" onClick={handleProceed}>PROCEED TO PAYMENT</button>
                 </div>
             </div>
 
@@ -141,9 +205,9 @@ const AddressDetails = ({ handleChoosePayment }) => {
                             type="text"
                             placeholder="Name"
                             className="border border-gray-400 outline-0 p-2 rounded text-[12px] "
-                            {...register("name", { required: "Name is required" })}
+                            {...register("customerName", { required: "Name is required" })}
                         />
-                        {errors.name && <p className="text-red-500 text-[11px]">{errors.name.message}</p>}
+                        {errors.customerName && <p className="text-red-500 text-[11px]">{errors.customerName.message}</p>}
                         <PhoneInput
                             country={'in'}
                             value={phone}
@@ -159,9 +223,9 @@ const AddressDetails = ({ handleChoosePayment }) => {
                             type="text"
                             placeholder="Address (House No., building, street, area)"
                             className="border border-gray-400 outline-0 p-2 rounded text-[12px]"
-                            {...register("address", { required: "Address is required" })}
+                            {...register("addressLine1", { required: "Address is required" })}
                         />
-                        {errors.address && <p className="text-red-500 text-[11px]">{errors.address.message}</p>}
+                        {errors.addressLine1 && <p className="text-red-500 text-[11px]">{errors.addressLine1.message}</p>}
                         <input
                             type="text"
                             inputMode="numeric"
@@ -219,7 +283,13 @@ const AddressDetails = ({ handleChoosePayment }) => {
                     {missingFields && (
                         <p className="text-red-500 text-[11px] mt-2">Mobile number, state and city are required</p>
                     )}
-                    <button type="submit" className="bg-[#fb6b25] text-white p-3 mt-3 text-center w-full cursor-pointer" >{editId ? "SAVE ADDRESS" : "ADD ADDRESS"}</button>
+                    <button
+                        type="submit"
+                        disabled={saving}
+                        className="bg-[#fb6b25] text-white p-3 mt-3 text-center w-full cursor-pointer disabled:opacity-60"
+                    >
+                        {saving ? "SAVING..." : editId ? "SAVE ADDRESS" : "ADD ADDRESS"}
+                    </button>
                 </form>
             </ModalBox>
         </div>

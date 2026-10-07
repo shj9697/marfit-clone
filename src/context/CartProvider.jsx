@@ -91,7 +91,13 @@ export function CartProvider({ children }) {
     }
   };
 
-  const value = { cart, addToCart, removeFromCart, productDeleteFromCart, cartLoading: loading, cartError: error };
+  // Placing an order empties the cart on the server, so reload it afterwards
+  const refreshCart = async () => {
+    const response = await getCartAPI();
+    if (response.status) setCart(response.data);
+  };
+
+  const value = { cart, addToCart, removeFromCart, productDeleteFromCart, refreshCart, cartLoading: loading, cartError: error };
 
   return (
     <CartContext.Provider value={value}>

@@ -1,14 +1,5 @@
 import { authFetch } from "./authFetch";
 
-
-function errorMessage(body) {
-    return body?.error?.message ?? 'Something went wrong. Please try again.';
-};
-
-function failure(body) {
-    return { status: false, message: errorMessage(body) };
-};
-
 export async function getCartAPI() {
     const res = await authFetch("/api/cart");
     const convertedData = await res.json();
@@ -22,7 +13,10 @@ export async function getCartAPI() {
             }
         };
     }
-    return failure(convertedData);
+    return {
+        status: false,
+        message: convertedData?.error?.message
+    };
 };
 
 export async function addToCartAPI(productId, quantity) {
@@ -44,7 +38,10 @@ export async function addToCartAPI(productId, quantity) {
             }
         };
     };
-    return failure(convertedData);
+    return {
+        status: false,
+        message: convertedData?.error?.message
+    };
 };
 
 export async function updateCartItemAPI(productId, quantity) {
@@ -67,7 +64,10 @@ export async function updateCartItemAPI(productId, quantity) {
             }
         };
     };
-    return failure(convertedData);
+    return {
+        status: false,
+        message: convertedData?.error?.message
+    };
 };
 
 export async function productDeleteFromCartAPI(productId) {
@@ -86,5 +86,8 @@ export async function productDeleteFromCartAPI(productId) {
             }
         };
     };
-    return failure(convertedData);
+    return {
+        status: false,
+        message: convertedData?.error?.message
+    };
 };

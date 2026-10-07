@@ -1,47 +1,87 @@
 import { Pencil, PencilIcon, Plus, Trash } from "lucide-react";
 import AddressPage from "./AddressPage";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { addAddressAPI, deleteAddressAPI, getAddressesAPI, updateAddressAPI } from "../api/addressApi";
 
 function Address() {
 
     const [mode, setMode] = useState("list");
-    const [editIndex, setEditIndex] = useState(null);
-    const [addresses, setAddresses] = useState(() => {
-        const saved = localStorage.getItem("addresses");
-        return saved ? JSON.parse(saved) : [];
-    });
+    const [editId, setEditId] = useState(null);
+    const [addresses, setAddresses] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        localStorage.setItem("addresses", JSON.stringify(addresses));
-    }, [addresses]);
+        let cancelled = false;
+        async function load() {
+            try {
+                setLoading(true);
+                setError(null);
+                const addressData = await getAddressesAPI();
+                if (!cancelled) {
+                    if (addressData.status) setAddresses(addressData.data);
+                    else setError(addressData.message);
+                }
+            } catch (err) {
+                if (!cancelled) setError(err.message);
+            } finally {
+                if (!cancelled) setLoading(false);
+            }
+        }
+        load();
+        return () => { cancelled = true; };
+    }, []);
 
     const switchMode = (nextMode) => {
         setMode(nextMode);
     }
 
     const handleBack = () => {
-        setEditIndex(null);
+        setEditId(null);
         switchMode('list')
     }
 
-    const handleSave = (data) => {
-        if (editIndex !== null) {
-            setAddresses((prev) => prev.map((existingAddress, index) => (index === editIndex ? data : existingAddress)));
-        } else {
-            setAddresses((prev) => [...prev, data]);
+    const handleSave = async (addressDetails) => {
+        try {
+            const response = editId
+                ? await updateAddressAPI(editId, addressDetails)
+                : await addAddressAPI(addressDetails);
+            if (!response.status) return toast.error(response.message);
+            setAddresses((prev) =>
+                editId
+                    ? prev.map((existingAddress) => (existingAddress.id === editId ? response.data : existingAddress))
+                    : [...prev, response.data]
+            );
+            setEditId(null);
+            switchMode("list");
+        } catch (err) {
+            toast.error(err.message);
         }
-        setEditIndex(null);
-        switchMode("list");
     }
 
-    const handleEdit = (index) => {
-        setEditIndex(index);
+    const handleEdit = (id) => {
+        setEditId(id);
         switchMode("form");
     }
 
-    const handleDelete = (index) => {
-        setAddresses((prev) => prev.filter((_, i) => i !== index));
+    const handleDelete = async (id) => {
+        try {
+            const response = await deleteAddressAPI(id);
+            if (!response.status) return toast.error(response.message);
+            // The server returns the addresses that are left
+            setAddresses(response.data);
+        } catch (err) {
+            toast.error(err.message);
+        }
     }
+
+    if (loading) {
+        return <p>Loading......</p>
+    }
+    if (error) {
+        return <p>Error : {error}</p>
+    };
 
     return (
         <div className="w-full flex flex-col gap-4">
@@ -51,23 +91,23 @@ function Address() {
                 <AddressPage
                     handleBack={handleBack}
                     handleSave={handleSave}
-                    initialData={editIndex !== null ? addresses[editIndex] : null}
+                    initialData={editId ? addresses.find((address) => address.id === editId) : null}
                 />
                 :
                 <div className="w-full">
-                    {addresses.map((address, index) => (
-                        <div key={index} className="flex items-center justify-between border-b-gray-500 rounded p-4 mb-4">
+                    {addresses.map((address) => (
+                        <div key={address.id} className="flex items-center justify-between border-b-gray-500 rounded p-4 mb-4">
                             <div>
-                                <p className="text-[17px] text-gray-800 leading-10" >{address.name}</p>
-                                <p className="text-[17px] text-gray-800 leading-10">{address.address}</p>
+                                <p className="text-[17px] text-gray-800 leading-10" >{address.customerName}</p>
+                                <p className="text-[17px] text-gray-800 leading-10">{address.addressLine1}</p>
                             </div>
                             <div className="flex items-center gap-3">
                                 <PencilIcon size={15}
-                                    onClick={() => handleEdit(index)}
+                                    onClick={() => handleEdit(address.id)}
                                     className="cursor-pointer text-[#fb641b]"
                                 />
                                 <Trash size={15}
-                                    onClick={() => handleDelete(index)}
+                                    onClick={() => handleDelete(address.id)}
                                     className="cursor-pointer text-[#fb641b]"
                                 />
                             </div>

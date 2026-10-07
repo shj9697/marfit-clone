@@ -5,20 +5,37 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { GetState, GetCity } from "react-country-state-city";
 
-const AddressPage = ({ handleBack, handleSave }) => {
+// initialData is the saved address when editing, null when adding a new one
+const AddressPage = ({ handleBack, handleSave, initialData }) => {
 
-    const [phone, setPhone] = useState("");
+    const [phone, setPhone] = useState(initialData ? `91${initialData.phone}` : "");
+    const [dialCode, setDialCode] = useState("91");
     const [stateList, setStateList] = useState([]);
     const [cityList, setCityList] = useState([]);
     const [stateId, setStateId] = useState("");
     const [cityId, setCityId] = useState("");
-    const { register, handleSubmit } = useForm({ mode: "onSubmit" });
+    const { register, handleSubmit, formState: { isSubmitting } } = useForm({
+        mode: "onSubmit",
+        defaultValues: {
+            customerName: initialData?.customerName ?? "",
+            addressLine1: initialData?.addressLine1 ?? "",
+            pincode: initialData?.pincode ?? ""
+        }
+    });
 
     const countryId = 101;
 
     useEffect(() => {
         GetState(countryId).then((result) => {
             setStateList(result);
+            // The server stores state and city by name, but the dropdowns select by id
+            const editState = result.find((state) => state.name === initialData?.state);
+            if (!editState) return;
+            setStateId(String(editState.id));
+            GetCity(countryId, editState.id).then((cities) => {
+                const editCity = cities.find((city) => city.name === initialData.city);
+                if (editCity) setCityId(String(editCity.id));
+            });
         });
     }, []);
 
@@ -35,7 +52,7 @@ const AddressPage = ({ handleBack, handleSave }) => {
         setCityId("");
     };
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         if (!phone || !stateId || !cityId) {
             toast.error("Please Fill All The Details");
             return;
@@ -43,7 +60,8 @@ const AddressPage = ({ handleBack, handleSave }) => {
 
         const stateName = stateList.find((state) => state.id === Number(stateId))?.name ?? "";
         const cityName = cityList.find((city) => city.id === Number(cityId))?.name ?? "";
-        handleSave({ ...data, phone, state: stateName, city: cityName });
+        // The server wants the 10-digit number without the country code
+        await handleSave({ ...data, phone: phone.slice(dialCode.length), state: stateName, city: cityName });
     }
 
     const onError = () => {
@@ -59,12 +77,12 @@ const AddressPage = ({ handleBack, handleSave }) => {
                             type="text"
                             name="" placeholder="Name"
                             className="outline-0 border border-gray-400 bg-white p-2 rounded"
-                            {...register("name", { required: "Please Fill All The Details" })}
+                            {...register("customerName", { required: "Please Fill All The Details" })}
                         />
                         <input type="text"
                             placeholder="Address"
                             className="outline-0 border border-gray-400 bg-white p-2 rounded"
-                            {...register("address", { required: "Please Fill All The Details" })}
+                            {...register("addressLine1", { required: "Please Fill All The Details" })}
                         />
                     </div>
                     <div className="flex flex-col gap-3">
@@ -110,20 +128,16 @@ const AddressPage = ({ handleBack, handleSave }) => {
                         <PhoneInput
                             country={'in'}
                             value={phone}
-                            onChange={(value) => setPhone(value)}
+                            onChange={(value, country) => {
+                                setPhone(value);
+                                setDialCode(country.dialCode);
+                            }}
                             className="my-3 "
-                            {...register("pincode", {
-                                required: "Mobile Number is required",
-                                pattern: {
-                                    value: /^[1-9][0-9]{5}$/,
-                                    message: "Enter a valid Mobile Number",
-                                },
-                            })}
                         />
                     </div>
                     <div className="flex gap-3 ">
                         <button type="button" className="text-[#fb641b] bg-white border border-[#fb641b] px-10 py-2 cursor-pointer rounded" onClick={handleBack}>Cancel</button>
-                        <button type="submit" className="bg-[#fb641b] text-white px-10 py-2 cursor-pointer rounded" >Add</button>
+                        <button type="submit" disabled={isSubmitting} className="bg-[#fb641b] text-white px-10 py-2 cursor-pointer rounded disabled:opacity-60" >{initialData ? "Save" : "Add"}</button>
                     </div>
                 </form>
             </div >

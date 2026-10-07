@@ -13,9 +13,9 @@ export async function getAuthenticationAPI(email, password, name) {
         return {
             status: true,
             data: {
-                email: convertedData.data.user.email,
-                password: convertedData.data.user.hasPassword,
-                name: convertedData.data.user.name
+                email: convertedData?.data?.user?.email,
+                password: convertedData?.data?.user?.hasPassword,
+                name: convertedData?.data?.user?.name
             }
         };
     };
@@ -37,13 +37,13 @@ export async function loginAPI(email, password) {
     if (!res.ok) {
         return {
             status: false,
-            message: convertedData.error?.message
+            message: convertedData?.error?.message
         };
     }
 
     return {
         status: true,
-        data: convertedData.data.user
+        data: convertedData?.data?.user
     };
 }
 
@@ -57,7 +57,7 @@ export async function logoutAPI() {
     const convertedData = await res.json();
     return {
         status: false,
-        message: convertedData.error?.message
+        message: convertedData?.error?.message
     };
 }
 
@@ -146,4 +146,6 @@ export async function removeFromWishlistAPI(productId) {
         message: convertedData.error?.message
     };
 };
+
+
 
