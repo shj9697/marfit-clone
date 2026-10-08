@@ -55,32 +55,34 @@ const Payment = ({ addressId }) => {
     // It asks the server to create a Razorpay order for this address. If that fails, it turns the button back on and shows the error.
 
     const payWithRazorpay = async () => {
-        const orderData = await createRazorpayOrderAPI(addressId);
-        if (!orderData.status) {
+        const { status, message, data } = await createRazorpayOrderAPI(addressId);
+        if (!status) {
             setPlacing(false);
-            return toast.error(orderData.message);
+            return toast.error(message);
         }
-        const razorpayOrder = orderData.data;
-        console.log(razorpayOrder)
+        const { isDummy, keyId, razorpayOrderId, name, prefill } = data;
+
         // Dummy mode never contacts Razorpay, so skip the modal and verify straight away
-        if (razorpayOrder.isDummy) {
+        if (isDummy) {
             return verifyPayment({
-                razorpay_order_id: razorpayOrder.razorpayOrderId,
+                razorpay_order_id: razorpayOrderId,
                 razorpay_payment_id: "pay_dummy",
                 razorpay_signature: "dummy"
             });
         }
 
-        new window.Razorpay({
-            key: razorpayOrder.keyId,
-            order_id: razorpayOrder.razorpayOrderId,
-            name: razorpayOrder.name,
-            prefill: razorpayOrder.prefill,
-            handler: verifyPayment,
-            // Closing the modal leaves no order behind and keeps the cart as it was
-            modal: { ondismiss: () => setPlacing(false) }
-        }).open();
+        const options = {
+            key: keyId,
+            order_id: razorpayOrderId,
+            name,
+            prefill,
+            handler: verifyPayment, // runs after the user pays
+            modal: { ondismiss: () => setPlacing(false) } // runs if the user closes the popup
+        };
+        const razorpay = new window.Razorpay(options);
+        razorpay.open();
     };
+
 
     // step:- 3 checks the payment is real
     //It sends Razorpay's payment details to the server. The server checks them and places the order.
