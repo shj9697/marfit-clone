@@ -17,7 +17,6 @@ function CategoryDropdown() {
 				setLoading(true);
 				setError(null);
 				const data = await getProductCategoriesAPI();
-				console.log(data)
 				if (!cancelled) setCategories(data.categories);
 			} catch (err) {
 				if (!cancelled) setError(err.message);

@@ -80,17 +80,9 @@ const AddressDetails = ({ handleChoosePayment }) => {
         };
         setSaving(true);
         try {
-            const response = editId
-                ? await updateAddressAPI(editId, addressDetails)
-                : await addAddressAPI(addressDetails);
+            const response = editId ? await updateAddressAPI(editId, addressDetails) : await addAddressAPI(addressDetails);
             if (!response.status) return toast.error(response.message);
-            setAddresses(prev =>
-                editId
-                    ? prev.map(address =>
-                        address.id === editId ? response.data : address
-                    )
-                    : [...prev, response.data]
-            );
+            setAddresses(prev => editId ? prev.map(address => address.id === editId ? response.data : address) : [...prev, response.data]);
             setSelectedAddressId(response.data.id);
             setIsOpen(false);
         } catch (err) {
@@ -102,9 +94,7 @@ const AddressDetails = ({ handleChoosePayment }) => {
 
     // address is passed when editing, left empty when adding a new one
     const openModal = (address) => {
-        reset(address
-            ? { customerName: address.customerName, addressLine1: address.addressLine1, pincode: address.pincode, email: address.email ?? "" }
-            : emptyAddressForm);
+        reset(address ? { customerName: address.customerName, addressLine1: address.addressLine1, pincode: address.pincode, email: address.email ?? "" } : emptyAddressForm);
         setPhone(address ? `91${address.phone}` : "");
         setDialCode("91");
         // The server stores state and city by name, but the dropdowns select by id

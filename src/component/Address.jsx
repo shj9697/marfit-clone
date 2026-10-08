@@ -44,15 +44,9 @@ function Address() {
 
     const handleSave = async (addressDetails) => {
         try {
-            const response = editId
-                ? await updateAddressAPI(editId, addressDetails)
-                : await addAddressAPI(addressDetails);
+            const response = editId ? await updateAddressAPI(editId, addressDetails) : await addAddressAPI(addressDetails);
             if (!response.status) return toast.error(response.message);
-            setAddresses((prev) =>
-                editId
-                    ? prev.map((existingAddress) => (existingAddress.id === editId ? response.data : existingAddress))
-                    : [...prev, response.data]
-            );
+            setAddresses((prev) => editId ? prev.map((existingAddress) => (existingAddress.id === editId ? response.data : existingAddress)) : [...prev, response.data]);
             setEditId(null);
             switchMode("list");
         } catch (err) {

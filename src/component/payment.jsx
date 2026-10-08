@@ -37,23 +37,22 @@ const Payment = ({ addressId }) => {
         return () => { cancelled = true; };
     }, [])
 
-    const finishOrder = async (orderData) => {
-        setPlacing(false);
-        if (!orderData.status) return toast.error(orderData.message);
-        await refreshCart();
-        toast.success(`Order ${orderData.data.orderNumber} placed`);
-        navigate("/dashboard/orders");
-    };
-
-    // Razorpay calls this after the customer pays, outside handleOrder's try/catch
-    const verifyPayment = async (razorpayResponse) => {
+    // step:- 1 the starting point 
+    //Runs when the user clicks the ORDER button.
+    const handleOrder = async () => {
+        if (!paymentMethod) return toast.error("Please choose a payment method");
+        setPlacing(true); // It sets placing = true, which disables the button and shows "PLACING ORDER..."
         try {
-            await finishOrder(await verifyRazorpayPaymentAPI(razorpayResponse));
+            if (paymentMethod === "cod") await finishOrder(await placeOrderAPI(addressId));
+            else await payWithRazorpay();
         } catch (err) {
             setPlacing(false);
             toast.error(err.message);
         }
     };
+
+    //step:- 2 opens the payment popup
+    // It asks the server to create a Razorpay order for this address. If that fails, it turns the button back on and shows the error.
 
     const payWithRazorpay = async () => {
         const orderData = await createRazorpayOrderAPI(addressId);
@@ -62,7 +61,7 @@ const Payment = ({ addressId }) => {
             return toast.error(orderData.message);
         }
         const razorpayOrder = orderData.data;
-
+        console.log(razorpayOrder)
         // Dummy mode never contacts Razorpay, so skip the modal and verify straight away
         if (razorpayOrder.isDummy) {
             return verifyPayment({
@@ -83,17 +82,34 @@ const Payment = ({ addressId }) => {
         }).open();
     };
 
-    const handleOrder = async () => {
-        if (!paymentMethod) return toast.error("Please choose a payment method");
-        setPlacing(true);
+    // step:- 3 checks the payment is real
+    //It sends Razorpay's payment details to the server. The server checks them and places the order.
+
+    // Razorpay calls this after the customer pays, outside handleOrder's try/catch
+    const verifyPayment = async (razorpayResponse) => {
         try {
-            if (paymentMethod === "cod") await finishOrder(await placeOrderAPI(addressId));
-            else await payWithRazorpay();
+            await finishOrder(await verifyRazorpayPaymentAPI(razorpayResponse));
         } catch (err) {
             setPlacing(false);
             toast.error(err.message);
         }
     };
+
+
+    //step:-4 the ending
+    // Both COD and Razorpay end up here.
+
+    const finishOrder = async (orderData) => {
+        setPlacing(false);
+        if (!orderData.status) return toast.error(orderData.message);
+        await refreshCart();
+        toast.success(`Order ${orderData.data.orderNumber} placed`);
+        navigate("/dashboard/orders");
+    };
+
+    // COD:      handleOrder → finishOrder
+    // Razorpay: handleOrder → payWithRazorpay → (user pays) → verifyPayment → finishOrder
+
 
     if (loading) {
         return <p>Loading......</p>
@@ -119,7 +135,7 @@ const Payment = ({ addressId }) => {
                     <div className="flex items-center" onClick={() => setPaymentMethod("razorpay")}>
                         <CircleSmall className={`w-3 h-3 mx-2 rounded-full border text-white ${paymentMethod === "razorpay" ? "bg-[#fb6b25] border-[#fb6b25]" : "bg-white border-black"}`} />
                         <img src="https://marfit-ea7ba.web.app/static/media/razorpay.cb9bcca7.png" alt="" className="h-12 w-20" />
-                        <p className="text-[14px] text-gray-500">Pay via razorpay ₹ 15 off</p>
+                        <p className="text-[14px] text-gray-500 whitespace-nowrap">Pay via razorpay ₹ 15 off</p>
                     </div>
                 )}
             </div>
