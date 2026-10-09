@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import toast from "react-hot-toast";
+import { createLeadAPI } from "../api/leadsApi";
 
 const ContactForm = () => {
     const [form, setForm] = useState({
@@ -9,8 +10,10 @@ const ContactForm = () => {
         message: "",
     });
 
+    const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
     const handleSubmit = useCallback(
-        (e) => {
+        async (e) => {
             e.preventDefault();
 
             if (!form.name.trim()) {
@@ -26,25 +29,26 @@ const ContactForm = () => {
                 return;
             }
 
+            const res = await createLeadAPI({ type: "CONTACT", ...form });
+            if (!res.status) {
+                toast.error(res.message || "Something went wrong, please try again!");
+                return;
+            }
+
             toast.success("Form submitted successfully!");
+            setForm({ name: "", email: "", phone: "", message: "" });
         },
         [form]
     );
 
     return (
         <section className="relative px-4 py-10">
-            {popup && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-white text-black px-5 py-3 rounded-md shadow-md font-medium">
-                    {popup}
-                </div>
-            )}
-
             <form
                 onSubmit={handleSubmit}
                 className="flex flex-col gap-3 w-full max-w-md mx-auto p-6 bg-white shadow-md rounded-md"
             >
                 <h1 className="text-2xl font-semibold text-center">
-                    Franchise Contact Form
+                    Contact Form
                 </h1>
 
                 <label className="font-semibold text-lg" htmlFor="name">
@@ -77,7 +81,7 @@ const ContactForm = () => {
                 <input
                     id="phone"
                     name="phone"
-                    type="number"
+                    type="tel"
                     className="p-2 border border-gray-300 rounded-md bg-white text-black focus:outline-none"
                     onChange={handleChange}
                     value={form.phone}

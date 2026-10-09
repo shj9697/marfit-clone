@@ -1,55 +1,57 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
+import { createLeadAPI } from "../api/leadsApi";
+
+const emptyForm = {
+    name: "",
+    email: "",
+    phone: "",
+    company: "",
+    message: "",
+};
 
 const BulkContact = () => {
-    const [form, setForm] = useState({
-        name: "",
-        email: "",
-        phone: "",
-        message: "",
-    });
+    const [form, setForm] = useState(emptyForm);
+    const [submitting, setSubmitting] = useState(false);
 
-    const [popup, setPopup] = useState("");
-
-    const handleChange = useCallback((e) => {
+    const handleChange = (e) => {
         setForm((prev) => ({
             ...prev,
             [e.target.name]: e.target.value,
         }));
-    }, []);
+    };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
+        if (!form.name.trim()) {
+            toast.error("Please enter your name!");
+            return;
+        }
+        if (!form.email.trim()) {
+            toast.error("Please enter your email!");
+            return;
+        }
+        if (!/^\+?\d{10,13}$/.test(form.phone.trim())) {
+            toast.error("Please enter a valid phone number!");
+            return;
+        }
 
-    const handleSubmit = useCallback(
-        (e) => {
-            e.preventDefault();
+        setSubmitting(true);
+        const res = await createLeadAPI({ type: "BULK", ...form });
+        setSubmitting(false);
 
-            if (!form.name.trim()) {
-                toast.error("Please enter your name!");
-                return;
-            }
-            if (!form.email.trim()) {
-                toast.error("Please enter your email!");
-                return;
-            }
-            if (!form.phone.trim()) {
-                toast.error("Please enter your phone number!");
-                return;
-            }
+        if (!res.status) {
+            toast.error(res.message || "Something went wrong, please try again!");
+            return;
+        }
 
-            toast.success("Form submitted successfully!");
-        },
-        [form]
-    );
+        toast.success("Form submitted successfully!");
+        setForm(emptyForm);
+    };
 
     return (
-        <section className="relative px-4 py-10">
-            {popup && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-white text-black px-5 py-3 rounded-md shadow-md font-medium">
-                    {popup}
-                </div>
-            )}
-
+        <section className="px-4 py-10">
             <form
                 onSubmit={handleSubmit}
                 className="flex flex-col gap-3 w-full max-w-md mx-auto p-6 bg-white shadow-md rounded-md"
@@ -88,10 +90,22 @@ const BulkContact = () => {
                 <input
                     id="phone"
                     name="phone"
-                    type="number"
+                    type="tel"
                     className="p-2 border border-gray-300 rounded-md bg-white text-black focus:outline-none"
                     onChange={handleChange}
                     value={form.phone}
+                />
+
+                <label className="font-semibold text-lg" htmlFor="company">
+                    Company
+                </label>
+                <input
+                    id="company"
+                    name="company"
+                    type="text"
+                    className="p-2 border border-gray-300 rounded-md bg-white text-black focus:outline-none"
+                    onChange={handleChange}
+                    value={form.company}
                 />
 
                 <label className="font-semibold text-lg" htmlFor="message">
@@ -107,9 +121,10 @@ const BulkContact = () => {
 
                 <button
                     type="submit"
-                    className="p-2 w-40 mx-auto rounded-sm bg-[#fb641b] text-white"
+                    disabled={submitting}
+                    className="p-2 w-40 mx-auto rounded-sm bg-[#fb641b] text-white disabled:opacity-60"
                 >
-                    Send
+                    {submitting ? "Sending..." : "Send"}
                 </button>
             </form>
         </section>

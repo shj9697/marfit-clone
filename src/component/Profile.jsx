@@ -1,21 +1,36 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthProvider";
+import { updateMeAPI } from "../api/authentication";
 
 
 function Profile() {
 
-    const { user } = useAuth();
+    const { user, setUser } = useAuth();
     const [mode, setMode] = useState("list");
-    const [dob, setDob] = useState(() => localStorage.getItem("dob") || "");
-    const [gender, setGender] = useState(() => localStorage.getItem("gender") || "");
+    const [name, setName] = useState("");
+    const [phone, setPhone] = useState("");
 
-
+    const saveProfile = async () => {
+        try {
+            const response = await updateMeAPI(name, phone);
+            if (!response.status) {
+                toast.error(response.message);
+                return;
+            }
+            setUser(response.data);
+            setMode("list");
+        } catch (err) {
+            toast.error(err.message);
+        }
+    };
 
     const profileDetails = [
         {
             id: "name",
             label: "User Name",
             value: user?.name,
+            editable: true
         },
         {
             id: "email",
@@ -23,15 +38,9 @@ function Profile() {
             value: user?.email,
         },
         {
-            id: "gender",
-            label: "Gender",
-            value: gender,
-            editable: true
-        },
-        {
-            id: "dob",
-            label: "Date of Birth",
-            value: dob,
+            id: "phone",
+            label: "Phone",
+            value: user?.phone,
             editable: true
         },
     ];
@@ -52,7 +61,11 @@ function Profile() {
                         ))}
                     </div>
                     <button
-                        onClick={() => setMode("edit")}
+                        onClick={() => {
+                            setName(user?.name || "");
+                            setPhone(user?.phone || "");
+                            setMode("edit");
+                        }}
                         className="mt-8 bg-[#fb641b] hover:bg-[#fb641b] text-white text-[17px] px-10 py-2 rounded-sm cursor-pointer"
                     >
                         Edit
@@ -69,38 +82,27 @@ function Profile() {
                         ))}
                     </div>
                     <div>
-                        <div className="w-full flex items-center gap-3 leading-10">
-                            <div className=" shrink-0">
-                                <h1>Gender</h1>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <input
-                                    type="radio"
-                                    name="gender"
-                                    value="male"
-                                    checked={gender === "male"}
-                                    onChange={(e) => setGender(e.target.value)}
-                                />
-                                <p>Male</p>
-                                <input
-                                    type="radio"
-                                    name="gender"
-                                    value="female"
-                                    checked={gender === "female"}
-                                    onChange={(e) => setGender(e.target.value)}
-                                />
-                                <p>Female</p>
-                            </div>
-                        </div>
                         <div className="flex items-center gap-3 leading-10">
-                            <label htmlFor="dob" className="w-[120px] md:w-[250px] shrink-0 text-[15px] md:text-[17px] text-gray-800">
-                                Date of Birth
+                            <label htmlFor="name" className="w-[120px] md:w-[250px] shrink-0 text-[15px] md:text-[17px] text-gray-800">
+                                User Name
                             </label>
                             <input
-                                id="dob"
-                                type="date"
-                                value={dob}
-                                onChange={(e) => setDob(e.target.value)}
+                                id="name"
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="min-w-0 border-0 border-b-2 border-b-gray-400 outline-0 py-2 text-[15px] md:text-[17px] text-gray-800"
+                            />
+                        </div>
+                        <div className="flex items-center gap-3 leading-10">
+                            <label htmlFor="phone" className="w-[120px] md:w-[250px] shrink-0 text-[15px] md:text-[17px] text-gray-800">
+                                Phone
+                            </label>
+                            <input
+                                id="phone"
+                                type="tel"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
                                 className="min-w-0 border-0 border-b-2 border-b-gray-400 outline-0 py-2 text-[15px] md:text-[17px] text-gray-800"
                             />
                         </div>
@@ -113,11 +115,7 @@ function Profile() {
                             Cancel
                         </button>
                         <button
-                            onClick={() => {
-                                localStorage.setItem("gender", gender);
-                                localStorage.setItem("dob", dob);
-                                setMode("list");
-                            }}
+                            onClick={saveProfile}
                             className="mt-8 bg-[#fb641b] hover:bg-[#fb641b] text-white text-[17px] px-10 py-2 rounded-sm cursor-pointer"
                         >
                             Save

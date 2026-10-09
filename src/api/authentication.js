@@ -85,6 +85,27 @@ export async function meAPI() {
     return convertedData.data;
 }
 
+export async function updateMeAPI(name, phone) {
+    const res = await authFetch(`${apiUrl}/api/auth/me`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, phone })
+    });
+    const convertedData = await res.json();
+    if (res.ok) {
+        return {
+            status: true,
+            data: convertedData.data
+        };
+    };
+    return {
+        status: false,
+        message: convertedData.error?.message
+    };
+};
+
 export async function getWishlistAPI() {
     const res = await authFetch("/api/wishlist");
     const convertedData = await res.json();

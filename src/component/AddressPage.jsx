@@ -26,26 +26,24 @@ const AddressPage = ({ handleBack, handleSave, initialData }) => {
     const countryId = 101;
 
     useEffect(() => {
-        GetState(countryId).then((result) => {
-            setStateList(result);
-            // The server stores state and city by name, but the dropdowns select by id
-            const editState = result.find((state) => state.name === initialData?.state);
-            if (!editState) return;
-            setStateId(String(editState.id));
-            GetCity(countryId, editState.id).then((cities) => {
-                const editCity = cities.find((city) => city.name === initialData.city);
-                if (editCity) setCityId(String(editCity.id));
-            });
+        GetState(countryId).then((states) => {
+            setStateList(states);
+            // When editing, select the saved state
+            const savedState = states.find((state) => state.name === initialData?.state);
+            if (savedState) setStateId(String(savedState.id));
         });
     }, []);
 
     useEffect(() => {
-        if (stateId)
-            GetCity(countryId, parseInt(stateId)).then((result) => {
-                setCityList(result);
-            });
-        else setCityList([]);
+        if (!stateId) return;
+        GetCity(countryId, Number(stateId)).then((cities) => {
+            setCityList(cities);
+            // When editing, select the saved city
+            const savedCity = cities.find((city) => city.name === initialData?.city);
+            if (savedCity) setCityId(String(savedCity.id));
+        });
     }, [stateId]);
+
 
     const handleStateChange = (e) => {
         setStateId(e.target.value);
