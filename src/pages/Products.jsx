@@ -120,7 +120,7 @@ function Products() {
       </div>
 
       <div className="relative w-full flex flex-wrap items-left m-6">
-        {items.map((item, _) => (
+        {items.map((item) => (
           <ProductCard item={item} key={item.id} />
         ))}
       </div>

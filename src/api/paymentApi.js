@@ -20,7 +20,7 @@ export async function getPaymentConfigAPI() {
 
 // Cash on delivery: the order is placed straight away from the cart
 export async function placeOrderAPI(addressId) {
-    const res = await authFetch(`${apiUrl}/api/orders`, {
+    const res = await authFetch(`/api/orders`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -42,7 +42,7 @@ export async function placeOrderAPI(addressId) {
 
 // Step 1 of online payment: the server prices the cart and opens a Razorpay order
 export async function createRazorpayOrderAPI(addressId) {
-    const res = await authFetch(`${apiUrl}/api/payments/razorpay/order`, {
+    const res = await authFetch(`/api/payments/razorpay/order`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -64,7 +64,7 @@ export async function createRazorpayOrderAPI(addressId) {
 
 // Step 2: the server checks Razorpay's signature, then places the order
 export async function verifyRazorpayPaymentAPI(razorpayResponse) {
-    const res = await authFetch(`${apiUrl}/api/payments/razorpay/verify`, {
+    const res = await authFetch(`/api/payments/razorpay/verify`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

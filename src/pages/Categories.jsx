@@ -56,7 +56,7 @@ function Categories() {
 				</div>
 
 				<div className="w-full gap-5 py-5 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
-					{(data?.children || []).map((item, _) => {
+					{(data?.children || []).map((item) => {
 						return (
 							<div key={item.id}
 								className="hover:-translate-y-2 transition-transform duration-400 ease-out cursor-pointer bg-white rounded-md p-4"

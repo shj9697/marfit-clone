@@ -45,7 +45,7 @@ function CategoryDropdown() {
 				>
 					New Arrivals
 				</Link>
-				{categories.map((item, _) => (
+				{categories.map((item) => (
 					<Dropdown
 						key={item.id}
 						title={item.name}
@@ -85,7 +85,7 @@ function CategoryDropdown() {
 									<img src={`https://marfit-ea7ba.web.app/static/media/new.23972988.png`} className="h-full w-full object-contain" />
 								</div>
 							</Link>
-							{categories.map((category, _) => (
+							{categories.map((category) => (
 								<Link key={category.id} to={`/categories/${category.slug}`}>
 									<div className="h-27 w-20">
 										<img src={category.imageUrl} className="h-full w-full object-contain" />

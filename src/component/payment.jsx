@@ -15,7 +15,6 @@ const Payment = ({ addressId }) => {
     const [paymentMethod, setPaymentMethod] = useState(null);
     const [placing, setPlacing] = useState(false);
 
-
     //when the payment page opens, it asks the server which payment options are allowed (COD, Razorpay) and saves the answer.
     useEffect(() => {
         let cancelled = false;
@@ -57,13 +56,12 @@ const Payment = ({ addressId }) => {
         }
     };
 
-    //step:- 2 opens the payment popup
+    // step:- 2 opens the payment popup
     // It asks the server to create a Razorpay order for this address. If that fails, it turns the button back on and shows the error.
-
     // In short: create the order, then either fake the payment (test mode) or show the real payment popup.
+
     const payWithRazorpay = async () => {
         const reply = await createRazorpayOrderAPI(addressId);
-        console.log(reply)
         if (!reply.status) {
             setPlacing(false);
             return toast.error(reply.message);
@@ -86,10 +84,8 @@ const Payment = ({ addressId }) => {
         }).open(); //Ends the settings and shows the popup
     };
 
-
     // step:- 3 checks the payment is real
-    //It sends Razorpay's payment details to the server. The server checks them and places the order.
-
+    // It sends Razorpay's payment details to the server. The server checks them and places the order.
     // Razorpay calls this after the customer pays, outside handleOrder's try/catch
     const verifyPayment = async (razorpayResponse) => {
         try {
@@ -101,11 +97,8 @@ const Payment = ({ addressId }) => {
         }
     };
 
-
-
     //step:-4 the ending
     // Both COD and Razorpay end up here.
-
     const finishOrder = async (orderData) => {
         setPlacing(false);
         if (!orderData.status)
@@ -117,7 +110,6 @@ const Payment = ({ addressId }) => {
 
     // COD:      handleOrder → finishOrder
     // Razorpay: handleOrder → payWithRazorpay → (user pays) → verifyPayment → finishOrder
-
 
     if (loading) {
         return <p>Loading......</p>

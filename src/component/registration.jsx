@@ -64,8 +64,7 @@ const Registration = ({ isOpen, closeModal }) => {
                 setUser(loginData?.data || null);
                 toast.success("Login SuccessFully");
                 handleCloseModal();
-            } catch (error) {
-                console.log(error);
+            } catch {
                 toast.error("Something went wrong. Please try again.");
             }
             return null;

@@ -86,7 +86,7 @@ export async function meAPI() {
 }
 
 export async function updateMeAPI(name, phone) {
-    const res = await authFetch(`${apiUrl}/api/auth/me`, {
+    const res = await authFetch("/api/auth/me", {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'

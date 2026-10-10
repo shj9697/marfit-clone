@@ -24,6 +24,8 @@ export default defineConfig([
     },
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      // Context hooks live beside their provider
+      'react-refresh/only-export-components': ['error', { allowExportNames: ['useAuth', 'useCart'] }],
     },
   },
 ])

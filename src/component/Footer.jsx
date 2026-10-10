@@ -1,8 +1,7 @@
 import { Facebook, Instagram, Mail, Phone } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Footer() {
-  const navigate = useNavigate();
   return (
     <div className="flex flex-col mt-16">
       <div className="bg-black rounded-none lg:rounded-tl-[45px] w-full lg:w-[95%] lg:ml-auto p-12 flex flex-col">
@@ -25,16 +24,16 @@ function Footer() {
               <div>
                 <h1 className="md:text-[14px] text-white text-[17px] font-normal ">COMPANY</h1>
                 <div className="md:leading-5 md:mt-2 lg:leading-8 text-gray-500 leading-9">
-                  <Link className=" md:text-[14px] cursor-pointer text-[15px] whitespace-nowrap" onClick={() => navigate("/TrackOrder")}>Track Orders</Link>
+                  <Link to="/TrackOrder" className=" md:text-[14px] cursor-pointer text-[15px] whitespace-nowrap">Track Orders</Link>
                   <p className="md:text-[14px] text-[15px] ">About Us</p>
-                  <Link className="md:text-[14px] cursor-pointer text-[15px]" onClick={() => navigate("/ContactForm")}>Contact</Link>
+                  <Link to="/ContactForm" className="md:text-[14px] cursor-pointer text-[15px]">Contact</Link>
                 </div>
               </div>
               <div>
                 <h1 className="md:text-[14px] text-white text-[17px] font-normal whitespace-nowrap">POLICY & RULES</h1>
                 <div className="md:leading-5 md:mt-2 lg:leading-8 flex flex-col text-gray-500 leading-9">
-                  <Link className="md:text-[14px] cursor-pointer text-[15px] whitespace-nowrap" onClick={() => navigate("/TermsAndCondition")} > Terms & Conditions</Link>
-                  <Link className="md:text-[14px] cursor-pointer text-[15px]" onClick={() => navigate("/ShippingPolicy")}> Shipping Policy</Link>
+                  <Link to="/TermsAndCondition" className="md:text-[14px] cursor-pointer text-[15px] whitespace-nowrap"> Terms & Conditions</Link>
+                  <Link to="/ShippingPolicy" className="md:text-[14px] cursor-pointer text-[15px]"> Shipping Policy</Link>
                 </div>
               </div>
               <div className="">

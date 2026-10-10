@@ -1,10 +1,8 @@
 import { authFetch } from "./authFetch";
 
-const apiUrl = import.meta.env.VITE_API_URL || "";
-
 // Default address first, then newest
 export async function getAddressesAPI() {
-    const res = await authFetch(`${apiUrl}/api/addresses`);
+    const res = await authFetch(`/api/addresses`);
     const convertedData = await res.json();
     if (res.ok) {
         return {
@@ -19,7 +17,7 @@ export async function getAddressesAPI() {
 };
 
 export async function addAddressAPI(addressDetails) {
-    const res = await authFetch(`${apiUrl}/api/addresses`, {
+    const res = await authFetch(`/api/addresses`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -40,7 +38,7 @@ export async function addAddressAPI(addressDetails) {
 };
 
 export async function updateAddressAPI(addressId, addressDetails) {
-    const res = await authFetch(`${apiUrl}/api/addresses/${addressId}`, {
+    const res = await authFetch(`/api/addresses/${addressId}`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
@@ -62,7 +60,7 @@ export async function updateAddressAPI(addressId, addressDetails) {
 
 // Returns the addresses that are left
 export async function deleteAddressAPI(addressId) {
-    const res = await authFetch(`${apiUrl}/api/addresses/${addressId}`, {
+    const res = await authFetch(`/api/addresses/${addressId}`, {
         method: 'DELETE'
     });
     const convertedData = await res.json();

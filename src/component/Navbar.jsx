@@ -92,9 +92,9 @@ const Navbar = () => {
   return (
     <>
       <div className="sticky top-0 z-50 w-full flex items-center justify-between h-15 px-3 md:px-8 shadow-[0_2px_4px_0_#c9ccd1] bg-white">
-        <div className={`md:hidden absolute inset-y-0 right-0 z-10 overflow-hidden bg-white transition-[width,visibility] duration-500 ease-out ${isSearchOpen ? "w-full visible" : "w-0 invisible"}`}>
+        <div className={`md:hidden absolute inset-y-0 right-0 z-10 overflow-x-clip bg-white transition-[width,visibility] duration-500 ease-out ${isSearchOpen ? "w-full visible" : "w-0 invisible"}`}>
           <div className="flex items-center gap-3 h-full px-8">
-            <SearchBar isMobile isOpen={isSearchOpen} />
+            <SearchBar isMobile onSelect={() => setIsSearchOpen(false)} />
             <button
               onClick={() => setIsSearchOpen(false)}
               className="cursor-pointer shrink-0"

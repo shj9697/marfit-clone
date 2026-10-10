@@ -46,6 +46,21 @@ export async function getRelatedProductsAPI(identifier, limit = 10) {
     };
 };
 
+// Navbar suggestions: categories first, then products. Under 2 characters returns []
+export async function searchProductsAPI(query) {
+    const res = await fetch(`${apiUrl}/api/products/search?q=${encodeURIComponent(query)}`);
+    const convertedData = await res.json();
+    if (res.ok) {
+        return {
+            results: convertedData.data
+        };
+    }
+    return {
+        results: [],
+        message: convertedData.error.message
+    };
+};
+
 export async function getProductDetailsAPI(id) {
     const res = await fetch(`${apiUrl}/api/products/${id}`);
     const convertedData = await res.json();

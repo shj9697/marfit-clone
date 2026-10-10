@@ -94,7 +94,7 @@ const Filter = ({ isOpen, onClose, sortBy, category, subCategory, handleSortBy, 
                     />
                     <span>All</span>
                 </div>
-                {(data?.categoryData || []).map((item, _) => (
+                {(data?.categoryData || []).map((item) => (
                     <div key={item.id} className="flex items-center gap-2">
                         <input
                             type="checkbox"
@@ -117,7 +117,7 @@ const Filter = ({ isOpen, onClose, sortBy, category, subCategory, handleSortBy, 
                         />
                         <span>All</span>
                     </div>
-                    {(data?.subCategoryData || []).map((item, _) => (
+                    {(data?.subCategoryData || []).map((item) => (
                         <div key={item.id} className="flex items-center gap-2">
                             <input
                                 type="checkbox"

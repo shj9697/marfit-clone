@@ -50,7 +50,7 @@ const SliderItem = ({ title, handleViewAll, list }) => {
                         }
                     }}
                 >
-                    {list.map((item, _) => (
+                    {list.map((item) => (
                         <SwiperSlide key={item.id} className="w-full">
                             <ProductCard item={item} />
                         </SwiperSlide>

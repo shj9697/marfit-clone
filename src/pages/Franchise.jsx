@@ -9,21 +9,11 @@ const Franchise = () => {
     message: "",
   });
 
-  const [popup, setPopup] = useState("");
-
   const handleChange = useCallback((e) => {
     setForm((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
-  }, []);
-
-  const showPopup = useCallback((msg) => {
-    setPopup(msg);
-
-    setTimeout(() => {
-      setPopup("");
-    }, 2500);
   }, []);
 
   const handleSubmit = useCallback(
@@ -50,12 +40,6 @@ const Franchise = () => {
 
   return (
     <section className="relative px-4 py-10">
-      {popup && (
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-white text-black px-5 py-3 rounded-md shadow-md font-medium">
-          {popup}
-        </div>
-      )}
-
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-3 w-full max-w-md mx-auto p-6 bg-white shadow-md rounded-md"
