@@ -19,7 +19,7 @@ import NotFound from "./pages/notFound";
 import "swiper/css";
 import "swiper/css/navigation";
 import CollectionContent from "./pages/CollectionContent";
-import CartPage from "./pages/cartPage";
+import CartPage from "./pages/cartPage"
 import AddressDetails from "./component/AddressDetails";
 import { AuthProvider } from "./context/AuthProvider";
 import { CartProvider } from "./context/CartProvider";
