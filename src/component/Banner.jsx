@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 
-
 function Banner({ imgUrl = "", path = "" }) {
 
   if (!imgUrl) return null;

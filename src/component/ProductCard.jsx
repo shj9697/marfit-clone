@@ -14,7 +14,7 @@ const ProductCard = ({ item }) => {
 
     return (
         <div
-            className="cursor-pointer p-2 h-80 "
+            className="cursor-pointer p-2 h-80"
             style={{
                 borderTop: "1px solid rgba(0,0,0,.03)",
                 borderLeft: "1px solid rgba(0,0,0,.1)",
@@ -22,7 +22,7 @@ const ProductCard = ({ item }) => {
             }}
         >
             <div className='relative flex justify-between' onClick={() => handleViewProductDetails(item)}>
-                <img src={item.img} alt="" className="h-45  min-w-0 object-contain rounded-md w-full" />
+                <img src={item.img} className="h-45 min-w-0 object-contain rounded-md w-full" />
                 {user ?
                     <Heart
                         size={24}
@@ -33,12 +33,14 @@ const ProductCard = ({ item }) => {
                             toggleWishList(item);
                         }}
                     />
-                    : null}
+                    :
+                    null
+                }
             </div>
-            <div >
+            <div>
                 <p className="text-sm mb-2 text-left line-clamp-2">{item.title}</p>
                 <p className="text-sm">Rs. {item.price}</p>
-                <div className="flex items-center gap-2"  >
+                <div className="flex items-center gap-2">
                     <p className="text-sm line-through text-gray-500">Rs. {item.oldPrice} </p>
                     <span className="text-sm text-orange-600">{item.discount}</span>
                 </div>

@@ -39,7 +39,8 @@ const Navbar = () => {
     async function load() {
       try {
         const data = await getProductCategoriesAPI();
-        if (!cancelled) setCategories(data.categories);
+        if (!cancelled)
+          setCategories(data.categories);
       } catch (err) {
         console.error(err);
       }
