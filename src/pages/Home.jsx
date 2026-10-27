@@ -16,7 +16,7 @@ function Home() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let cancelled = false;
+    let cancelled = false; //cancelled is a note that says "I'm gone, don't update me," so old data doesn't show up on a page that isn't there anymore.
     async function load() {
       try {
         setLoading(true);

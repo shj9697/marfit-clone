@@ -51,7 +51,8 @@ function Dashboard() {
                                 <NavLink
                                     to={item.path}
                                     className={({ isActive }) =>
-                                        `flex items-center justify-start h-[52px] lg:h-[68px] px-3 lg:px-8 text-[15px] lg:text-[17px] whitespace-nowrap border-b-4 lg:border-b-0 lg:border-r-[6px] gap-2 ${isActive
+                                        `flex items-center justify-start h-[52px] lg:h-[68px] px-3 lg:px-8 text-[15px] lg:text-[17px] whitespace-nowrap border-b-4 lg:border-b-0 lg:border-r-[6px] gap-2 
+                                    ${isActive
                                             ? "bg-[#e9ecef] border-[#fb641b] text-gray-900 font-semibold"
                                             : "border-transparent text-gray-700 hover:bg-gray-50"
                                         }`

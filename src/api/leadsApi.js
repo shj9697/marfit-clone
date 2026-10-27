@@ -1,5 +1,8 @@
-const apiUrl = import.meta.env.VITE_API_URL || "";
+import axios from "axios";
 
+const api = axios.create({
+    baseURL: import.meta.env.VITE_API_URL || "",
+});
 // One endpoint for Franchise, Bulk and Contact forms; `type` picks which
 export async function createLeadAPI(leadDetails) {
     const res = await fetch(`${apiUrl}/api/leads`, {

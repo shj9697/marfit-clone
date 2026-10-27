@@ -1,19 +1,19 @@
 import axios from "axios";
 
-const apiUrl = axios.create({
+const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL || "",
 });
 
 export async function getCollectionBySlugAPI(slug) {
-    const res = await api.get(`/api/collections/` + slug);
-    const convertedData = await res.json();
-    if (res.ok) {
+    try {
+        const res = await api.get(`/api/collections/${slug}`);
         return {
-            data: convertedData.data,
+            data: res.data?.data,
+        };
+    } catch (err) {
+        return {
+            data: null,
+            message: err.response?.data?.error?.message || err.message
         };
     }
-    return {
-        data: null,
-        message: convertedData.error.message
-    };
 };
