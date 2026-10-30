@@ -1,23 +1,20 @@
-const apiUrl = import.meta.env.VITE_API_URL || "";
+import axios from "axios";
 
+const api = axios.create({
+    baseURL: import.meta.env.VITE_API_URL || "",
+});
 // One endpoint for Franchise, Bulk and Contact forms; `type` picks which
 export async function createLeadAPI(leadDetails) {
-    const res = await fetch(`${apiUrl}/api/leads`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(leadDetails)
-    });
-    const convertedData = await res.json();
-    if (res.ok) {
+    try {
+        const res = await api.post("/api/leads", leadDetails);
         return {
             status: true,
-            data: convertedData.data
+            data: res.data?.data
+        };
+    } catch (err) {
+        return {
+            status: false,
+            message: err.response?.data?.error?.message || err.message
         };
     }
-    return {
-        status: false,
-        message: convertedData?.error?.message
-    };
 };

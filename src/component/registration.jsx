@@ -40,7 +40,8 @@ const Registration = ({ isOpen, closeModal }) => {
                     formData.name
                 );
                 if (!result.status) {
-                    toast.error("Registration failed");
+                    toast.error(result.message || "Registration failed");
+                    return;
                 }
                 toast.success("Registered SuccessFully");
                 handleCloseModal();
@@ -59,7 +60,8 @@ const Registration = ({ isOpen, closeModal }) => {
                     formData.password
                 );
                 if (!loginData?.status) {
-                    toast.error("Login failed");
+                    toast.error(loginData?.message || "Login failed");
+                    return;
                 }
                 setUser(loginData?.data || null);
                 toast.success("Login SuccessFully");

@@ -1,30 +1,33 @@
-const apiUrl = import.meta.env.VITE_API_URL || "";
+import axios from "axios";
+
+const api = axios.create({
+    baseURL: import.meta.env.VITE_API_URL || "",
+});
 
 export async function getHomePageContentAPI() {
-    const res = await fetch(`${apiUrl}/api/home`);
-    const convertedData = await res.json();
-    if (res.ok) {
+    try {
+        const res = await api.get("/api/home");
         return {
-            data: convertedData?.data,
+            data: res.data?.data,
+        };
+    } catch (err) {
+        return {
+            data: null,
+            message: err.response?.data?.error?.message || err.message
         };
     }
-    return {
-        data: null,
-        message: convertedData?.error?.message
-    };
 };
 
-
 export async function getPincodeAPI(code) {
-    const res = await fetch(`${apiUrl}/api/pincodes/${code}`);
-    const convertedData = await res.json();
-    if (res.ok) {
+    try {
+        const res = await api.get(`/api/pincodes/${code}`);
         return {
-            data: convertedData?.data
-        }
+            data: res.data?.data
+        };
+    } catch (err) {
+        return {
+            data: null,
+            message: err.response?.data?.error?.message || err.message
+        };
     }
-    return {
-        data: null,
-        message: convertedData?.error?.message
-    };
 }

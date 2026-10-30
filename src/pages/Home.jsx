@@ -11,18 +11,19 @@ import Luggage from '../component/luggage';
 import Accessories from '../component/accessories';
 
 function Home() {
-
   const [homePageContent, setHomePageContent] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let cancelled = false;
+    let cancelled = false; //cancelled is a note that says "I'm gone, don't update me," so old data doesn't show up on a page that isn't there anymore.
     async function load() {
       try {
         setLoading(true);
         setError(null);
         const data = await getHomePageContentAPI();
+        console.log(data)
+        if (data.message) throw new Error(data.message);
         if (!cancelled) setHomePageContent(data.data);
       } catch (err) {
         if (!cancelled) setError(err.message);

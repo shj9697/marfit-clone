@@ -71,7 +71,7 @@ export async function updateCartItemAPI(productId, quantity) {
 };
 
 export async function productDeleteFromCartAPI(productId) {
-    const res = await authFetch(`/api/cart/items/${encodeURIComponent(productId)}`, {
+    const res = await authFetch(`/api/cart/items/${productId}`, {
         method: 'DELETE',
     });
     const convertedData = await res.json();
