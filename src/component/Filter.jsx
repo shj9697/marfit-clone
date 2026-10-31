@@ -132,14 +132,17 @@ const Filter = ({ isOpen, onClose, sortBy, category, subCategory, handleSortBy, 
 
             <div className="border border-gray-200 rounded-md p-4 my-2">
                 <h1>AVAILABILITY</h1>
-                <div className="flex items-center gap-2">
-                    <input
-                        type="checkbox"
-                        checked={embossable}
-                        onChange={(event) => handleIsEmbossableBy(event.target.checked)}
-                    />
-                    <span>Embose</span>
-                </div>
+                {/* The Emboss page always filters by embossable, so it passes no handler */}
+                {handleIsEmbossableBy && (
+                    <div className="flex items-center gap-2">
+                        <input
+                            type="checkbox"
+                            checked={embossable}
+                            onChange={(event) => handleIsEmbossableBy(event.target.checked)}
+                        />
+                        <span>Embose</span>
+                    </div>
+                )}
                 <div className="flex items-center gap-2">
                     <input
                         type="checkbox"

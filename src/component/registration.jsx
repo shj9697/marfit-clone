@@ -2,7 +2,7 @@ import { useState } from "react";
 import LoginModal from "./LoginModal";
 import { useForm } from "react-hook-form";
 import { getAuthenticationAPI, loginAPI } from "../api/authentication";
-import { brandIcon, brandLogo } from "./Navbar";
+import { brandIcon, brandLogo } from "./brandImages";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthProvider";
 

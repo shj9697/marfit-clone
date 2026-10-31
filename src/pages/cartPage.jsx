@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useCart } from "../context/CartProvider";
 import CartItem from "../component/cartItem";
@@ -11,16 +11,6 @@ const CartPage = () => {
     const { cart } = useCart();
     const { user, loading } = useAuth();
     const navigate = useNavigate();
-    const { state } = useLocation();
-    const buyNowId = state?.buyNowId;
-
-    const items = buyNowId ? cart.items.filter((item) => item.productId === buyNowId) : cart.items;
-    const summary = buyNowId
-        ? {
-            totalItems: items.reduce((count, item) => count + item.quantity, 0),
-            totalAmount: items.reduce((total, item) => total + (item.lineTotal ?? item.price * item.quantity), 0),
-        }
-        : { totalItems: cart.totalItems, totalAmount: cart.totalAmount };
 
     useEffect(() => {
         if (!loading && !user) {
@@ -37,7 +27,7 @@ const CartPage = () => {
 
     return (
         <div className="w-full lg:px-2">
-            {items.length === 0 ?
+            {cart.items.length === 0 ?
                 <div className="flex items-center justify-center gap-3 flex-col p-5 w-full h-96 my-36">
                     <h1 className="text-4xl sm:text-[14px] text-gray-900 whitespace-nowrap">Your cart is empty</h1>
                     <p className="text-center text-base text-gray-700">Add items in your cart and come back later to process checkout.</p>
@@ -49,18 +39,18 @@ const CartPage = () => {
                         <div>
                             <div className="flex items-center gap-3">
                                 <h1 className='text-2xl'>Your Cart</h1>
-                                <p className="bg-[#fb641b] text-white p-1 rounded-xl text-[14px]">{summary.totalItems} items</p>
+                                <p className="bg-[#fb641b] text-white p-1 rounded-xl text-[14px]">{cart.totalItems} items</p>
                             </div>
                             <div className="flex items-center gap-2 my-1">
                                 <span className="w-15 h-1 bg-[#fb641b]"></span>
                             </div>
                         </div>
-                        {items.map((item) => (
+                        {cart.items.map((item) => (
                             <CartItem key={item.productId} item={item} />
                         ))}
                     </div>
                     <div className='w-full lg:w-1/3'>
-                        <CartDetails totalAmount={summary.totalAmount} />
+                        <CartDetails />
                     </div>
                 </div>
             }

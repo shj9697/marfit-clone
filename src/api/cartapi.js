@@ -1,93 +1,77 @@
-import { authFetch } from "./authFetch";
+import api from "./client";
 
 export async function getCartAPI() {
-    const res = await authFetch("/api/cart");
-    const convertedData = await res.json();
-    if (res.ok && convertedData) {
+    try {
+        const res = await api.get("/api/cart");
         return {
             status: true,
             data: {
-                items: convertedData?.data?.items || [],
-                totalItems: convertedData?.data?.summary?.itemCount || 0,
-                totalAmount: convertedData?.data?.summary?.subtotal || 0
+                items: res.data?.data?.items || [],
+                totalItems: res.data?.data?.summary?.itemCount || 0,
+                totalAmount: res.data?.data?.summary?.subtotal || 0
             }
         };
+    } catch (err) {
+        return {
+            status: false,
+            message: err.response?.data?.error?.message || err.message
+        };
     }
-    return {
-        status: false,
-        message: convertedData?.error?.message
-    };
 };
 
 export async function addToCartAPI(productId, quantity) {
-    const res = await authFetch(`/api/cart/items`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ productId, quantity }),
-    });
-    const convertedData = await res.json();
-    if (res.ok && convertedData) {
+    try {
+        const res = await api.post("/api/cart/items", { productId, quantity });
         return {
             status: true,
             data: {
-                items: convertedData.data.items,
-                totalItems: convertedData.data.summary.itemCount,
-                totalAmount: convertedData.data.summary.subtotal
+                items: res.data.data.items,
+                totalItems: res.data.data.summary.itemCount,
+                totalAmount: res.data.data.summary.subtotal
             }
         };
-    };
-    return {
-        status: false,
-        message: convertedData?.error?.message
-    };
+    } catch (err) {
+        return {
+            status: false,
+            message: err.response?.data?.error?.message || err.message
+        };
+    }
 };
 
 export async function updateCartItemAPI(productId, quantity) {
-    const res = await authFetch(`/api/cart/items`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ productId, quantity }),
-    });
-    const convertedData = await res.json();
-
-    if (res.ok && convertedData) {
+    try {
+        const res = await api.patch("/api/cart/items", { productId, quantity });
         return {
             status: true,
             data: {
-                items: convertedData.data.items,
-                totalItems: convertedData.data.summary.itemCount,
-                totalAmount: convertedData.data.summary.subtotal
+                items: res.data.data.items,
+                totalItems: res.data.data.summary.itemCount,
+                totalAmount: res.data.data.summary.subtotal
             }
         };
-    };
-    return {
-        status: false,
-        message: convertedData?.error?.message
-    };
+    } catch (err) {
+        return {
+            status: false,
+            message: err.response?.data?.error?.message || err.message
+        };
+    }
 };
 
 export async function productDeleteFromCartAPI(productId) {
-    const res = await authFetch(`/api/cart/items/${productId}`, {
-        method: 'DELETE',
-    });
-    const convertedData = await res.json();
-
-    if (res.ok && convertedData) {
+    try {
+        const res = await api.delete(`/api/cart/items/${productId}`);
         return {
             status: true,
             data: {
-                items: convertedData.data.items,
-                totalItems: convertedData.data.summary.itemCount,
-                totalAmount: convertedData.data.summary.subtotal
+                items: res.data.data.items,
+                totalItems: res.data.data.summary.itemCount,
+                totalAmount: res.data.data.summary.subtotal
             }
         };
-    };
-    return {
-        status: false,
-        message: convertedData?.error?.message
-    };
+    } catch (err) {
+        return {
+            status: false,
+            message: err.response?.data?.error?.message || err.message
+        };
+    }
 };

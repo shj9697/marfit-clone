@@ -1,45 +1,44 @@
-const apiUrl = import.meta.env.VITE_API_URL || "";
+import api from "./client";
 
 export async function getProductCategoriesAPI() {
-    const res = await fetch(`${apiUrl}/api/categories`);
-    const convertedData = await res.json();
-    if (res.ok) {
+    try {
+        const res = await api.get(`/api/categories`);
+
         return {
-            categories: convertedData.data.sort((a, b) => a.sortOrder - b.sortOrder),
+            categories: res.data.data.sort((a, b) => a.sortOrder - b.sortOrder),
+        };
+    } catch (error) {
+        return {
+            categories: [],
+            message: error.response?.data?.error?.message
         };
     }
-    return {
-        categories: [],
-        message: convertedData.error.message
-    };
 };
-
 
 export async function getProductCategoriesBySlugAPI(slug) {
-    const res = await fetch(`${apiUrl}/api/categories/` + slug);
-    const convertedData = await res.json();
-    if (res.ok) {
+    try {
+        const res = await api.get(`/api/categories/` + slug);
         return {
-            categories: convertedData.data,
+            categories: res.data.data,
+        };
+    } catch (error) {
+        return {
+            categories: [],
+            message: error.response?.data?.error?.message
         };
     }
-    return {
-        categories: [],
-        message: convertedData.error.message
-    };
 };
 
-
 export async function getProductCategoriesBySubSlugAPI(categorySlug, subCategorySlug) {
-    const res = await fetch(`${apiUrl}/api/categories/${categorySlug}/${subCategorySlug}`);
-    const convertedData = await res.json();
-    if (res.ok) {
+    try {
+        const res = await api.get(`/api/categories/${categorySlug}/${subCategorySlug}`);
         return {
-            categories: convertedData.data,
+            categories: res.data.data,
+        };
+    } catch (error) {
+        return {
+            categories: [],
+            message: error.response?.data?.error?.message
         };
     }
-    return {
-        categories: [],
-        message: convertedData.error.message
-    };
 };

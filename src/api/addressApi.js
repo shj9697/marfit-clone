@@ -1,77 +1,63 @@
-import { authFetch } from "./authFetch";
+import api from "./client";
 
 // Default address first, then newest
 export async function getAddressesAPI() {
-    const res = await authFetch(`/api/addresses`);
-    const convertedData = await res.json();
-    if (res.ok) {
+    try {
+        const res = await api.get("/api/addresses");
         return {
             status: true,
-            data: convertedData.data
+            data: res.data.data
+        };
+    } catch (err) {
+        return {
+            status: false,
+            message: err.response?.data?.error?.message || err.message
         };
     }
-    return {
-        status: false,
-        message: convertedData?.error?.message
-    };
 };
 
 export async function addAddressAPI(addressDetails) {
-    const res = await authFetch(`/api/addresses`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(addressDetails)
-    });
-    const convertedData = await res.json();
-    if (res.ok) {
+    try {
+        const res = await api.post("/api/addresses", addressDetails);
         return {
             status: true,
-            data: convertedData.data
+            data: res.data.data
+        };
+    } catch (err) {
+        return {
+            status: false,
+            message: err.response?.data?.error?.message || err.message
         };
     }
-    return {
-        status: false,
-        message: convertedData?.error?.message
-    };
 };
 
 export async function updateAddressAPI(addressId, addressDetails) {
-    const res = await authFetch(`/api/addresses/${addressId}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(addressDetails)
-    });
-    const convertedData = await res.json();
-    if (res.ok) {
+    try {
+        const res = await api.patch(`/api/addresses/${addressId}`, addressDetails);
         return {
             status: true,
-            data: convertedData.data
+            data: res.data.data
+        };
+    } catch (err) {
+        return {
+            status: false,
+            message: err.response?.data?.error?.message || err.message
         };
     }
-    return {
-        status: false,
-        message: convertedData?.error?.message
-    };
 };
 
 // Returns the addresses that are left
 export async function deleteAddressAPI(addressId) {
-    const res = await authFetch(`/api/addresses/${addressId}`, {
-        method: 'DELETE'
-    });
-    const convertedData = await res.json();
-    if (res.ok) {
+    try {
+        const res = await api.delete(`/api/addresses/${addressId}`);
         return {
             status: true,
-            data: convertedData.data
+            data: res.data.data
+        };
+    } catch (err) {
+        return {
+            status: false,
+            message: err.response?.data?.error?.message || err.message
         };
     }
-    return {
-        status: false,
-        message: convertedData?.error?.message
-    };
 };

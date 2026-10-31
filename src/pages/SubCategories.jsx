@@ -73,16 +73,21 @@ function SubCategories() {
 		return <p>Error : {error}</p>
 	};
 
-	const handleSortBy = (value) => setSortBy(value);
-	const handleCategoryBy = (value) => setCategory(value);
-	const handleSubCategoryBy = (value) => setSubCategory(value);
-	const handleIsEmbossableBy = (value) => setEmbossable(value);
-	const handleStock = (value) => setStock(value);
+	// Every filter change starts again from page 1
+	const handleSortBy = (value) => { setSortBy(value); setCurrentPage(1); };
+	const handleCategoryBy = (value) => { setCategory(value); setSubCategory(""); setCurrentPage(1); };
+	const handleSubCategoryBy = (value) => { setSubCategory(value); setCurrentPage(1); };
+	const handleIsEmbossableBy = (value) => { setEmbossable(value); setCurrentPage(1); };
+	const handleStock = (value) => { setStock(value); setCurrentPage(1); };
 
+	// Back to the category and subcategory in the URL
 	const handleReset = () => {
 		setSortBy("relevance");
-		setCategory("category");
-		setSubCategory("subCategory");
+		setCategory(categorySlug);
+		setSubCategory(subCategorySlug);
+		setEmbossable(false);
+		setStock(true);
+		setCurrentPage(1);
 	};
 
 	const handleNextPage = () => {
@@ -152,7 +157,7 @@ function SubCategories() {
 						].map(option => (
 							<button
 								key={option.value}
-								onClick={() => { setSortBy(option.value); setIsSortOpen(false); }}
+								onClick={() => { handleSortBy(option.value); setIsSortOpen(false); }}
 								className={`block w-full text-left py-3 cursor-pointer ${sortBy === option.value ? "text-[#fb641b] font-semibold" : "text-gray-700"}`}
 							>
 								{option.label}

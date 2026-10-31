@@ -21,7 +21,12 @@ export function AuthProvider({ children }) {
         async function load() {
             try {
                 const response = await getWishlistAPI();
-                if (!cancelled) setWishList(response.data.productData);
+                if (cancelled) return;
+                if (!response.status) {
+                    toast.error(response.message);
+                    return;
+                }
+                setWishList(response.data.productData);
             } catch (err) {
                 if (!cancelled) toast.error(err.message);
             } finally {

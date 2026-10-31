@@ -32,7 +32,7 @@ const AddressPage = ({ handleBack, handleSave, initialData }) => {
             const savedState = states.find((state) => state.name === initialData?.state);
             if (savedState) setStateId(String(savedState.id));
         });
-    }, []);
+    }, [initialData?.state]);
 
     useEffect(() => {
         if (!stateId) return;
@@ -42,7 +42,7 @@ const AddressPage = ({ handleBack, handleSave, initialData }) => {
             const savedCity = cities.find((city) => city.name === initialData?.city);
             if (savedCity) setCityId(String(savedCity.id));
         });
-    }, [stateId]);
+    }, [stateId, initialData?.city]);
 
 
     const handleStateChange = (e) => {

@@ -67,8 +67,8 @@ function ProductDetailsPage() {
 
     const handleBuyNow = async (productId) => {
         await addToCart(productId);
-        navigate(`/cart`,
-            { state: { buyNowId: productId } });
+        // The server orders the whole cart, so show all of it
+        navigate(`/cart`);
     };
 
     const corporateContact = () => {
@@ -111,7 +111,7 @@ function ProductDetailsPage() {
                 ]}
             />
             <div className="flex flex-col justify-between w-full px-8 bg-white lg:flex-row lg:h-135">
-                <div className="flex flex-col w-full lg:w-[45%] pt-3 relative">
+                <div className="flex flex-col w-full lg:w-1/2 xl:w-[45%] pt-3 relative">
                     <div className="flex flex-col-reverse lg:flex-row">
                         <div className="flex flex-row lg:flex-col justify-center-safe lg:justify-start gap-2 overflow-x-auto">
                             {(productDetails?.images || []).map((img, index) => {
@@ -122,9 +122,9 @@ function ProductDetailsPage() {
                                 )
                             })}
                         </div>
-                        <div className="w-full my-4 lg:flex-1 lg:m-10">
+                        <div className="w-full my-4 lg:flex-1 lg:mx-4 lg:my-10">
                             <div className="h-90">
-                                <img src={(productDetails?.images || [])?.[activeImage]?.url || ""} alt={(productDetails?.images || [])?.[activeImage]?.alt || "product-image"} className="w-full h-full cursor-pointer object-cover" />
+                                <img src={(productDetails?.images || [])?.[activeImage]?.url || ""} alt={(productDetails?.images || [])?.[activeImage]?.alt || "product-image"} className="w-full h-full cursor-pointer object-contain" />
                             </div>
                             <div className="hidden lg:flex justify-center gap-5 mt-5">
                                 <button className="px-9 py-2 bg-white cursor-pointer border-2 border-[#fb641b] whitespace-nowrap hover:-translate-y-2 transition-transform duration-200 ease-out" onClick={() => addToCart(productId)}>ADD TO CART</button>
@@ -153,8 +153,12 @@ function ProductDetailsPage() {
                         </div>
                         <div className="flex items-center gap-2 my-2">
                             <p className="text-[18px] lg:text-4xl">₹{productDetails.price} </p>
-                            <p className="text-[18px] line-through text-gray-600 lg:text-2xl">₹{productDetails.oldPrice}</p>
-                            <p className="text-[18px] text-[#fb641b] font-medium lg:text-md">{productDetails.discount}</p>
+                            {productDetails.oldPrice && (
+                                <>
+                                    <p className="text-[18px] line-through text-gray-600 lg:text-2xl">₹{productDetails.oldPrice}</p>
+                                    <p className="text-[18px] text-[#fb641b] font-medium lg:text-md">{productDetails.discount}</p>
+                                </>
+                            )}
                         </div>
                     </div>
                     <div className="flex  w-[50%]">

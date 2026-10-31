@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import toast from "react-hot-toast";
+import { createLeadAPI } from "../api/leadsApi";
 
 const Franchise = () => {
   const [form, setForm] = useState({
@@ -17,7 +18,7 @@ const Franchise = () => {
   }, []);
 
   const handleSubmit = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
 
       if (!form.name.trim()) {
@@ -33,7 +34,14 @@ const Franchise = () => {
         return;
       }
 
+      const res = await createLeadAPI({ type: "FRANCHISE", ...form });
+      if (!res.status) {
+        toast.error(res.message || "Something went wrong, please try again!");
+        return;
+      }
+
       toast.success("Form submitted successfully!");
+      setForm({ name: "", email: "", phone: "", message: "" });
     },
     [form]
   );

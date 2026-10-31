@@ -1,10 +1,9 @@
 import "./App.css";
 import Home from "./pages/Home";
 import Navbar from "./component/Navbar";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Footer from "./component/Footer";
 import Franchise from "./pages/Franchise";
-import Products from "./pages/Products";
 import { Toaster } from "react-hot-toast";
 import Categories from "./pages/Categories";
 import SubCategories from "./pages/SubCategories";
@@ -44,7 +43,6 @@ function App() {
                 <Route path="wishlist" element={<Wishlist />} />
                 <Route path="address" element={<Address />} />
               </Route>
-              <Route path="/products/:id" element={<Products />} />
               <Route exact path="/:slug" element={<CollectionContent />} />
               <Route path="/franchise" element={<Franchise />} />
               <Route path="/categories/:slug" element={<Categories />} />

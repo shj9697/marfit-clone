@@ -26,10 +26,12 @@ const CartItem = ({ item }) => {
                     <div className="mt-3 flex flex-wrap justify-between items-center gap-6 p-2">
                         <div className="flex flex-col items-center">
                             <p className="text-[16px]">₹{item.price}</p>
-                            <div className="flex">
-                                <p className="text-gray-400 text-[13px] line-through">₹{item.oldPrice}</p>
-                                <p className="text-orange-600 text-[13px]">{item.product.off}</p>
-                            </div>
+                            {item.oldPrice && (
+                                <div className="flex">
+                                    <p className="text-gray-400 text-[13px] line-through">₹{item.oldPrice}</p>
+                                    <p className="text-orange-600 text-[13px]">{item.product.off}</p>
+                                </div>
+                            )}
                         </div>
                         <div className="flex flex-col items-center">
                             <div className="flex items-center">

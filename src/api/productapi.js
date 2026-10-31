@@ -1,11 +1,11 @@
-const apiUrl = import.meta.env.VITE_API_URL || "";
+import api from "./client";
 
 export async function getProductsAPI({ page, limit, category, subCategory, search, sort, minPrice, maxPrice, embossable, inStock }) {
     const params = new URLSearchParams();
     params.append("page", page);
     params.append("limit", limit);
     category && params.append("category", category);
-    subCategory && params.append("subCategory", subCategory);
+    subCategory && params.append("subcategory", subCategory);
     search && params.append("search", search);
     sort && params.append("sort", sort);
     minPrice && params.append("minPrice", minPrice);
@@ -13,64 +13,65 @@ export async function getProductsAPI({ page, limit, category, subCategory, searc
     embossable && params.append("embossable", embossable);
     inStock && params.append("inStock", inStock);
 
-    const res = await fetch(`${apiUrl}/api/products?${params}`);
-    const convertedData = await res.json();
-    if (res.ok) {
+    try {
+        const res = await api.get(`/api/products?${params}`);
         return {
-            products: convertedData.data,
-            total: convertedData.totalProducts,
-            totalPages: convertedData.totalPages
+            products: res.data.data,
+            total: res.data.totalProducts,
+            totalPages: res.data.totalPages
+        };
+    } catch (error) {
+        return {
+            products: [],
+            total: 0,
+            totalPages: 0,
+            message: error.response?.data?.error?.message
         };
     }
-    return {
-        products: [],
-        total: 0,
-        totalPages: 0,
-        message: convertedData.error.message
-    };
 };
 
 export async function getRelatedProductsAPI(identifier, limit = 10) {
-    const res = await fetch(`${apiUrl}/api/products/${identifier}/related?limit=${limit}`);
-    const convertedData = await res.json();
-    if (res.ok) {
+    try {
+        const res = await api.get(`/api/products/${identifier}/related?limit=${limit}`);
         return {
-            similar: convertedData.data.similar,
-            youMayAlsoLike: convertedData.data.youMayAlsoLike,
+            similar: res.data.data.similar,
+            youMayAlsoLike: res.data.data.youMayAlsoLike,
+        };
+    } catch (error) {
+        return {
+            similar: [],
+            youMayAlsoLike: [],
+            message: error.response?.data?.error?.message
         };
     }
-    return {
-        similar: [],
-        youMayAlsoLike: [],
-        message: convertedData.error.message
-    };
-};
+}
 
 // Navbar suggestions: categories first, then products. Under 2 characters returns []
 export async function searchProductsAPI(query) {
-    const res = await fetch(`${apiUrl}/api/products/search?q=${encodeURIComponent(query)}`);
-    const convertedData = await res.json();
-    if (res.ok) {
+    try {
+        const res = await api.get(`/api/products/search?q=${encodeURIComponent(query)}`);
         return {
-            results: convertedData.data
+            results: res.data.data
+        };
+    } catch (error) {
+        return {
+            results: [],
+            message: error.response?.data?.error?.message
         };
     }
-    return {
-        results: [],
-        message: convertedData.error.message
-    };
 };
 
 export async function getProductDetailsAPI(id) {
-    const res = await fetch(`${apiUrl}/api/products/${id}`);
-    const convertedData = await res.json();
-    if (res.ok) {
+    try {
+        const res = await api.get(`/api/products/${id}`);
         return {
-            data: convertedData.data
+            data: res.data.data
         }
-    }
-    return {
-        data: []
+    } catch (error) {
+        return {
+            data: [],
+            message: error.response?.data?.error?.message
+        };
     }
 }
 
